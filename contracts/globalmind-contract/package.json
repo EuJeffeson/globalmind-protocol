@@ -1,0 +1,30 @@
+{
+  "name": "globalmind-contract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile",
+    "node": "hardhat node",
+    "deploy:local": "hardhat run scripts/deploy.ts --network localhost",
+    "deploy:sepolia": "hardhat run scripts/deploy.cjs --network sepolia",
+    "deploy:token": "hardhat run scripts/deploy-token.cjs --network sepolia",
+    "deploy:v2": "hardhat run scripts/deploy-v2.cjs --network sepolia"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.2",
+    "@types/node": "^25.3.5",
+    "dotenv": "^17.3.1",
+    "hardhat": "^2.28.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "type": "module",
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.6.1"
+  }
+}

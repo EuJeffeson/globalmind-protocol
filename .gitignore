@@ -1,0 +1,13 @@
+# Env files com chave privada — NUNCA subir
+contracts/.env
+frontend/.env
+frontend/.env.local
+
+# Dependencies
+node_modules/
+frontend/.next/
+frontend/node_modules/
+contracts/node_modules/
+
+# Vercel
+frontend/.vercel/
