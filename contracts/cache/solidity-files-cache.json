@@ -1,0 +1,114 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/eujeffeson/Downloads/globalmind-contract/contracts/GlobalMindProtocol.sol": {
+      "lastModificationDate": 1772886331013,
+      "contentHash": "9d6c3581d41a02b7dd9e476f5a14d24c",
+      "sourceName": "contracts/GlobalMindProtocol.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "GlobalMindProtocol"
+      ]
+    },
+    "/Users/eujeffeson/Downloads/globalmind-contract/contracts/GMNDToken.sol": {
+      "lastModificationDate": 1772887714860,
+      "contentHash": "d2b0fc79c99b279cf3403de1f2c136e2",
+      "sourceName": "contracts/GMNDToken.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "GMNDToken"
+      ]
+    },
+    "/Users/eujeffeson/Downloads/globalmind-contract/contracts/GlobalMindProtocolV2.sol": {
+      "lastModificationDate": 1772888211114,
+      "contentHash": "2fedf42ac235ca443223129453f11639",
+      "sourceName": "contracts/GlobalMindProtocolV2.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "GlobalMindProtocolV2",
+        "IERC20"
+      ]
+    }
+  }
+}
