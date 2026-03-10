@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Instrument_Serif, DM_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import WalletModal from "@/components/WalletModal";
 
 const instrumentSerif = Instrument_Serif({
   weight: ["400"],
@@ -33,8 +33,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR">
       <body className={`${instrumentSerif.variable} ${dmMono.variable} ${manrope.variable}`}>
         <Navbar />
+        <WalletModal />
         <main>{children}</main>
-        <SpeedInsights />
       </body>
     </html>
   );

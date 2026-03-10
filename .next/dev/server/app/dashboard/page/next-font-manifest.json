@@ -1,0 +1,14 @@
+{
+  "pages": {},
+  "app": {
+    "[project]/globalmind-frontend/app/dashboard/page": [
+      "static/media/7ebf22b5a21034f8-s.p.d8bad3ab.woff2",
+      "static/media/e41d5df559864f9e-s.p.380d09ea.woff2",
+      "static/media/36363bfb06833f56-s.p.d8302362.woff2",
+      "static/media/a73419dd2ba2d841-s.p.f2813c2a.woff2",
+      "static/media/a343f882a40d2cc9-s.p.71e1367e.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pagesUsingSizeAdjust": false
+}

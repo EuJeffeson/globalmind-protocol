@@ -1,0 +1,10 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/admin/page": "/admin",
+  "/dashboard/page": "/dashboard",
+  "/empresa/page": "/empresa",
+  "/favicon.ico/route": "/favicon.ico",
+  "/page": "/",
+  "/tarefas/page": "/tarefas"
+}
