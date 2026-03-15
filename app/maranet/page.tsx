@@ -13,7 +13,7 @@ const TOKEN_ABI = [
 ] as const;
 
 const PROTOCOL_ABI = [
-  { name: "submitValidation", type: "function", stateMutability: "nonpayable", inputs: [{ name: "taskId", type: "uint256" }, { name: "response", type: "uint8" }], outputs: [] },
+  { name: "submitAnswer", type: "function", stateMutability: "nonpayable", inputs: [{ name: "batchId", type: "uint256" }, { name: "taskIndex", type: "uint256" }, { name: "answer", type: "string" }], outputs: [] },
 ] as const;
 
 const TASKS = [
@@ -78,8 +78,8 @@ function MaranetContent() {
     writeContract({
       address: CONTRACT_ADDRESS,
       abi: PROTOCOL_ABI,
-      functionName: "submitValidation",
-      args: [BigInt(taskId), optionIdx],
+      functionName: "submitAnswer",
+      args: [BigInt(0), BigInt(taskId), TASKS.find(t => t.id === taskId)?.options[optionIdx] ?? ""],
     });
   };
 
