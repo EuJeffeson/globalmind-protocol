@@ -2,7 +2,7 @@
 export const CONTRACT_ADDRESS = "0x7Cb748160b81978Ef7B5a6C93f5415311f450994";
 
 // Endereço do token GMND ERC-20
-export const GMND_TOKEN_ADDRESS = "0x642799DA14BE72A9b8f5cF31fFbd7432CaFA97b3";
+export const GMND_TOKEN_ADDRESS = "0x658719E24649F727C3608118bFA33A9Bac3f18F0";
 
 export const CONTRACT_ABI = [
   // createBatch — agora recebe rewardAmount em GMND (sem payable)
