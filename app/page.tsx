@@ -1,334 +1,232 @@
 "use client";
-import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+
+const CARDS = [
+  {
+    href: "/empresa",
+    icon: "🏢",
+    title: "Empresa",
+    desc: "Poste lotes de tarefas de validação de IA e pague automaticamente via smart contract. Auditável on-chain.",
+    cta: "Postar tarefas →",
+    color: "from-blue-500/10 to-transparent border-blue-500/20",
+  },
+  {
+    href: "/tarefas",
+    icon: "⚡",
+    title: "Validar",
+    desc: "Responda micro-tarefas de validação de IA e ganhe $GMND automaticamente. Sem intermediário.",
+    cta: "Começar a validar →",
+    color: "from-[#c8522a]/10 to-transparent border-[#c8522a]/20",
+  },
+  {
+    href: "/dashboard",
+    icon: "📊",
+    title: "Dashboard",
+    desc: "Acompanhe seu score PoEC, saldo $GMND, precisão e histórico de validações on-chain.",
+    cta: "Ver dashboard →",
+    color: "from-purple-500/10 to-transparent border-purple-500/20",
+  },
+  {
+    href: "/admin",
+    icon: "🔧",
+    title: "Admin",
+    desc: "Visualize todos os batches ativos, finalize consensos e monitore a rede de validação.",
+    cta: "Painel admin →",
+    color: "from-orange-500/10 to-transparent border-orange-500/20",
+  },
+];
+
+const HALVING = [
+  { era: "Era 0 — Ano 1-2", emission: "100.000 GMND/dia", active: true },
+  { era: "Era 1 — Ano 3-4", emission: "50.000 GMND/dia",  active: false },
+  { era: "Era 2 — Ano 5-6", emission: "25.000 GMND/dia",  active: false },
+  { era: "Era 3 — Ano 7-8", emission: "12.500 GMND/dia",  active: false },
+];
 
 export default function Home() {
-  const revealRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          const el = e.target as HTMLElement;
-          const siblings = Array.from(el.parentElement?.children || []).filter(c => c.classList.contains("reveal"));
-          const idx = siblings.indexOf(el);
-          el.style.transitionDelay = idx * 100 + "ms";
-          el.classList.add("in");
-        }
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
-    const bgTxt = document.querySelector(".hero-bg-text") as HTMLElement;
-    const onScroll = () => { if (bgTxt) bgTxt.style.transform = `translateY(${window.scrollY * 0.3}px)`; };
-    window.addEventListener("scroll", onScroll);
-    return () => { observer.disconnect(); window.removeEventListener("scroll", onScroll); };
-  }, []);
-
   return (
-    <div style={{ background: "var(--bg)" }}>
+    <div className="max-w-7xl mx-auto px-6 py-16">
 
-      {/* HERO */}
-      <section className="hero-section">
-        <div className="hero-bg-text" style={{
-          position: "absolute", bottom: "-2rem", right: "-1rem",
-          fontFamily: "var(--font-serif), serif", fontSize: "22vw",
-          color: "rgba(15,14,12,0.03)", lineHeight: 1,
-          whiteSpace: "nowrap", pointerEvents: "none", userSelect: "none",
-          letterSpacing: "-0.05em",
-        }}>GMND</div>
+      {/* Hero */}
+      <div className="text-center mb-16">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#c8522a]/10 border border-[#c8522a]/20 text-[#c8522a] text-xs font-mono mb-6">
+          <span className="w-2 h-2 rounded-full bg-[#c8522a] animate-pulse" />
+          Sepolia Testnet — Contratos V2 Ativos · V3 + Halving em Deploy
+        </div>
 
-        {/* Left */}
-        <div style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginBottom: "2rem", flexWrap: "wrap" }}>
-            <span style={{
-              background: "var(--ink)", color: "var(--bg)",
-              fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem",
-              padding: "0.35rem 0.8rem", borderRadius: "2px",
-              letterSpacing: "0.12em", textTransform: "uppercase",
-            }}>Protocolo v2.0</span>
-            <span style={{
-              fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem",
-              color: "var(--muted)", letterSpacing: "0.1em",
-            }}>// Infraestrutura Descentralizada de IA</span>
+        <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-6">
+          A infraestrutura de<br />
+          <span className="text-[#c8522a]">validação de IA</span><br />
+          do futuro
+        </h1>
+
+        <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-4">
+          O GlobalMind Protocol conecta empresas de IA com uma rede global de validadores humanos.
+          Dados melhores. Custos menores. Recompensas automáticas via blockchain.
+        </p>
+
+        <p className="text-gray-500 text-sm max-w-xl mx-auto mb-10">
+          Parceiro ISP: <span className="text-white font-medium">Maranet Telecom</span> — mais de mil clientes ativos em Marabá, Pará 🇧🇷
+        </p>
+
+        <div className="flex items-center justify-center gap-4 flex-wrap">
+          <Link href="/tarefas" className="px-6 py-3 bg-[#c8522a] text-white font-bold rounded-xl hover:bg-[#c8522a]/90 transition-all">
+            Começar a validar
+          </Link>
+          <Link href="/empresa" className="px-6 py-3 border border-white/10 text-white rounded-xl hover:bg-white/5 transition-all">
+            Sou empresa →
+          </Link>
+          <a href="https://github.com/EuJeffeson/globalmind-protocol" target="_blank" rel="noopener noreferrer"
+            className="px-6 py-3 border border-white/10 text-gray-400 rounded-xl hover:bg-white/5 transition-all text-sm">
+            GitHub →
+          </a>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+        {[
+          { val: "1B",     label: "Supply $GMND",     color: "text-[#c8522a]" },
+          { val: "$0.003", label: "Preco Seed",        color: "text-blue-400"  },
+          { val: "20%",    label: "Auto Burn",         color: "text-red-400"   },
+          { val: "$3.3M",  label: "Valuation",         color: "text-green-400" },
+        ].map(({ val, label, color }) => (
+          <div key={label} className="text-center p-4 rounded-xl bg-white/[0.03] border border-white/5">
+            <div className={`text-2xl font-black font-mono ${color}`}>{val}</div>
+            <div className="text-xs text-gray-500 mt-1">{label}</div>
           </div>
+        ))}
+      </div>
 
-          <h1 style={{
-            fontFamily: "var(--font-serif), serif",
-            fontSize: "clamp(2.4rem, 5.5vw, 5.5rem)",
-            lineHeight: 1.05, letterSpacing: "-0.02em",
-            color: "var(--ink)", marginBottom: "1.5rem",
-          }}>
-            A primeira{" "}
-            <em style={{ fontStyle: "italic", color: "var(--accent)" }}>rede neural</em>{" "}
-            movida por hardware cotidiano
-          </h1>
+      {/* Cards */}
+      <div className="grid md:grid-cols-2 gap-4 mb-16">
+        {CARDS.map(c => (
+          <Link key={c.href} href={c.href}
+            className={`group p-6 rounded-2xl bg-gradient-to-br border ${c.color} hover:scale-[1.01] transition-all`}>
+            <div className="text-3xl mb-3">{c.icon}</div>
+            <h2 className="text-xl font-bold mb-2">{c.title}</h2>
+            <p className="text-gray-400 text-sm mb-4">{c.desc}</p>
+            <span className="text-[#c8522a] text-sm font-medium group-hover:underline">{c.cta}</span>
+          </Link>
+        ))}
+      </div>
 
-          <p style={{
-            fontSize: "1rem", color: "var(--ink2)",
-            lineHeight: 1.8, fontWeight: 300,
-            marginBottom: "2.5rem",
-          }}>
-            GlobalMind transforma qualquer dispositivo conectado em um neurônio de validação global. Sem data centers. Sem monopólios. A inteligência pertence a quem a alimenta.
+      {/* Halving */}
+      <div className="mb-16">
+        <div className="text-center mb-8">
+          <span className="text-xs font-mono text-[#c8522a] tracking-widest uppercase">Tokenomics</span>
+          <h2 className="text-3xl font-black mt-2">Deflacao Dupla — $GMND</h2>
+          <p className="text-gray-400 text-sm mt-2 max-w-lg mx-auto">
+            Halving a cada 2 anos (inspirado no Bitcoin) + Burn automatico de 20% por transacao corporativa.
+            Nenhum competidor combina os dois mecanismos.
           </p>
-
-          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-            <Link href="/empresa" className="btn-fill">Postar Tarefas</Link>
-            <Link href="/tarefas" className="btn-ghost">Começar a Validar</Link>
-          </div>
-
-          <div className="hero-stats">
-            {[
-              { val: "∞",    label: "Escalabilidade" },
-              { val: "$0",   label: "CAPEX Próprio"  },
-              { val: "PoEC", label: "Consenso Cego"  },
-              { val: "1B",   label: "Supply GMND"    },
-            ].map(m => (
-              <div key={m.label} style={{ flex: "1 1 auto", minWidth: "70px" }}>
-                <span style={{
-                  fontFamily: "var(--font-serif), serif",
-                  fontSize: "clamp(1.6rem, 4vw, 2.4rem)", color: "var(--accent)",
-                  lineHeight: 1, display: "block", marginBottom: "0.3rem",
-                }}>{m.val}</span>
-                <div style={{
-                  fontFamily: "var(--font-mono), monospace",
-                  fontSize: "0.6rem", color: "var(--muted)",
-                  textTransform: "uppercase", letterSpacing: "0.1em",
-                }}>{m.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
 
-        {/* Right — device grid (hidden on mobile) */}
-        <div className="hero-cards" style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-            <div style={{
-              gridColumn: "span 2",
-              background: "var(--ink)", borderRadius: "6px", padding: "1.8rem 1.5rem",
-            }}>
-              <span style={{ fontSize: "1.8rem", display: "block", marginBottom: "0.8rem" }}>📱</span>
-              <div style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "rgba(244,241,235,0.4)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "0.3rem" }}>One-Click Install</div>
-              <div style={{ fontSize: "1rem", fontWeight: 700, color: "var(--bg)" }}>App Mobile — Android & iOS</div>
-              <div style={{ fontSize: "0.8rem", color: "rgba(244,241,235,0.55)", marginTop: "0.4rem", lineHeight: 1.5 }}>Usuário leigo instala, toca em "Iniciar" e começa a ganhar $GMND em segundo plano.</div>
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/10">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-lg">🔥</span>
+              <h3 className="font-bold text-white">Calendario de Halving</h3>
             </div>
-            {[
-              { icon: "💻", label: "Desktop",    name: "Windows / macOS", desc: "Usa apenas capacidade ociosa da CPU/GPU." },
-              { icon: "📡", label: "Infra / ISP", name: "Roteador + OpenWrt", desc: "Firmware Rust para uptime 24/7." },
-              { icon: "⚙️", label: "Server",     name: "Docker Container", desc: "Deploy em segundos para usuários tech." },
-              { icon: "🔗", label: "Smart Contract", name: "Recompensas GMND", desc: "Pagamentos automáticos on-chain." },
-            ].map(d => (
-              <div key={d.name} className="card" style={{ padding: "1.5rem" }}>
-                <span style={{ fontSize: "1.6rem", display: "block", marginBottom: "0.8rem" }}>{d.icon}</span>
-                <div style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "var(--muted)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "0.3rem" }}>{d.label}</div>
-                <div style={{ fontSize: "0.9rem", fontWeight: 700 }}>{d.name}</div>
-                <div style={{ fontSize: "0.78rem", color: "var(--muted)", marginTop: "0.3rem", lineHeight: 1.5 }}>{d.desc}</div>
-              </div>
-            ))}
+            <div className="space-y-2">
+              {HALVING.map(({ era, emission, active }) => (
+                <div key={era} className={`flex items-center justify-between p-3 rounded-lg ${active ? "bg-[#c8522a]/10 border border-[#c8522a]/20" : "bg-white/[0.02] border border-white/5"}`}>
+                  <span className={`text-sm ${active ? "text-white font-bold" : "text-gray-400"}`}>{era}</span>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-sm font-mono ${active ? "text-[#c8522a] font-bold" : "text-gray-500"}`}>{emission}</span>
+                    {active && <span className="text-xs bg-[#c8522a]/20 text-[#c8522a] px-2 py-0.5 rounded-full">ATUAL</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-gray-600 mt-3 italic">Inspirado no modelo de escassez do Bitcoin</p>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/10">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-lg">📊</span>
+              <h3 className="font-bold text-white">Distribuicao do Token</h3>
+            </div>
+            <div className="space-y-2">
+              {[
+                { label: "Recompensas de Rede",  pct: "40%", color: "bg-[#c8522a]" },
+                { label: "Venda Seed",            pct: "15%", color: "bg-blue-500"  },
+                { label: "Equipe (vesting)",      pct: "15%", color: "bg-green-500" },
+                { label: "Ecossistema",           pct: "15%", color: "bg-purple-500"},
+                { label: "Reserva",               pct: "10%", color: "bg-yellow-500"},
+                { label: "Liquidez Inicial",      pct: "5%",  color: "bg-gray-500"  },
+              ].map(({ label, pct, color }) => (
+                <div key={label} className="flex items-center gap-3">
+                  <div className={`w-2 h-2 rounded-full ${color} flex-shrink-0`} />
+                  <span className="text-sm text-gray-400 flex-1">{label}</span>
+                  <span className="text-sm font-mono text-white font-bold">{pct}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 p-3 rounded-lg bg-[#c8522a]/10 border border-[#c8522a]/20 text-xs text-[#c8522a]">
+              Seed: 150M GMND · $0.003/token · Valuation $3.3M
+            </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* HOW IT WORKS */}
-      <section style={{ padding: "5rem 1.5rem", background: "var(--surface)", borderTop: "1px solid var(--border)" }}>
-        <div style={{ marginBottom: "3rem" }}>
-          <span className="section-num">// 01 — Como Funciona</span>
-          <h2 className="section-title">Três participantes. <em>Um protocolo.</em></h2>
+      {/* ISP Partner */}
+      <div className="mb-16 p-6 rounded-2xl bg-white/[0.03] border border-white/10">
+        <div className="flex items-start gap-4">
+          <span className="text-3xl">📡</span>
+          <div>
+            <h3 className="font-bold text-white text-lg mb-1">Primeiro Parceiro ISP — Maranet Telecom</h3>
+            <p className="text-gray-400 text-sm mb-3">
+              Mais de mil clientes ativos em Maraba, Para 🇧🇷 — primeiro DePIN de validacao de IA do Norte do Brasil.
+              Cada cliente Maranet e um node potencial da rede GlobalMind.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {["DePIN", "ISP Node", "Maraba-PA", "1.000+ Clientes", "Norte do Brasil"].map(tag => (
+                <span key={tag} className="text-xs px-2 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400">{tag}</span>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="cards-grid">
+      </div>
+
+      {/* Traction */}
+      <div className="mb-16">
+        <h2 className="text-2xl font-black mb-6 text-center">Tracao Atual</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {[
-            { badge: "Para Usuários", badgeColor: "var(--accent3)", icon: "👤", title: "Instale e Ganhe", desc: "Instale o app, conecte sua carteira e deixe seu dispositivo validar tarefas de IA enquanto você dorme. Cada resposta correta gera $GMND automaticamente.", tags: ["Mobile", "Desktop", "Roteador"] },
-            { badge: "Para Provedores", badgeColor: "var(--accent2)", icon: "🌐", title: "Monetize sua Infraestrutura", desc: "ISPs e provedores de conectividade transformam capacidade ociosa de rede em receita tokenizada. Zero configuração adicional necessária.", tags: ["ISP", "Fibra", "5G"] },
-            { badge: "Para Empresas", badgeColor: "var(--accent)", icon: "🏢", title: "Validação Auditável", desc: "Acesse uma rede global de validadores humanos on-chain. Pague por resultado, audite cada etapa. Substitua contratos opacos de anotação por transparência total.", tags: ["AI Training", "LLM", "Auditável"] },
-          ].map(c => (
-            <div key={c.title} className="card reveal" style={{ padding: "2rem 1.5rem" }}>
-              <span style={{
-                display: "inline-block",
-                fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem",
-                letterSpacing: "0.12em", textTransform: "uppercase",
-                padding: "0.25rem 0.7rem", borderRadius: "2px", marginBottom: "1.5rem",
-                border: `1px solid ${c.badgeColor}`, color: c.badgeColor,
-                background: `${c.badgeColor}0f`,
-              }}>{c.badge}</span>
-              <span style={{ fontSize: "2.5rem", display: "block", marginBottom: "1.2rem" }}>{c.icon}</span>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 800, marginBottom: "0.8rem" }}>{c.title}</h3>
-              <p style={{ fontSize: "0.87rem", color: "var(--muted)", lineHeight: 1.7 }}>{c.desc}</p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginTop: "1.5rem" }}>
-                {c.tags.map(t => (
-                  <span key={t} style={{
-                    fontFamily: "var(--font-mono), monospace", fontSize: "0.63rem",
-                    background: "var(--bg2)", padding: "0.2rem 0.6rem",
-                    borderRadius: "2px", color: "var(--ink2)", letterSpacing: "0.05em",
-                  }}>{t}</span>
-                ))}
-              </div>
+            "✅ Smart Contracts V2 live na Sepolia",
+            "✅ Token ERC-20 $GMND deployado",
+            "✅ dApp em producao",
+            "✅ App de validacao Maranet",
+            "✅ Contrato V3 + Halving desenvolvido",
+            "✅ Open source no GitHub",
+            "✅ Product Hunt lancado",
+            "✅ DevHunt listado",
+            "✅ Giveth — primeira doacao recebida",
+          ].map(item => (
+            <div key={item} className="p-3 rounded-xl bg-white/[0.02] border border-white/5 text-sm text-gray-400">
+              {item}
             </div>
           ))}
         </div>
-      </section>
-
-      {/* TOKENOMICS */}
-      <section style={{ padding: "5rem 1.5rem", background: "var(--bg)" }}>
-        <div style={{ marginBottom: "3rem" }}>
-          <span className="section-num">// 02 — Tokenomics</span>
-          <h2 className="section-title">$GMND: Mecanismo de <em>Valorização</em></h2>
-          <p style={{ color: "var(--ink2)", fontSize: "1rem", lineHeight: 1.8, fontWeight: 300, marginTop: "1rem" }}>
-            Não é apenas uma moeda. É o combustível deflacionário que alinha o incentivo de todos os participantes.
-          </p>
-        </div>
-        <div className="tokenomics-grid">
-          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            {[
-              { icon: "🏢", title: "Empresas de IA compram acesso", desc: "Clientes corporativos pagam Créditos de Validação em $GMND para acessar a rede de validadores humanos." },
-              { icon: "🔥", title: "Burn — Oferta Diminui", desc: "20% dos tokens pagos são permanentemente destruídos. Oferta circulante cai com o crescimento da demanda." },
-              { icon: "👥", title: "Distribuição aos Nós", desc: "70% é distribuído proporcionalmente aos nós com base no score PoEC. Quanto melhor a contribuição, maior a fatia." },
-              { icon: "📈", title: "Efeito de Rede Composto", desc: "Mais usuários → mais confiável → mais clientes → mais burn → maior valor. Ciclo virtuoso autossustentado." },
-            ].map((n, i) => (
-              <div key={n.title} className="reveal" style={{ display: "flex", alignItems: "stretch", gap: "1rem", position: "relative" }}>
-                {i < 3 && <div style={{ position: "absolute", left: "23px", top: "52px", width: "1px", bottom: "-24px", background: "var(--border)" }} />}
-                <div style={{
-                  width: "48px", height: "48px", borderRadius: "50%", flexShrink: 0,
-                  background: "var(--surface)", border: "1px solid var(--border)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "1.1rem", position: "relative", zIndex: 1, alignSelf: "flex-start",
-                }}>{n.icon}</div>
-                <div style={{
-                  background: "var(--surface)", border: "1px solid var(--border)",
-                  borderRadius: "6px", padding: "1.2rem 1.4rem", flex: 1, marginBottom: "1.5rem",
-                }}>
-                  <h4 style={{ fontSize: "0.9rem", fontWeight: 800, marginBottom: "0.4rem" }}>{n.title}</h4>
-                  <p style={{ fontSize: "0.83rem", color: "var(--muted)", lineHeight: 1.6 }}>{n.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-            {[
-              { val: "1B",    color: "var(--accent)",  key: "Supply Total GMND" },
-              { val: "0,003", color: "var(--accent2)", key: "Preço Seed (USD)" },
-              { val: "20%",   color: "var(--accent)",  key: "Burn por Transação" },
-              { val: "70%",   color: "var(--accent3)", key: "Para Validadores" },
-            ].map(s => (
-              <div key={s.key} className="card reveal" style={{ padding: "1.5rem" }}>
-                <span style={{ fontFamily: "var(--font-serif), serif", fontSize: "2rem", color: s.color, lineHeight: 1, display: "block" }}>{s.val}</span>
-                <div style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginTop: "0.5rem" }}>{s.key}</div>
-              </div>
-            ))}
-            <div style={{ gridColumn: "span 2", background: "var(--ink)", borderRadius: "6px", padding: "1.5rem", display: "flex", alignItems: "center", gap: "1rem" }} className="reveal">
-              <span style={{ fontSize: "2rem" }}>🔥</span>
-              <div>
-                <h4 style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--bg)", marginBottom: "0.3rem" }}>Queima Automática On-Chain</h4>
-                <p style={{ fontSize: "0.82rem", color: "rgba(244,241,235,0.5)", lineHeight: 1.5 }}>Cada batch finalizado queima 20% via smart contract. Imutável e auditável.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
 
       {/* CTA */}
-      <section style={{
-        background: "var(--ink)", padding: "6rem 1.5rem",
-        textAlign: "center", position: "relative", overflow: "hidden",
-      }}>
-        <div style={{
-          position: "absolute", bottom: "-3rem", left: "50%", transform: "translateX(-50%)",
-          fontFamily: "var(--font-serif), serif", fontSize: "30vw", color: "rgba(244,241,235,0.03)",
-          pointerEvents: "none", whiteSpace: "nowrap", lineHeight: 1,
-        }}>GMND</div>
-        <h2 style={{
-          fontFamily: "var(--font-serif), serif", fontStyle: "italic",
-          fontSize: "clamp(2rem, 6vw, 6rem)", color: "var(--bg)",
-          lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: "1.5rem",
-          position: "relative",
-        }}>
-          A inteligência pertence<br/>a{" "}
-          <em style={{ fontStyle: "normal", color: "var(--accent)" }}>todos</em>
-        </h2>
-        <p style={{ color: "rgba(244,241,235,0.45)", fontSize: "1rem", maxWidth: "520px", margin: "0 auto 2.5rem", lineHeight: 1.7, position: "relative" }}>
-          Seja um dos primeiros a apoiar a infraestrutura descentralizada que vai remodelar o futuro global da IA.
-        </p>
-        <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", position: "relative" }}>
-          <Link href="/empresa" style={{
-            background: "var(--accent)", color: "white",
-            padding: "1rem 2rem", borderRadius: "2px",
-            fontWeight: 700, fontSize: "0.85rem",
-            letterSpacing: "0.08em", textTransform: "uppercase",
-            textDecoration: "none", display: "inline-block",
-          }}>Entrar no Protocolo</Link>
-          <Link href="/dashboard" style={{
-            background: "transparent", color: "rgba(244,241,235,0.6)",
-            padding: "1rem 2rem", borderRadius: "2px",
-            fontWeight: 700, fontSize: "0.85rem",
-            letterSpacing: "0.08em", textTransform: "uppercase",
-            textDecoration: "none", border: "1px solid rgba(244,241,235,0.15)",
-            display: "inline-block",
-          }}>Ver Dashboard</Link>
+      <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-[#c8522a]/10 to-transparent border border-[#c8522a]/20">
+        <p className="text-2xl font-black mb-2 italic">A inteligencia pertence a quem a alimenta.</p>
+        <p className="text-gray-400 text-sm mb-6">Seed Round Aberto · $500K · 150M GMND · $0.003/token</p>
+        <div className="flex items-center justify-center gap-4 flex-wrap">
+          <Link href="/tarefas" className="px-6 py-3 bg-[#c8522a] text-white font-bold rounded-xl hover:bg-[#c8522a]/90 transition-all">
+            Comecar a validar
+          </Link>
+          <a href="https://github.com/EuJeffeson/globalmind-protocol" target="_blank" rel="noopener noreferrer"
+            className="px-6 py-3 border border-white/10 text-gray-400 rounded-xl hover:bg-white/5 transition-all text-sm">
+            Ver GitHub →
+          </a>
         </div>
-      </section>
+      </div>
 
-      {/* FOOTER */}
-      <footer style={{
-        background: "var(--ink2)", padding: "2rem 1.5rem",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        flexWrap: "wrap", gap: "1rem",
-        borderTop: "1px solid rgba(244,241,235,0.06)",
-      }}>
-        <span style={{ fontFamily: "var(--font-serif), serif", fontSize: "1.2rem", color: "rgba(244,241,235,0.7)" }}>
-          GlobalMind<sup style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.5rem", color: "var(--accent)", verticalAlign: "super" }}>GMND</sup>
-        </span>
-        <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "rgba(244,241,235,0.3)", letterSpacing: "0.08em" }}>
-          © 2026 GlobalMind Protocol · $GMND · Proof of Expertise & Connectivity
-        </p>
-        <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "rgba(244,241,235,0.2)" }}>
-          Rede Sepolia Testnet · Smart Contract Auditável
-        </p>
-      </footer>
-
-      <style>{`
-        .hero-section {
-          min-height: 100vh;
-          padding: 8rem 1.5rem 4rem;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 4rem;
-          align-items: center;
-          position: relative;
-          overflow: hidden;
-        }
-        .hero-stats {
-          display: flex;
-          gap: 1.5rem;
-          margin-top: 2.5rem;
-          padding-top: 2rem;
-          border-top: 1px solid var(--border);
-          flex-wrap: wrap;
-        }
-        .hero-cards { display: block; }
-        .cards-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 1.5rem;
-        }
-        .tokenomics-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 4rem;
-          align-items: start;
-        }
-        @media (max-width: 900px) {
-          .hero-section {
-            grid-template-columns: 1fr;
-            padding: 7rem 1.5rem 3rem;
-            gap: 2rem;
-          }
-          .hero-cards { display: none; }
-          .cards-grid { grid-template-columns: 1fr; }
-          .tokenomics-grid { grid-template-columns: 1fr; gap: 2rem; }
-        }
-        @media (max-width: 480px) {
-          .hero-section { padding: 6rem 1rem 2.5rem; }
-          .hero-stats { gap: 1rem; }
-        }
-      `}</style>
     </div>
   );
 }

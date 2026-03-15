@@ -6,201 +6,165 @@ import { BATCH_STATUS } from "@/lib/contract";
 
 interface Batch { id: number; creator: string; reward: string; taskCount: number; deadline: number; status: number; }
 
-export default function AdminPage() {
-  const { isConnected, connect, getContract } = useWeb3();
-  const [batches, setBatches]     = useState<Batch[]>([]);
-  const [loading, setLoading]     = useState(false);
-  const [finalizing, setFinalizing] = useState<Record<number, boolean>>({});
-  const [results, setResults]     = useState<Record<number, string>>({});
-  const [error, setError]         = useState("");
+const STATUS_COLOR = ["text-green-400 bg-green-400/10", "text-gray-400 bg-gray-400/10", "text-red-400 bg-red-400/10"];
 
-  const load = useCallback(async () => {
+export default function AdminPage() {
+  const { isConnected, connect, address, getContract } = useWeb3();
+  const [batches,    setBatches]    = useState<Batch[]>([]);
+  const [loading,    setLoading]    = useState(false);
+  const [finalizing, setFinalizing] = useState<Record<number, boolean>>({});
+  const [done,       setDone]       = useState<Record<number, string>>({});
+  const [error,      setError]      = useState<Record<number, string>>({});
+
+  const fetchBatches = useCallback(async () => {
     const contract = getContract(false);
     if (!contract) return;
     setLoading(true);
     try {
-      const count = await contract.batchCount();
-      const list: Batch[] = [];
-      for (let i = 0; i < Number(count); i++) {
+      const count = Number(await contract.batchCount());
+      const result: Batch[] = [];
+      for (let i = 0; i < count; i++) {
         const info = await contract.getBatchInfo(i);
-        list.push({
+        result.push({
           id: i,
-          creator: info.creator,
-          reward: Number(ethers.formatUnits(info.reward, 18)).toFixed(0),
+          creator:   info.creator,
+          reward:    ethers.formatEther(info.reward),
           taskCount: Number(info.taskCount),
-          deadline: Number(info.deadline),
-          status: Number(info.status),
+          deadline:  Number(info.deadline),
+          status:    Number(info.status),
         });
       }
-      setBatches(list.reverse());
-    } catch (e: any) { setError(e.message); }
+      setBatches(result.reverse()); // newest first
+    } catch (e) { console.error(e); }
     finally { setLoading(false); }
   }, [getContract]);
 
-  useEffect(() => { if (isConnected) load(); }, [isConnected, load]);
+  useEffect(() => { if (isConnected) fetchBatches(); }, [isConnected, fetchBatches]);
 
   const finalize = async (batchId: number) => {
+    const contract = getContract(true);
+    if (!contract) return;
     setFinalizing(f => ({ ...f, [batchId]: true }));
-    setResults(r => ({ ...r, [batchId]: "" }));
+    setError(e => ({ ...e, [batchId]: "" }));
     try {
-      const contract = getContract(true);
-      if (!contract) throw new Error("Contrato indisponível");
       const tx = await contract.finalizeBatch(batchId);
       await tx.wait();
-      setResults(r => ({ ...r, [batchId]: "ok" }));
-      load();
+      setDone(d => ({ ...d, [batchId]: tx.hash }));
+      fetchBatches();
     } catch (e: any) {
-      setResults(r => ({ ...r, [batchId]: e.reason || e.message || "Erro" }));
+      setError(err => ({ ...err, [batchId]: e.reason || e.message }));
     } finally {
       setFinalizing(f => ({ ...f, [batchId]: false }));
     }
   };
 
-  const timeLeft = (deadline: number) => {
-    const diff = deadline - Date.now() / 1000;
+  const timeStr = (ts: number) => {
+    const diff = ts - Math.floor(Date.now() / 1000);
     if (diff <= 0) return "Expirado";
     const h = Math.floor(diff / 3600);
-    const m = Math.floor((diff % 3600) / 60);
-    return `${h}h ${m}m`;
+    return diff < 0 ? "Expirado" : `${h}h restantes`;
   };
 
-  const open = batches.filter(b => b.status === 0).length;
-  const final = batches.filter(b => b.status === 1).length;
-
-  const s = {
-    page: { background: "var(--bg)", minHeight: "100vh", paddingTop: "7rem" } as React.CSSProperties,
-    wrap: { maxWidth: "960px", margin: "0 auto", padding: "3rem 2rem 6rem" } as React.CSSProperties,
-    eyebrow: { fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "var(--muted)", letterSpacing: "0.15em", textTransform: "uppercase" as const, marginBottom: "0.8rem", display: "block" },
-    title: { fontFamily: "var(--font-serif), serif", fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: 1.05, letterSpacing: "-0.02em", color: "var(--ink)", marginBottom: "0.6rem" } as React.CSSProperties,
-    subtitle: { color: "var(--ink2)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.7, marginBottom: "2.5rem" } as React.CSSProperties,
-
-    statsRow: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "1rem", marginBottom: "2.5rem" } as React.CSSProperties,
-    statCard: { background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "6px", padding: "1.5rem 1.8rem" } as React.CSSProperties,
-    statVal: { fontFamily: "var(--font-serif), serif", fontSize: "2.8rem", lineHeight: 1, color: "var(--accent)", display: "block" } as React.CSSProperties,
-    statKey: { fontFamily: "var(--font-mono), monospace", fontSize: "0.62rem", color: "var(--muted)", textTransform: "uppercase" as const, letterSpacing: "0.1em", marginTop: "0.4rem", display: "block" },
-
-    topRow: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.5rem" } as React.CSSProperties,
-    tableLabel: { fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "var(--muted)", letterSpacing: "0.15em", textTransform: "uppercase" as const },
-    refreshBtn: { fontFamily: "var(--font-mono), monospace", fontSize: "0.7rem", color: "var(--muted)", background: "none", border: "1px solid var(--border)", borderRadius: "2px", padding: "0.4rem 0.9rem", cursor: "none", letterSpacing: "0.08em" } as React.CSSProperties,
-
-    table: { width: "100%", borderCollapse: "collapse" as const },
-    th: { fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "var(--muted)", letterSpacing: "0.1em", textTransform: "uppercase" as const, textAlign: "left" as const, padding: "0 1rem 0.75rem", borderBottom: "1px solid var(--border)" },
-    td: { padding: "1.2rem 1rem", borderBottom: "1px solid var(--border2)", fontSize: "0.85rem", verticalAlign: "middle" as const },
-    mono: { fontFamily: "var(--font-mono), monospace", fontSize: "0.78rem" } as React.CSSProperties,
-
-    finalizeBtn: { background: "var(--ink)", color: "var(--bg)", border: "none", borderRadius: "2px", padding: "0.5rem 1rem", fontWeight: 700, fontSize: "0.72rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, cursor: "none", fontFamily: "var(--font-sans), sans-serif", transition: "all 0.2s" } as React.CSSProperties,
-
-    connectBox: { textAlign: "center" as const, padding: "5rem 2rem" },
-    connectBtn: { background: "var(--ink)", color: "var(--bg)", border: "none", borderRadius: "2px", padding: "0.95rem 2.2rem", fontWeight: 700, fontSize: "0.82rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, cursor: "none", fontFamily: "var(--font-sans), sans-serif" } as React.CSSProperties,
-  };
-
-  const statusBadge = (status: number) => {
-    const styles: Record<number, React.CSSProperties> = {
-      0: { color: "var(--accent3)", border: "1px solid rgba(45,138,78,0.25)", background: "rgba(45,138,78,0.06)" },
-      1: { color: "var(--accent2)", border: "1px solid rgba(26,58,143,0.25)", background: "rgba(26,58,143,0.06)" },
-      2: { color: "var(--muted)",   border: "1px solid var(--border)",         background: "var(--bg2)" },
-    };
-    return (
-      <span style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.62rem", letterSpacing: "0.1em", padding: "0.25rem 0.6rem", borderRadius: "2px", ...styles[status] }}>
-        {BATCH_STATUS[status]}
-      </span>
-    );
-  };
-
-  if (!isConnected) return (
-    <div style={s.page}>
-      <div style={s.wrap}>
-        <div style={s.connectBox}>
-          <span style={{ fontSize: "3rem", display: "block", marginBottom: "1.5rem" }}>⚙️</span>
-          <h2 style={{ fontFamily: "var(--font-serif), serif", fontSize: "2rem", color: "var(--ink)", marginBottom: "0.5rem" }}>Admin</h2>
-          <p style={{ color: "var(--ink2)", fontSize: "0.9rem", fontWeight: 300, marginBottom: "2rem" }}>Conecte sua carteira para monitorar e finalizar batches.</p>
-          <button onClick={connect} style={s.connectBtn}>Conectar Carteira</button>
-        </div>
-      </div>
-    </div>
-  );
+  const short = (addr: string) => `${addr.slice(0,6)}...${addr.slice(-4)}`;
 
   return (
-    <div style={s.page}>
-      <div style={s.wrap}>
-        <span style={s.eyebrow}>// Administração</span>
-        <h1 style={s.title}>
-          Todos os <em style={{ fontStyle: "italic", color: "var(--accent)" }}>Batches</em>
-        </h1>
-        <p style={s.subtitle}>Monitore a rede e finalize consensos para distribuir as recompensas GMND.</p>
-
-        {/* Stats */}
-        <div style={s.statsRow}>
-          {[
-            { val: batches.length.toString(), key: "Total de Batches" },
-            { val: open.toString(),           key: "Abertos"          },
-            { val: final.toString(),          key: "Finalizados"      },
-          ].map(st => (
-            <div key={st.key} style={s.statCard}>
-              <span style={st.key === "Finalizados" ? { ...s.statVal, color: "var(--accent2)" } : s.statVal}>{st.val}</span>
-              <span style={s.statKey}>{st.key}</span>
-            </div>
-          ))}
+    <div className="max-w-5xl mx-auto px-6 py-12">
+      <div className="flex items-center justify-between mb-10">
+        <div>
+          <h1 className="text-4xl font-black mb-2">Admin — Todos os Batches</h1>
+          <p className="text-gray-400">Monitore a rede e finalize consensos.</p>
         </div>
-
-        {error && <div style={{ background: "rgba(185,28,28,0.05)", border: "1px solid rgba(185,28,28,0.15)", borderRadius: "4px", padding: "0.85rem 1.2rem", fontSize: "0.82rem", color: "#b91c1c", marginBottom: "1.5rem" }}>{error}</div>}
-
-        <div style={s.topRow}>
-          <span style={s.tableLabel}>// Registro de Batches</span>
-          <button onClick={load} style={s.refreshBtn}>↻ Atualizar</button>
-        </div>
-
-        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "6px", overflow: "hidden" }}>
-          <table style={s.table}>
-            <thead>
-              <tr style={{ background: "var(--bg2)" }}>
-                {["Batch ID", "Criador", "Recompensa", "Tarefas", "Prazo", "Status", "Ação"].map(h => (
-                  <th key={h} style={s.th}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan={7} style={{ ...s.td, textAlign: "center", color: "var(--muted)", fontFamily: "var(--font-mono), monospace", fontSize: "0.75rem" }}>Carregando...</td></tr>
-              ) : batches.length === 0 ? (
-                <tr><td colSpan={7} style={{ ...s.td, textAlign: "center", color: "var(--muted)", fontStyle: "italic" }}>Nenhum batch encontrado</td></tr>
-              ) : batches.map(b => (
-                <tr key={b.id} style={{ transition: "background 0.2s" }}>
-                  <td style={s.td}><span style={{ ...s.mono, color: "var(--accent)" }}>#{b.id}</span></td>
-                  <td style={s.td}><span style={s.mono}>{b.creator.slice(0,6)}...{b.creator.slice(-4)}</span></td>
-                  <td style={s.td}><span style={{ ...s.mono, fontWeight: 600 }}>{b.reward} GMND</span></td>
-                  <td style={{ ...s.td, textAlign: "center" as const }}>{b.taskCount}</td>
-                  <td style={s.td}><span style={s.mono}>{timeLeft(b.deadline)}</span></td>
-                  <td style={s.td}>{statusBadge(b.status)}</td>
-                  <td style={s.td}>
-                    {b.status === 0 ? (
-                      <div>
-                        <button
-                          onClick={() => finalize(b.id)}
-                          disabled={finalizing[b.id]}
-                          style={{ ...s.finalizeBtn, opacity: finalizing[b.id] ? 0.6 : 1 }}
-                        >
-                          {finalizing[b.id] ? "..." : "Finalizar"}
-                        </button>
-                        {results[b.id] && results[b.id] !== "ok" && (
-                          <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "var(--accent)", marginTop: "0.4rem", maxWidth: "160px", lineHeight: 1.4 }}>
-                            {results[b.id]}
-                          </p>
-                        )}
-                        {results[b.id] === "ok" && (
-                          <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "var(--accent3)", marginTop: "0.4rem" }}>✓ Finalizado</p>
-                        )}
-                      </div>
-                    ) : (
-                      <span style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "var(--muted)" }}>—</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {isConnected && (
+          <button onClick={fetchBatches} disabled={loading} className="px-4 py-2 rounded-xl border border-white/10 text-sm text-gray-400 hover:text-white hover:border-white/20 transition">
+            {loading ? "..." : "↻ Atualizar"}
+          </button>
+        )}
       </div>
+
+      {!isConnected ? (
+        <div className="text-center py-20">
+          <div className="text-5xl mb-4">🔧</div>
+          <h2 className="text-xl font-bold mb-3">Conecte sua carteira</h2>
+          <button onClick={connect} className="px-6 py-3 bg-[#c8522a] text-black font-bold rounded-xl hover:bg-[#c8522a]/90 transition">
+            Conectar MetaMask
+          </button>
+        </div>
+      ) : loading ? (
+        <div className="text-center py-20 text-gray-500">Buscando dados da blockchain...</div>
+      ) : batches.length === 0 ? (
+        <div className="text-center py-20">
+          <div className="text-5xl mb-4">📭</div>
+          <p className="text-gray-400">Nenhum batch encontrado. Crie o primeiro!</p>
+        </div>
+      ) : (
+        <>
+          {/* Summary */}
+          <div className="grid grid-cols-3 gap-4 mb-8">
+            {[
+              { label: "Total de Batches", value: batches.length },
+              { label: "Abertos",          value: batches.filter(b => b.status === 0).length },
+              { label: "Finalizados",      value: batches.filter(b => b.status === 1).length },
+            ].map(s => (
+              <div key={s.label} className="p-4 rounded-xl bg-white/[0.03] border border-white/5 text-center">
+                <div className="text-3xl font-black font-mono text-[#c8522a]">{s.value}</div>
+                <div className="text-xs text-gray-500 mt-1">{s.label}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Table */}
+          <div className="rounded-2xl border border-white/10 overflow-hidden">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-white/5 bg-white/[0.02]">
+                  {["Batch ID", "Criador", "Recompensa", "Tarefas", "Prazo", "Status", "Ação"].map(h => (
+                    <th key={h} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {batches.map((batch, i) => (
+                  <tr key={batch.id} className={`border-b border-white/5 hover:bg-white/[0.02] transition ${i % 2 === 0 ? "" : "bg-white/[0.01]"}`}>
+                    <td className="px-4 py-3 font-mono text-sm text-[#c8522a]">#{batch.id}</td>
+                    <td className="px-4 py-3 font-mono text-xs text-gray-400">
+                      <a href={`https://sepolia.etherscan.io/address/${batch.creator}`} target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
+                        {short(batch.creator)}
+                      </a>
+                    </td>
+                    <td className="px-4 py-3 font-mono text-sm text-white">{batch.reward} ETH</td>
+                    <td className="px-4 py-3 text-sm text-gray-300">{batch.taskCount}</td>
+                    <td className="px-4 py-3 text-xs text-gray-500">{timeStr(batch.deadline)}</td>
+                    <td className="px-4 py-3">
+                      <span className={`px-2 py-0.5 rounded-md text-xs font-medium ${STATUS_COLOR[batch.status]}`}>
+                        {BATCH_STATUS[batch.status]}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3">
+                      {batch.status === 0 ? (
+                        <div>
+                          <button
+                            onClick={() => finalize(batch.id)}
+                            disabled={finalizing[batch.id]}
+                            className="px-3 py-1.5 bg-[#c8522a]/10 text-[#c8522a] text-xs font-medium rounded-lg hover:bg-[#c8522a]/20 transition disabled:opacity-40"
+                          >
+                            {finalizing[batch.id] ? "..." : "Finalizar"}
+                          </button>
+                          {error[batch.id] && <p className="text-xs text-red-400 mt-1 max-w-32">{error[batch.id].slice(0, 50)}</p>}
+                          {done[batch.id] && (
+                            <a href={`https://sepolia.etherscan.io/tx/${done[batch.id]}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-400 mt-1 block hover:underline">✅ Ver tx →</a>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-xs text-gray-600">—</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
     </div>
   );
 }
