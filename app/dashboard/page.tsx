@@ -2,134 +2,186 @@
 import { useState, useEffect, useCallback } from "react";
 import { ethers } from "ethers";
 import { useWeb3 } from "@/lib/useWeb3";
+import { GMND_TOKEN_ADDRESS, GMND_TOKEN_ABI } from "@/lib/contract";
 
 export default function DashboardPage() {
-  const { isConnected, connect, address, getContract } = useWeb3();
-  const [score,      setScore]      = useState<bigint>(0n);
-  const [totalTasks, setTotalTasks] = useState<bigint>(0n);
-  const [balance,    setBalance]    = useState("0");
-  const [loading,    setLoading]    = useState(false);
+  const { isConnected, connect, address, getContract, provider } = useWeb3();
+  const [profile, setProfile] = useState({ score: 0, totalTasks: 0, earned: "0" });
+  const [gmndBal, setGmndBal] = useState("0");
+  const [ethBal,  setEthBal]  = useState("0");
+  const [netStats, setNetStats] = useState({ batches: 0, burned: "0", rewarded: "0" });
+  const [loading, setLoading]  = useState(false);
 
-  const fetchProfile = useCallback(async () => {
+  const load = useCallback(async () => {
     if (!address) return;
-    const contract = getContract(false);
-    if (!contract) return;
     setLoading(true);
     try {
-      const profile = await contract.getNodeProfile(address);
-      setScore(profile.score);
-      setTotalTasks(profile.totalTasks);
-      if (window.ethereum) {
-        const p = new ethers.BrowserProvider(window.ethereum);
-        const bal = await p.getBalance(address);
-        setBalance(Number(ethers.formatEther(bal)).toFixed(4));
+      const contract = getContract(false);
+      if (!contract) return;
+
+      const [p, ns] = await Promise.all([
+        contract.getNodeProfile(address),
+        contract.getNetworkStats(),
+      ]);
+      setProfile({
+        score: Number(p.score),
+        totalTasks: Number(p.totalTasks),
+        earned: ethers.formatUnits(p.earned, 18),
+      });
+      setNetStats({
+        batches: Number(ns._totalBatches),
+        burned: Number(ethers.formatUnits(ns._totalBurned, 18)).toFixed(0),
+        rewarded: Number(ethers.formatUnits(ns._totalRewarded, 18)).toFixed(0),
+      });
+
+      if (provider) {
+        const eth = await provider.getBalance(address);
+        setEthBal(Number(ethers.formatEther(eth)).toFixed(4));
+        const token = new ethers.Contract(GMND_TOKEN_ADDRESS, GMND_TOKEN_ABI, provider);
+        const gmnd = await token.balanceOf(address);
+        setGmndBal(Number(ethers.formatUnits(gmnd, 18)).toLocaleString());
       }
     } catch (e) { console.error(e); }
     finally { setLoading(false); }
-  }, [address, getContract]);
+  }, [address, getContract, provider]);
 
-  useEffect(() => { if (isConnected) fetchProfile(); }, [isConnected, fetchProfile]);
+  useEffect(() => { if (isConnected) load(); }, [isConnected, load]);
 
-  const level = (score: bigint) => {
-    const s = Number(score);
-    if (s >= 500) return { label: "Expert",    color: "text-yellow-400",  bg: "bg-yellow-400/10" };
-    if (s >= 200) return { label: "Avançado",  color: "text-purple-400",  bg: "bg-purple-400/10" };
-    if (s >= 50)  return { label: "Validador", color: "text-blue-400",    bg: "bg-blue-400/10"   };
-    return             { label: "Iniciante",   color: "text-gray-400",    bg: "bg-gray-400/10"   };
+  const level = profile.score >= 200 ? "Expert" : profile.score >= 50 ? "Validador" : "Iniciante";
+  const levelColor = profile.score >= 200 ? "var(--accent)" : profile.score >= 50 ? "var(--accent2)" : "var(--muted)";
+  const progress = Math.min((profile.score / 500) * 100, 100);
+
+  const s = {
+    page: { background: "var(--bg)", minHeight: "100vh", paddingTop: "7rem" } as React.CSSProperties,
+    wrap: { maxWidth: "800px", margin: "0 auto", padding: "3rem 2rem 6rem" } as React.CSSProperties,
+    eyebrow: { fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "var(--muted)", letterSpacing: "0.15em", textTransform: "uppercase" as const, marginBottom: "0.8rem", display: "block" },
+    title: { fontFamily: "var(--font-serif), serif", fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: 1.05, letterSpacing: "-0.02em", color: "var(--ink)", marginBottom: "0.6rem" } as React.CSSProperties,
+    subtitle: { color: "var(--ink2)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.7, marginBottom: "2.5rem" } as React.CSSProperties,
+
+    profileCard: { background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "6px", padding: "2rem", marginBottom: "1.5rem" } as React.CSSProperties,
+    profileTop: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "1.5rem" } as React.CSSProperties,
+    levelBadge: { fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", letterSpacing: "0.1em", padding: "0.3rem 0.75rem", borderRadius: "2px", border: `1px solid ${levelColor}`, color: levelColor, background: `${levelColor}15` },
+    onlineDot: { display: "flex", alignItems: "center", gap: "0.4rem", fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "var(--accent3)" },
+    addr: { fontFamily: "var(--font-mono), monospace", fontSize: "0.75rem", color: "var(--ink2)", marginBottom: "1.2rem", wordBreak: "break-all" as const },
+    progressBar: { height: "4px", background: "var(--bg2)", borderRadius: "2px", overflow: "hidden", marginBottom: "0.5rem" } as React.CSSProperties,
+    progressFill: { height: "100%", width: `${progress}%`, background: "var(--accent)", borderRadius: "2px", transition: "width 1s ease" } as React.CSSProperties,
+    progressLabel: { display: "flex", justifyContent: "space-between", fontFamily: "var(--font-mono), monospace", fontSize: "0.62rem", color: "var(--muted)" } as React.CSSProperties,
+
+    grid4: { display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "1rem", marginBottom: "1.5rem" } as React.CSSProperties,
+    grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1.5rem" } as React.CSSProperties,
+
+    statCard: { background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "6px", padding: "1.5rem", transition: "all 0.3s" } as React.CSSProperties,
+    statVal: { fontFamily: "var(--font-serif), serif", fontSize: "2.2rem", lineHeight: 1, color: "var(--accent)", display: "block", marginBottom: "0.4rem" } as React.CSSProperties,
+    statKey: { fontFamily: "var(--font-mono), monospace", fontSize: "0.62rem", color: "var(--muted)", textTransform: "uppercase" as const, letterSpacing: "0.1em" },
+
+    sectionTitle: { fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "var(--muted)", letterSpacing: "0.15em", textTransform: "uppercase" as const, marginBottom: "1rem", display: "block", marginTop: "0.5rem" },
+
+    netCard: { background: "var(--ink)", borderRadius: "6px", padding: "2rem", display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "1.5rem" } as React.CSSProperties,
+    netVal: { fontFamily: "var(--font-serif), serif", fontSize: "2rem", color: "var(--bg)", display: "block", marginBottom: "0.3rem" } as React.CSSProperties,
+    netKey: { fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "rgba(244,241,235,0.4)", textTransform: "uppercase" as const, letterSpacing: "0.1em" },
+
+    howCard: { background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "6px", padding: "2rem" } as React.CSSProperties,
+    howTitle: { fontSize: "0.9rem", fontWeight: 800, marginBottom: "1.2rem", color: "var(--ink)" },
+    howRow: { display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "0.75rem", marginBottom: "0.75rem", borderBottom: "1px solid var(--border2)", fontSize: "0.83rem" } as React.CSSProperties,
+
+    connectBox: { textAlign: "center" as const, padding: "5rem 2rem" },
+    connectBtn: { background: "var(--ink)", color: "var(--bg)", border: "none", borderRadius: "2px", padding: "0.95rem 2.2rem", fontWeight: 700, fontSize: "0.82rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, cursor: "none", fontFamily: "var(--font-sans), sans-serif" } as React.CSSProperties,
   };
 
-  const lvl = level(score);
-  const accuracy = totalTasks > 0n ? Math.min(100, Math.round((Number(score) / (Number(totalTasks) * 10)) * 100)) : 0;
-
-  const STATS = [
-    { label: "Score PoEC",       value: score.toString(),      suffix: "pts", color: "text-[#c8522a]" },
-    { label: "Tarefas Totais",   value: totalTasks.toString(), suffix: "",    color: "text-white"     },
-    { label: "Taxa de Acerto",   value: accuracy.toString(),   suffix: "%",   color: "text-blue-400"  },
-    { label: "Saldo",            value: balance,               suffix: "ETH", color: "text-purple-400"},
-  ];
+  if (!isConnected) return (
+    <div style={s.page}>
+      <div style={s.wrap}>
+        <div style={s.connectBox}>
+          <span style={{ fontSize: "3rem", display: "block", marginBottom: "1.5rem" }}>📊</span>
+          <h2 style={{ fontFamily: "var(--font-serif), serif", fontSize: "2rem", color: "var(--ink)", marginBottom: "0.5rem" }}>Dashboard do Nó</h2>
+          <p style={{ color: "var(--ink2)", fontSize: "0.9rem", fontWeight: 300, marginBottom: "2rem" }}>Conecte sua carteira para ver seu perfil PoEC.</p>
+          <button onClick={connect} style={s.connectBtn}>Conectar Carteira</button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-12">
-      <div className="mb-10">
-        <h1 className="text-4xl font-black mb-2">Dashboard do Nó</h1>
-        <p className="text-gray-400">Seu perfil, score PoEC e recompensas acumuladas.</p>
-      </div>
+    <div style={s.page}>
+      <div style={s.wrap}>
+        <span style={s.eyebrow}>// Dashboard do Nó</span>
+        <h1 style={s.title}>
+          Seu <em style={{ fontStyle: "italic", color: "var(--accent)" }}>Score PoEC</em>
+        </h1>
+        <p style={s.subtitle}>Perfil, recompensas acumuladas e estatísticas da rede global.</p>
 
-      {!isConnected ? (
-        <div className="text-center py-20">
-          <div className="text-5xl mb-4">📊</div>
-          <h2 className="text-xl font-bold mb-3">Conecte sua carteira</h2>
-          <p className="text-gray-400 mb-6 text-sm">Veja seu score PoEC, histórico e recompensas.</p>
-          <button onClick={connect} className="px-6 py-3 bg-[#c8522a] text-black font-bold rounded-xl hover:bg-[#c8522a]/90 transition">
-            Conectar MetaMask
-          </button>
+        {/* Profile card */}
+        <div style={s.profileCard}>
+          <div style={s.profileTop}>
+            <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+              <span style={s.levelBadge}>{level}</span>
+              <span style={s.onlineDot}><span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent3)", display: "inline-block" }} />Online</span>
+            </div>
+            <button onClick={load} style={{ background: "none", border: "none", color: "var(--muted)", cursor: "none", fontSize: "0.85rem" }}>
+              {loading ? "⟳" : "↻"}
+            </button>
+          </div>
+          <p style={s.addr}>{address}</p>
+          <div style={s.progressBar}><div style={s.progressFill} /></div>
+          <div style={s.progressLabel}>
+            <span>Score PoEC: {profile.score} pts</span>
+            <span>{500 - profile.score > 0 ? `${500 - profile.score} pts para Expert` : "Expert ✓"}</span>
+          </div>
         </div>
-      ) : loading ? (
-        <div className="text-center py-20 text-gray-500">Carregando perfil...</div>
-      ) : (
-        <>
-          {/* Profile card */}
-          <div className="p-6 rounded-2xl bg-gradient-to-br from-[#c8522a]/5 to-transparent border border-[#c8522a]/10 mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className={`px-2 py-0.5 rounded-md text-xs font-bold ${lvl.bg} ${lvl.color}`}>{lvl.label}</span>
-                  <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                  <span className="text-xs text-gray-500">Online</span>
-                </div>
-                <p className="font-mono text-sm text-gray-400">{address}</p>
-              </div>
-              <button onClick={fetchProfile} className="text-xs text-gray-500 hover:text-white transition">↻</button>
-            </div>
 
-            {/* Score bar */}
-            <div className="mb-2 flex justify-between text-xs text-gray-500">
-              <span>Score PoEC</span>
-              <span className="text-[#c8522a] font-mono">{score.toString()} / 500 pts</span>
+        {/* Stats */}
+        <div style={s.grid4}>
+          {[
+            { val: `${profile.score}`, key: "Score PoEC", color: "var(--accent)" },
+            { val: `${profile.totalTasks}`, key: "Tarefas Totais", color: "var(--ink)" },
+            { val: `${Number(profile.earned).toFixed(0)}`, key: "GMND Ganho", color: "var(--accent2)" },
+            { val: `${Number(gmndBal).toLocaleString()}`, key: "Saldo GMND", color: "var(--accent3)" },
+          ].map(s2 => (
+            <div key={s2.key} style={s.statCard}>
+              <span style={{ ...s.statVal, color: s2.color }}>{s2.val}</span>
+              <span style={s.statKey}>{s2.key}</span>
             </div>
-            <div className="h-2 rounded-full bg-white/5">
-              <div
-                className="h-2 rounded-full bg-gradient-to-r from-[#c8522a] to-blue-400 transition-all duration-700"
-                style={{ width: `${Math.min(100, (Number(score) / 500) * 100)}%` }}
-              />
-            </div>
-            <p className="text-xs text-gray-600 mt-1">
-              {Number(score) < 50  ? `${50 - Number(score)} pts para Validador` :
-               Number(score) < 200 ? `${200 - Number(score)} pts para Avançado` :
-               Number(score) < 500 ? `${500 - Number(score)} pts para Expert` : "Nível máximo atingido!"}
-            </p>
-          </div>
+          ))}
+        </div>
 
-          {/* Stats grid */}
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            {STATS.map(s => (
-              <div key={s.label} className="p-5 rounded-xl bg-white/[0.03] border border-white/5">
-                <div className={`text-3xl font-black font-mono mb-1 ${s.color}`}>{s.value}<span className="text-lg">{s.suffix}</span></div>
-                <div className="text-xs text-gray-500">{s.label}</div>
-              </div>
-            ))}
-          </div>
+        {/* ETH balance */}
+        <div style={{ ...s.statCard, marginBottom: "1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{ fontSize: "0.9rem", color: "var(--ink2)" }}>Saldo ETH (gas)</span>
+          <span style={{ fontFamily: "var(--font-mono), monospace", fontSize: "1rem", color: "var(--ink)", fontWeight: 600 }}>{ethBal} ETH</span>
+        </div>
 
-          {/* How score works */}
-          <div className="p-5 rounded-xl bg-white/[0.02] border border-white/5">
-            <h3 className="text-sm font-bold mb-3 text-gray-300">Como funciona o Score PoEC</h3>
-            <div className="space-y-2 text-xs text-gray-500">
-              <div className="flex justify-between">
-                <span>+10 pts por resposta no consenso majoritário</span>
-                <span className="text-[#c8522a]">Acurácia</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Score determina peso nas distribuições futuras</span>
-                <span className="text-blue-400">Reputação</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Score alto = mais tarefas prioritárias</span>
-                <span className="text-purple-400">Privilégio</span>
-              </div>
+        {/* Network stats */}
+        <span style={s.sectionTitle}>// Estatísticas da Rede</span>
+        <div style={s.netCard}>
+          {[
+            { val: netStats.batches.toString(), key: "Total de Batches" },
+            { val: `🔥 ${netStats.burned}`, key: "GMND Queimado" },
+            { val: netStats.rewarded, key: "GMND Distribuído" },
+          ].map(n => (
+            <div key={n.key}>
+              <span style={s.netVal}>{n.val}</span>
+              <span style={s.netKey}>{n.key}</span>
             </div>
+          ))}
+        </div>
+
+        {/* How it works */}
+        <span style={{ ...s.sectionTitle, marginTop: "1.5rem" }}>// Como funciona o Score PoEC</span>
+        <div style={s.howCard}>
+          <div style={s.howRow}>
+            <span style={{ color: "var(--ink2)" }}>+10 pts por resposta no consenso majoritário</span>
+            <span style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.72rem", color: "var(--accent)" }}>Acurácia</span>
           </div>
-        </>
-      )}
+          <div style={s.howRow}>
+            <span style={{ color: "var(--ink2)" }}>Score determina peso nas distribuições futuras</span>
+            <span style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.72rem", color: "var(--accent2)" }}>Reputação</span>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.83rem" }}>
+            <span style={{ color: "var(--ink2)" }}>Score alto = acesso a tarefas prioritárias</span>
+            <span style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.72rem", color: "var(--accent3)" }}>Privilégio</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

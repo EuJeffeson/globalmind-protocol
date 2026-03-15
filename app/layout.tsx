@@ -1,40 +1,78 @@
+"use client";
 import type { Metadata } from "next";
 import { Instrument_Serif, DM_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import WalletModal from "@/components/WalletModal";
+import { useEffect, useRef } from "react";
 
-const instrumentSerif = Instrument_Serif({
+const serif = Instrument_Serif({
+  subsets: ["latin"],
   weight: ["400"],
   style: ["normal", "italic"],
-  subsets: ["latin"],
   variable: "--font-serif",
 });
 
-const dmMono = DM_Mono({
-  weight: ["400", "500"],
+const mono = DM_Mono({
   subsets: ["latin"],
+  weight: ["300", "400", "500"],
   variable: "--font-mono",
 });
 
-const manrope = Manrope({
-  weight: ["300", "400", "600", "700", "800"],
+const sans = Manrope({
   subsets: ["latin"],
+  weight: ["300", "400", "600", "700", "800"],
   variable: "--font-sans",
 });
 
-export const metadata: Metadata = {
-  title: "GlobalMind Protocol — GMND",
-  description: "A infraestrutura descentralizada de validação de IA do futuro.",
-};
+function CursorEffect() {
+  const dotRef  = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const dot  = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return;
+
+    let mouseX = 0, mouseY = 0;
+    let ringX  = 0, ringY  = 0;
+
+    const onMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.left = mouseX + "px";
+      dot.style.top  = mouseY + "px";
+    };
+
+    const animate = () => {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      ring.style.left = ringX + "px";
+      ring.style.top  = ringY + "px";
+      requestAnimationFrame(animate);
+    };
+
+    window.addEventListener("mousemove", onMove);
+    animate();
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
+
+  return (
+    <>
+      <div ref={dotRef}  className="cursor-dot"  />
+      <div ref={ringRef} className="cursor-ring" />
+    </>
+  );
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR">
-      <body className={`${instrumentSerif.variable} ${dmMono.variable} ${manrope.variable}`}>
+    <html lang="pt-BR" className={`${serif.variable} ${mono.variable} ${sans.variable}`}>
+      <body>
+        <CursorEffect />
         <Navbar />
-        <WalletModal />
-        <main>{children}</main>
+        <main style={{ paddingTop: "64px" }}>
+          {children}
+        </main>
       </body>
     </html>
   );
