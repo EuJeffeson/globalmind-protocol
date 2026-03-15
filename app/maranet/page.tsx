@@ -238,12 +238,12 @@ function MaranetContent() {
 }
 
 // Wrap with providers
-import Web3Provider from "@/components/Web3Provider";
+
 
 export default function MaranetPage() {
   return (
-    <Web3Provider>
-      <MaranetContent />
-    </Web3Provider>
+
+    <MaranetContent />
+
   );
 }

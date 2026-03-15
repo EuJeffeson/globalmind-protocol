@@ -1,8 +1,8 @@
 "use client";
-import type { Metadata } from "next";
 import { Instrument_Serif, DM_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import Web3Provider from "@/components/Web3Provider";
 import { useEffect, useRef } from "react";
 
 const serif = Instrument_Serif({
@@ -68,11 +68,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR" className={`${serif.variable} ${mono.variable} ${sans.variable}`}>
       <body>
-        <CursorEffect />
-        <Navbar />
-        <main style={{ paddingTop: "64px" }}>
-          {children}
-        </main>
+        <Web3Provider>
+          <CursorEffect />
+          <Navbar />
+          <main style={{ paddingTop: "64px" }}>
+            {children}
+          </main>
+        </Web3Provider>
       </body>
     </html>
   );
