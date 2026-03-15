@@ -4,7 +4,7 @@ import { useAccount, useReadContract, useWriteContract, useWaitForTransactionRec
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { formatUnits } from "viem";
 
-const CONTRACT_ADDRESS = "0x7Cb748160b81978Ef7B5a6C93f5415311f450994" as `0x${string}`;
+const CONTRACT_ADDRESS = "0xA605b8092A4f7833799CcFaAE7C914771bdB5D36" as `0x${string}`;
 const TOKEN_ADDRESS    = "0x658719E24649F727C3608118bFA33A9Bac3f18F0" as `0x${string}`;
 
 const TOKEN_ABI = [
