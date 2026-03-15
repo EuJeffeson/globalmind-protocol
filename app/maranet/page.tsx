@@ -112,7 +112,7 @@ function MaranetContent() {
             </div>
           )}
           {/* WalletConnect button */}
-          <w3m-button balance="hide" size="sm" />
+          <button onClick={() => open()} style={{ background: isConnected ? "rgba(45,138,78,0.1)" : "#c8522a", border: isConnected ? "1px solid rgba(45,138,78,0.3)" : "none", color: isConnected ? "#2d8a4e" : "white", padding: "0.4rem 1rem", borderRadius: "20px", fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", cursor: "pointer" }}>{isConnected ? shortAddr : "Conectar"}</button>
         </div>
       </div>
 
