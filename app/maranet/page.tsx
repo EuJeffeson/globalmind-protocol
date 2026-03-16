@@ -79,7 +79,7 @@ function MaranetContent() {
       address: CONTRACT_ADDRESS,
       abi: PROTOCOL_ABI,
       functionName: "submitAnswer",
-      args: [BigInt(0), BigInt(taskId), TASKS.find(t => t.id === taskId)?.options[optionIdx] ?? ""],
+      args: [BigInt(1), BigInt(taskId), TASKS.find(t => t.id === taskId)?.options[optionIdx] ?? ""],
     });
   };
 
