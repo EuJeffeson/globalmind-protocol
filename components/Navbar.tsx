@@ -2,11 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useWeb3 } from "@/lib/useWeb3";
+import { useAccount } from "wagmi";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { address, connect, isConnected, loading } = useWeb3();
+  const { address, isConnected } = useAccount();
+  const { open } = useWeb3Modal();
   const curRef  = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
@@ -101,7 +103,7 @@ export default function Navbar() {
             </li>
           ))}
           <li>
-            <button onClick={connect} disabled={loading} style={{
+            <button onClick={() => open()} style={{
               fontFamily: "var(--font-mono), monospace", fontSize: "0.72rem",
               color: isConnected ? "var(--accent3)" : "var(--accent)",
               border: `1px solid ${isConnected ? "var(--accent3)" : "var(--accent)"}`,
@@ -109,7 +111,7 @@ export default function Navbar() {
               background: "transparent", cursor: "pointer",
               transition: "all 0.2s", letterSpacing: "0.05em",
             }}>
-              {loading ? "..." : isConnected ? shortAddr : "$GMND — Conectar"}
+              {isConnected ? shortAddr : "$GMND — Conectar"}
             </button>
           </li>
         </ul>
@@ -148,14 +150,14 @@ export default function Navbar() {
               borderBottom: "1px solid var(--border)",
             }}>{l.label}</Link>
           ))}
-          <button onClick={() => { connect(); setMenuOpen(false); }} disabled={loading} style={{
+          <button onClick={() => { open(); setMenuOpen(false); }} style={{
             fontFamily: "var(--font-mono), monospace", fontSize: "0.85rem",
             color: "white", background: "var(--accent)",
             border: "none", padding: "1rem", borderRadius: "2px",
             cursor: "pointer", fontWeight: 700, letterSpacing: "0.05em",
             marginTop: "0.5rem",
           }}>
-            {loading ? "..." : isConnected ? shortAddr : "$GMND — Conectar Carteira"}
+            {isConnected ? shortAddr : "$GMND — Conectar Carteira"}
           </button>
         </div>
       )}
