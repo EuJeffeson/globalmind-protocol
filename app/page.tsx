@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 
 const HALVING = [
@@ -10,8 +10,6 @@ const HALVING = [
 ];
 
 export default function Home() {
-  const revealRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((e) => {

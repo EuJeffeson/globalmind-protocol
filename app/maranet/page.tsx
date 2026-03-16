@@ -3,18 +3,10 @@ import { useState } from "react";
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { formatUnits } from "viem";
+import { CONTRACT_ADDRESS as PROTOCOL_ADDRESS, CONTRACT_ABI, GMND_TOKEN_ADDRESS, GMND_TOKEN_ABI } from "@/lib/contract";
 
-const CONTRACT_ADDRESS = "0xA605b8092A4f7833799CcFaAE7C914771bdB5D36" as `0x${string}`;
-const TOKEN_ADDRESS    = "0x658719E24649F727C3608118bFA33A9Bac3f18F0" as `0x${string}`;
-
-const TOKEN_ABI = [
-  { name: "balanceOf", type: "function", stateMutability: "view", inputs: [{ name: "account", type: "address" }], outputs: [{ type: "uint256" }] },
-  { name: "decimals",  type: "function", stateMutability: "view", inputs: [], outputs: [{ type: "uint8" }] },
-] as const;
-
-const PROTOCOL_ABI = [
-  { name: "submitAnswer", type: "function", stateMutability: "nonpayable", inputs: [{ name: "batchId", type: "uint256" }, { name: "taskIndex", type: "uint256" }, { name: "answer", type: "string" }], outputs: [] },
-] as const;
+const CONTRACT_ADDRESS = PROTOCOL_ADDRESS as `0x${string}`;
+const TOKEN_ADDRESS    = GMND_TOKEN_ADDRESS as `0x${string}`;
 
 const TASKS = [
   { id: 0, type: "Classificação de Texto", reward: 2.5, question: "Esta notícia é verdadeira, falsa ou não verificável?", context: '"Pesquisadores da USP desenvolveram uma IA capaz de diagnosticar dengue com 98% de precisão a partir de exames de sangue simples."', options: ["Verdadeira", "Falsa", "Não verificável"] },
@@ -47,12 +39,12 @@ function MaranetContent() {
 
   // Read GMND balance
   const { data: balanceRaw } = useReadContract({
-    address: TOKEN_ADDRESS, abi: TOKEN_ABI,
+    address: TOKEN_ADDRESS, abi: GMND_TOKEN_ABI,
     functionName: "balanceOf", args: address ? [address] : undefined,
     query: { enabled: !!address },
   });
   const { data: decimals } = useReadContract({
-    address: TOKEN_ADDRESS, abi: TOKEN_ABI,
+    address: TOKEN_ADDRESS, abi: GMND_TOKEN_ABI,
     functionName: "decimals",
   });
 
@@ -77,7 +69,7 @@ function MaranetContent() {
     setPendingTask({ id: taskId, reward });
     writeContract({
       address: CONTRACT_ADDRESS,
-      abi: PROTOCOL_ABI,
+      abi: CONTRACT_ABI,
       functionName: "submitAnswer",
       args: [BigInt(1), BigInt(taskId), TASKS.find(t => t.id === taskId)?.options[optionIdx] ?? ""],
     });
