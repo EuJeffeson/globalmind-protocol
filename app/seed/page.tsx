@@ -66,7 +66,7 @@ export default function SeedPage() {
         </p>
 
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-          <a href="https://forms.gle/seed-globalmind" target="_blank" rel="noopener noreferrer" className="btn-fill">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7A0bAoQ4IjRvK0JKkqXeeJcnFXS0_HhpFFrNFvOhcBrO_xQ/viewform" target="_blank" rel="noopener noreferrer" className="btn-fill">
             Quero Investir
           </a>
           <a href="https://twitter.com/GMNDProtocol" target="_blank" rel="noopener noreferrer" className="btn-ghost">
