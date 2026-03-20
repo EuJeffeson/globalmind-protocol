@@ -39,7 +39,6 @@ export default function DashboardPage() {
         setEthBal(Number(ethers.formatEther(eth)).toFixed(4));
         const token = new ethers.Contract(GMND_TOKEN_ADDRESS, GMND_TOKEN_ABI, provider);
         const gmnd = await token.balanceOf(address);
-        // FIX Bug 1: Store raw number, format only at display time
         const gmndNum = Number(ethers.formatUnits(gmnd, 18));
         setGmndBal(isNaN(gmndNum) ? "0" : gmndNum.toFixed(2));
       }

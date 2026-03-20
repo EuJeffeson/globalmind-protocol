@@ -9,30 +9,40 @@ declare global {
   }
 }
 
-// FIX Bug 2: Proper provider detection for desktop + mobile + multi-wallet (EIP-5749)
+// Get the injected Ethereum provider, handling EIP-5749 (multiple injected wallets)
 function getInjectedProvider(): any | null {
   if (typeof window === "undefined") return null;
-  
+
   const eth = window.ethereum;
   if (!eth) return null;
 
   // EIP-5749: Multiple wallets installed — window.ethereum.providers is an array
   if (eth.providers && Array.isArray(eth.providers)) {
-    // Prioritize MetaMask
+    // Prioritize MetaMask, explicitly exclude Brave's injected wallet
     const metamask = eth.providers.find((p: any) => p.isMetaMask && !p.isBraveWallet);
     if (metamask) return metamask;
-    // Fallback to first available provider
     return eth.providers[0] || null;
   }
 
-  // Single provider (desktop MetaMask or mobile wallet browser)
+  // Single provider (desktop MetaMask or MetaMask mobile browser)
   return eth;
 }
 
-// Detect if on mobile device
+// Detect if on mobile device (iOS / Android)
 function isMobileDevice(): boolean {
   if (typeof window === "undefined") return false;
   return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+}
+
+/**
+ * Returns true only when the user is inside the MetaMask built-in browser
+ * (mobile device + MetaMask provider injected).
+ * Returns false on Safari/Chrome mobile where MetaMask is NOT injected.
+ */
+export function isInsideMetaMaskBrowser(): boolean {
+  if (typeof window === "undefined") return false;
+  const injected = getInjectedProvider();
+  return isMobileDevice() && !!injected?.isMetaMask;
 }
 
 export function useWeb3() {
@@ -113,21 +123,27 @@ export function useWeb3() {
   const connect = useCallback(async () => {
     if (typeof window === "undefined") return;
 
-    // FIX Bug 2: Use getInjectedProvider() instead of raw window.ethereum
     const injected = getInjectedProvider();
-    
-    if (injected) {
+
+    // MetaMask injected (desktop or inside MetaMask mobile browser) — connect normally
+    if (injected?.isMetaMask) {
       await connectWithProvider(injected);
       return;
     }
 
-    // On mobile without injected wallet — show options modal
+    // Another wallet injected on desktop — also connect normally
+    if (injected && !isMobileDevice()) {
+      await connectWithProvider(injected);
+      return;
+    }
+
+    // Mobile Safari/Chrome without MetaMask injected — show redirect modal
     if (isMobileDevice()) {
       setShowMobileModal(true);
       return;
     }
 
-    // Desktop without wallet
+    // Desktop without any wallet
     setError("Nenhuma carteira encontrada. Instale MetaMask em metamask.io");
   }, [connectWithProvider]);
 
@@ -156,12 +172,10 @@ export function useWeb3() {
     return null;
   }, [provider, signer]);
 
-  // FIX Bug 2: Listen to events on the correct provider
   useEffect(() => {
     if (typeof window === "undefined") return;
     const injected = getInjectedProvider();
     if (!injected) return;
-    
     const onAccountsChanged = () => connect();
     const onChainChanged    = () => connect();
     injected.on("accountsChanged", onAccountsChanged);

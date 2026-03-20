@@ -54,16 +54,13 @@ export default function TarefasPage() {
     try {
       const contract = getContract(true);
       if (!contract) throw new Error("Contrato indisponível");
-      
-      // FIX Bug 3: Add gas estimation with 30% buffer to prevent "will fail" on desktop MetaMask
       let gasLimit;
       try {
         const estimated = await contract.submitAnswer.estimateGas(task.batchId, task.taskIndex, ans);
-        gasLimit = estimated * 130n / 100n; // 30% buffer
+        gasLimit = estimated * 130n / 100n;
       } catch {
-        gasLimit = 300000n; // Fallback if estimation fails
+        gasLimit = 300000n;
       }
-      
       const tx = await contract.submitAnswer(task.batchId, task.taskIndex, ans, { gasLimit });
       await tx.wait();
       setDone(d => ({ ...d, [key]: true }));

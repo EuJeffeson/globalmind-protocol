@@ -3,7 +3,7 @@ import { Instrument_Serif, DM_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Web3Provider from "@/components/Web3Provider";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const serif = Instrument_Serif({
   subsets: ["latin"],
@@ -23,6 +23,92 @@ const sans = Manrope({
   weight: ["300", "400", "600", "700", "800"],
   variable: "--font-sans",
 });
+
+const METAMASK_DEEP_LINK = "https://metamask.app.link/dapp/globalmind-protocol.vercel.app";
+
+/**
+ * Banner fixo no topo — aparece SOMENTE em dispositivos mobile quando o usuário
+ * NÃO está dentro do browser embutido do MetaMask (Safari/Chrome mobile).
+ */
+function MetaMaskBanner() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
+      navigator.userAgent
+    );
+    if (!isMobile) return;
+
+    // EIP-5749: checar no array providers também
+    const eth = (window as any).ethereum;
+    const providers: any[] | undefined = eth?.providers;
+    const isMetaMaskInjected = providers
+      ? providers.some((p: any) => p.isMetaMask)
+      : !!eth?.isMetaMask;
+
+    if (!isMetaMaskInjected) {
+      setVisible(true);
+    }
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 2000,
+        background: "#f6851b",
+        color: "#fff",
+        padding: "10px 16px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: "12px",
+        fontFamily: "var(--font-sans)",
+        fontSize: "14px",
+        lineHeight: "1.4",
+      }}
+    >
+      <span>Para validar tarefas, abra no MetaMask Browser</span>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
+        <a
+          href={METAMASK_DEEP_LINK}
+          style={{
+            background: "#fff",
+            color: "#f6851b",
+            padding: "4px 12px",
+            borderRadius: "6px",
+            fontWeight: 700,
+            textDecoration: "none",
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}
+        >
+          Abrir
+        </a>
+        <button
+          onClick={() => setVisible(false)}
+          aria-label="Fechar aviso"
+          style={{
+            background: "transparent",
+            border: "none",
+            color: "#fff",
+            fontSize: "20px",
+            lineHeight: 1,
+            cursor: "pointer",
+            padding: "0 2px",
+          }}
+        >
+          ×
+        </button>
+      </div>
+    </div>
+  );
+}
 
 function CursorEffect() {
   const dotRef  = useRef<HTMLDivElement>(null);
@@ -69,6 +155,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR" className={`${serif.variable} ${mono.variable} ${sans.variable}`}>
       <body>
         <Web3Provider>
+          <MetaMaskBanner />
           <CursorEffect />
           <Navbar />
           <main style={{ paddingTop: "64px" }}>
