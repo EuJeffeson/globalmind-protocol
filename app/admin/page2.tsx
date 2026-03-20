@@ -60,38 +60,9 @@ export default function AdminPage() {
     return new ethers.Contract(TOKEN, TOKEN_ABI, provider);
   };
 
-  // FIX Bug 3: Add Sepolia switch on connect
   const connect = async () => {
     if (!window.ethereum) { alert("Instale MetaMask!"); return; }
     const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-    
-    // Force switch to Sepolia
-    try {
-      await window.ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: "0xaa36a7" }],
-      });
-    } catch (switchError: any) {
-      // Chain not added — try adding Sepolia
-      if (switchError.code === 4902) {
-        try {
-          await window.ethereum.request({
-            method: "wallet_addEthereumChain",
-            params: [{
-              chainId: "0xaa36a7",
-              chainName: "Sepolia Testnet",
-              nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
-              rpcUrls: ["https://rpc.sepolia.org"],
-              blockExplorerUrls: ["https://sepolia.etherscan.io"],
-            }],
-          });
-        } catch {
-          alert("Não foi possível adicionar a rede Sepolia. Adicione manualmente.");
-          return;
-        }
-      }
-    }
-    
     setAddress(accounts[0]);
     setConnected(true);
   };
@@ -120,14 +91,13 @@ export default function AdminPage() {
       setBatches(result.reverse());
       setActiveBatch(active);
 
-      // FIX Bug 1 (also in admin): GMND balance with NaN protection
+      // GMND balance
       if (address) {
         const token = await getToken(false);
         if (token) {
           const bal = await token.balanceOf(address);
           const dec = await token.decimals();
-          const num = Number(ethers.formatUnits(bal, dec));
-          setGmndBalance(isNaN(num) ? "0" : num.toFixed(2));
+          setGmndBalance(Number(ethers.formatUnits(bal, dec)).toLocaleString());
         }
       }
     } catch (e) { console.error(e); }
@@ -136,21 +106,13 @@ export default function AdminPage() {
 
   useEffect(() => { if (isConnected) fetchBatches(); }, [isConnected, fetchBatches]);
 
-  // FIX Bug 3: Add gas buffer to finalizeBatch
   const finalize = async (batchId: number) => {
     const contract = await getContract(true);
     if (!contract) return;
     setFinalizing(f => ({ ...f, [batchId]: true }));
     setError(e => ({ ...e, [batchId]: "" }));
     try {
-      let gasLimit;
-      try {
-        const estimated = await contract.finalizeBatch.estimateGas(batchId);
-        gasLimit = estimated * 130n / 100n; // 30% buffer
-      } catch {
-        gasLimit = 500000n; // Fallback
-      }
-      const tx = await contract.finalizeBatch(batchId, { gasLimit });
+      const tx = await contract.finalizeBatch(batchId);
       await tx.wait();
       setDone(d => ({ ...d, [batchId]: tx.hash }));
       fetchBatches();
@@ -161,7 +123,6 @@ export default function AdminPage() {
     }
   };
 
-  // FIX Bug 3: Add gas buffer to createBatch
   const createBatch = async () => {
     setCreating(true);
     setCreateError("");
@@ -178,9 +139,9 @@ export default function AdminPage() {
       const approveTx = await token.approve(PROTOCOL, rewardWei);
       await approveTx.wait();
 
-      // Create batch with gas buffer
+      // Create batch
       const contract = new ethers.Contract(PROTOCOL, CONTRACT_ABI, signer);
-      const args = [
+      const tx = await contract.createBatch(
         ["task-0", "task-1", "task-2"],
         [
           "Esta notícia é verdadeira, falsa ou não verificável? Pesquisadores da USP desenvolveram IA para diagnosticar dengue.",
@@ -190,17 +151,7 @@ export default function AdminPage() {
         [0, 0, 0],
         BigInt(48 * 3600),
         rewardWei
-      ];
-      
-      let gasLimit;
-      try {
-        const estimated = await contract.createBatch.estimateGas(...args);
-        gasLimit = estimated * 130n / 100n; // 30% buffer
-      } catch {
-        gasLimit = 800000n; // Fallback for createBatch
-      }
-      
-      const tx = await contract.createBatch(...args, { gasLimit });
+      );
       await tx.wait();
       setCreateTx(tx.hash);
       fetchBatches();

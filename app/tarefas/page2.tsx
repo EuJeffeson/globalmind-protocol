@@ -54,17 +54,7 @@ export default function TarefasPage() {
     try {
       const contract = getContract(true);
       if (!contract) throw new Error("Contrato indisponível");
-      
-      // FIX Bug 3: Add gas estimation with 30% buffer to prevent "will fail" on desktop MetaMask
-      let gasLimit;
-      try {
-        const estimated = await contract.submitAnswer.estimateGas(task.batchId, task.taskIndex, ans);
-        gasLimit = estimated * 130n / 100n; // 30% buffer
-      } catch {
-        gasLimit = 300000n; // Fallback if estimation fails
-      }
-      
-      const tx = await contract.submitAnswer(task.batchId, task.taskIndex, ans, { gasLimit });
+      const tx = await contract.submitAnswer(task.batchId, task.taskIndex, ans);
       await tx.wait();
       setDone(d => ({ ...d, [key]: true }));
     } catch (e: any) { setError(e.reason || e.message); }
@@ -89,7 +79,7 @@ export default function TarefasPage() {
     topRow: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "2.5rem", paddingBottom: "1.5rem", borderBottom: "1px solid var(--border)" } as React.CSSProperties,
     countBadge: { display: "flex", alignItems: "center", gap: "0.5rem", fontFamily: "var(--font-mono), monospace", fontSize: "0.75rem", color: tasks.length > 0 ? "var(--accent3)" : "var(--muted)" } as React.CSSProperties,
     dot: { width: "8px", height: "8px", borderRadius: "50%", background: tasks.length > 0 ? "var(--accent3)" : "var(--muted)" } as React.CSSProperties,
-    refreshBtn: { fontFamily: "var(--font-mono), monospace", fontSize: "0.7rem", color: "var(--muted)", background: "none", border: "1px solid var(--border)", borderRadius: "2px", padding: "0.4rem 0.9rem", cursor: "pointer", letterSpacing: "0.08em", transition: "all 0.2s" } as React.CSSProperties,
+    refreshBtn: { fontFamily: "var(--font-mono), monospace", fontSize: "0.7rem", color: "var(--muted)", background: "none", border: "1px solid var(--border)", borderRadius: "2px", padding: "0.4rem 0.9rem", cursor: "none", letterSpacing: "0.08em", transition: "all 0.2s" } as React.CSSProperties,
 
     taskCard: { background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "6px", padding: "2rem", marginBottom: "1rem", position: "relative", overflow: "hidden", transition: "all 0.3s" } as React.CSSProperties,
 
@@ -104,7 +94,7 @@ export default function TarefasPage() {
 
     inputRow: { display: "flex", gap: "0.75rem" } as React.CSSProperties,
     input: { flex: 1, background: "var(--bg)", border: "1px solid var(--border)", borderRadius: "4px", padding: "0.75rem 1rem", fontSize: "0.9rem", color: "var(--ink)", fontFamily: "var(--font-sans), sans-serif", outline: "none" } as React.CSSProperties,
-    sendBtn: { background: "var(--ink)", color: "var(--bg)", border: "none", borderRadius: "2px", padding: "0.75rem 1.5rem", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, cursor: "pointer", fontFamily: "var(--font-sans), sans-serif", transition: "all 0.2s", whiteSpace: "nowrap" as const } as React.CSSProperties,
+    sendBtn: { background: "var(--ink)", color: "var(--bg)", border: "none", borderRadius: "2px", padding: "0.75rem 1.5rem", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, cursor: "none", fontFamily: "var(--font-sans), sans-serif", transition: "all 0.2s", whiteSpace: "nowrap" as const } as React.CSSProperties,
 
     doneBadge: { background: "rgba(45,138,78,0.08)", border: "1px solid rgba(45,138,78,0.2)", borderRadius: "4px", padding: "0.75rem 1rem", fontFamily: "var(--font-mono), monospace", fontSize: "0.75rem", color: "var(--accent3)", textAlign: "center" as const } as React.CSSProperties,
 
@@ -112,7 +102,7 @@ export default function TarefasPage() {
     connectIcon: { fontSize: "3rem", marginBottom: "1.5rem", display: "block" },
     connectTitle: { fontFamily: "var(--font-serif), serif", fontSize: "2rem", color: "var(--ink)", marginBottom: "0.5rem" },
     connectSub: { color: "var(--ink2)", fontSize: "0.9rem", fontWeight: 300, marginBottom: "2rem" },
-    connectBtn: { background: "var(--ink)", color: "var(--bg)", border: "none", borderRadius: "2px", padding: "0.95rem 2.2rem", fontWeight: 700, fontSize: "0.82rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, cursor: "pointer", fontFamily: "var(--font-sans), sans-serif" } as React.CSSProperties,
+    connectBtn: { background: "var(--ink)", color: "var(--bg)", border: "none", borderRadius: "2px", padding: "0.95rem 2.2rem", fontWeight: 700, fontSize: "0.82rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, cursor: "none", fontFamily: "var(--font-sans), sans-serif" } as React.CSSProperties,
 
     emptyBox: { textAlign: "center" as const, padding: "4rem 2rem", border: "1px dashed var(--border)", borderRadius: "6px" },
     emptyText: { fontFamily: "var(--font-serif), serif", fontSize: "1.5rem", color: "var(--muted)", fontStyle: "italic" },

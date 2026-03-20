@@ -39,7 +39,9 @@ export default function DashboardPage() {
         setEthBal(Number(ethers.formatEther(eth)).toFixed(4));
         const token = new ethers.Contract(GMND_TOKEN_ADDRESS, GMND_TOKEN_ABI, provider);
         const gmnd = await token.balanceOf(address);
-        setGmndBal(Number(ethers.formatUnits(gmnd, 18)).toLocaleString());
+        // FIX Bug 1: Store raw number, format only at display time
+        const gmndNum = Number(ethers.formatUnits(gmnd, 18));
+        setGmndBal(isNaN(gmndNum) ? "0" : gmndNum.toFixed(2));
       }
     } catch (e) { console.error(e); }
     finally { setLoading(false); }
@@ -85,7 +87,7 @@ export default function DashboardPage() {
     howRow: { display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "0.75rem", marginBottom: "0.75rem", borderBottom: "1px solid var(--border2)", fontSize: "0.83rem" } as React.CSSProperties,
 
     connectBox: { textAlign: "center" as const, padding: "5rem 2rem" },
-    connectBtn: { background: "var(--ink)", color: "var(--bg)", border: "none", borderRadius: "2px", padding: "0.95rem 2.2rem", fontWeight: 700, fontSize: "0.82rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, cursor: "none", fontFamily: "var(--font-sans), sans-serif" } as React.CSSProperties,
+    connectBtn: { background: "var(--ink)", color: "var(--bg)", border: "none", borderRadius: "2px", padding: "0.95rem 2.2rem", fontWeight: 700, fontSize: "0.82rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, cursor: "pointer", fontFamily: "var(--font-sans), sans-serif" } as React.CSSProperties,
   };
 
   if (!isConnected) return (
@@ -117,7 +119,7 @@ export default function DashboardPage() {
               <span style={s.levelBadge}>{level}</span>
               <span style={s.onlineDot}><span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent3)", display: "inline-block" }} />Online</span>
             </div>
-            <button onClick={load} style={{ background: "none", border: "none", color: "var(--muted)", cursor: "none", fontSize: "0.85rem" }}>
+            <button onClick={load} style={{ background: "none", border: "none", color: "var(--muted)", cursor: "pointer", fontSize: "0.85rem" }}>
               {loading ? "⟳" : "↻"}
             </button>
           </div>
@@ -129,13 +131,13 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Stats */}
+        {/* Stats - FIX Bug 1: use gmndBal directly, no Number() re-parse */}
         <div style={s.grid4}>
           {[
             { val: `${profile.score}`, key: "Score PoEC", color: "var(--accent)" },
             { val: `${profile.totalTasks}`, key: "Tarefas Totais", color: "var(--ink)" },
             { val: `${Number(profile.earned).toFixed(0)}`, key: "GMND Ganho", color: "var(--accent2)" },
-            { val: `${Number(gmndBal).toLocaleString()}`, key: "Saldo GMND", color: "var(--accent3)" },
+            { val: gmndBal, key: "Saldo GMND", color: "var(--accent3)" },
           ].map(s2 => (
             <div key={s2.key} style={s.statCard}>
               <span style={{ ...s.statVal, color: s2.color }}>{s2.val}</span>

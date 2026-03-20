@@ -9,10 +9,24 @@ declare global {
   }
 }
 
-// Detect if running inside a mobile wallet browser
-function isMobileWalletBrowser(): boolean {
-  if (typeof window === "undefined") return false;
-  return !!window.ethereum;
+// FIX Bug 2: Proper provider detection for desktop + mobile + multi-wallet (EIP-5749)
+function getInjectedProvider(): any | null {
+  if (typeof window === "undefined") return null;
+  
+  const eth = window.ethereum;
+  if (!eth) return null;
+
+  // EIP-5749: Multiple wallets installed — window.ethereum.providers is an array
+  if (eth.providers && Array.isArray(eth.providers)) {
+    // Prioritize MetaMask
+    const metamask = eth.providers.find((p: any) => p.isMetaMask && !p.isBraveWallet);
+    if (metamask) return metamask;
+    // Fallback to first available provider
+    return eth.providers[0] || null;
+  }
+
+  // Single provider (desktop MetaMask or mobile wallet browser)
+  return eth;
 }
 
 // Detect if on mobile device
@@ -58,8 +72,31 @@ export function useWeb3() {
           setProvider(p2);
           setSigner(s2);
           setChainId(SEPOLIA_CHAIN_ID);
-        } catch {
-          setError("Troque para a rede Sepolia na sua carteira");
+        } catch (switchError: any) {
+          // Chain not added — try adding Sepolia
+          if (switchError.code === 4902) {
+            try {
+              await ethereum.request({
+                method: "wallet_addEthereumChain",
+                params: [{
+                  chainId: "0xaa36a7",
+                  chainName: "Sepolia Testnet",
+                  nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
+                  rpcUrls: ["https://rpc.sepolia.org"],
+                  blockExplorerUrls: ["https://sepolia.etherscan.io"],
+                }],
+              });
+              const p2 = new ethers.BrowserProvider(ethereum);
+              const s2 = await p2.getSigner();
+              setProvider(p2);
+              setSigner(s2);
+              setChainId(SEPOLIA_CHAIN_ID);
+            } catch {
+              setError("Não foi possível adicionar a rede Sepolia");
+            }
+          } else {
+            setError("Troque para a rede Sepolia na sua carteira");
+          }
         }
       }
     } catch (e: any) {
@@ -76,9 +113,11 @@ export function useWeb3() {
   const connect = useCallback(async () => {
     if (typeof window === "undefined") return;
 
-    // If wallet is injected (MetaMask desktop or inside wallet browser)
-    if (window.ethereum) {
-      await connectWithProvider(window.ethereum);
+    // FIX Bug 2: Use getInjectedProvider() instead of raw window.ethereum
+    const injected = getInjectedProvider();
+    
+    if (injected) {
+      await connectWithProvider(injected);
       return;
     }
 
@@ -117,15 +156,19 @@ export function useWeb3() {
     return null;
   }, [provider, signer]);
 
+  // FIX Bug 2: Listen to events on the correct provider
   useEffect(() => {
-    if (typeof window === "undefined" || !window.ethereum) return;
+    if (typeof window === "undefined") return;
+    const injected = getInjectedProvider();
+    if (!injected) return;
+    
     const onAccountsChanged = () => connect();
     const onChainChanged    = () => connect();
-    window.ethereum.on("accountsChanged", onAccountsChanged);
-    window.ethereum.on("chainChanged",    onChainChanged);
+    injected.on("accountsChanged", onAccountsChanged);
+    injected.on("chainChanged",    onChainChanged);
     return () => {
-      window.ethereum.removeListener("accountsChanged", onAccountsChanged);
-      window.ethereum.removeListener("chainChanged",    onChainChanged);
+      injected.removeListener("accountsChanged", onAccountsChanged);
+      injected.removeListener("chainChanged",    onChainChanged);
     };
   }, [connect]);
 
