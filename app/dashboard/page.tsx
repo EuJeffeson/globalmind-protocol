@@ -39,7 +39,9 @@ export default function DashboardPage() {
         setEthBal(Number(ethers.formatEther(eth)).toFixed(4));
         const token = new ethers.Contract(GMND_TOKEN_ADDRESS, GMND_TOKEN_ABI, provider);
         const gmnd = await token.balanceOf(address);
-        setGmndBal(Number(ethers.formatUnits(gmnd, 18)).toLocaleString());
+        if (gmnd != null) {
+          setGmndBal(Number(ethers.formatUnits(gmnd, 18)).toLocaleString());
+        }
       }
     } catch (e) { console.error(e); }
     finally { setLoading(false); }
@@ -135,7 +137,7 @@ export default function DashboardPage() {
             { val: `${profile.score}`, key: "Score PoEC", color: "var(--accent)" },
             { val: `${profile.totalTasks}`, key: "Tarefas Totais", color: "var(--ink)" },
             { val: `${Number(profile.earned).toFixed(0)}`, key: "GMND Ganho", color: "var(--accent2)" },
-            { val: `${Number(gmndBal).toLocaleString()}`, key: "Saldo GMND", color: "var(--accent3)" },
+            { val: gmndBal, key: "Saldo GMND", color: "var(--accent3)" },
           ].map(s2 => (
             <div key={s2.key} style={s.statCard}>
               <span style={{ ...s.statVal, color: s2.color }}>{s2.val}</span>

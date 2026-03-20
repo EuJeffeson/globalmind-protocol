@@ -9,10 +9,15 @@ declare global {
   }
 }
 
-// Detect if running inside a mobile wallet browser
-function isMobileWalletBrowser(): boolean {
-  if (typeof window === "undefined") return false;
-  return !!window.ethereum;
+// Get the injected Ethereum provider, handling EIP-5749 (multiple injected wallets)
+function getInjectedProvider(): any {
+  if (typeof window === "undefined") return null;
+  const providers = (window.ethereum as any)?.providers;
+  if (providers?.length) {
+    // Prefer MetaMask when multiple wallets are installed
+    return providers.find((p: any) => p.isMetaMask) ?? providers[0];
+  }
+  return window.ethereum ?? null;
 }
 
 // Detect if on mobile device
@@ -76,13 +81,14 @@ export function useWeb3() {
   const connect = useCallback(async () => {
     if (typeof window === "undefined") return;
 
-    // If wallet is injected (MetaMask desktop or inside wallet browser)
-    if (window.ethereum) {
-      await connectWithProvider(window.ethereum);
+    // If wallet is injected (MetaMask desktop or inside MetaMask mobile browser)
+    const injected = getInjectedProvider();
+    if (injected) {
+      await connectWithProvider(injected);
       return;
     }
 
-    // On mobile without injected wallet — show options modal
+    // On mobile without injected wallet — show deep-link options modal
     if (isMobileDevice()) {
       setShowMobileModal(true);
       return;
@@ -118,14 +124,15 @@ export function useWeb3() {
   }, [provider, signer]);
 
   useEffect(() => {
-    if (typeof window === "undefined" || !window.ethereum) return;
+    const ethereum = getInjectedProvider();
+    if (!ethereum) return;
     const onAccountsChanged = () => connect();
     const onChainChanged    = () => connect();
-    window.ethereum.on("accountsChanged", onAccountsChanged);
-    window.ethereum.on("chainChanged",    onChainChanged);
+    ethereum.on("accountsChanged", onAccountsChanged);
+    ethereum.on("chainChanged",    onChainChanged);
     return () => {
-      window.ethereum.removeListener("accountsChanged", onAccountsChanged);
-      window.ethereum.removeListener("chainChanged",    onChainChanged);
+      ethereum.removeListener("accountsChanged", onAccountsChanged);
+      ethereum.removeListener("chainChanged",    onChainChanged);
     };
   }, [connect]);
 

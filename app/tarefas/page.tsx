@@ -54,7 +54,12 @@ export default function TarefasPage() {
     try {
       const contract = getContract(true);
       if (!contract) throw new Error("Contrato indisponível");
-      const tx = await contract.submitAnswer(task.batchId, task.taskIndex, ans);
+      let gasLimit = 150000n;
+      try {
+        const est = await contract.submitAnswer.estimateGas(task.batchId, task.taskIndex, ans);
+        gasLimit = est * 130n / 100n;
+      } catch { /* use fallback */ }
+      const tx = await contract.submitAnswer(task.batchId, task.taskIndex, ans, { gasLimit });
       await tx.wait();
       setDone(d => ({ ...d, [key]: true }));
     } catch (e: any) { setError(e.reason || e.message); }

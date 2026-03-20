@@ -64,6 +64,21 @@ export default function AdminPage() {
     if (!window.ethereum) { alert("Instale MetaMask!"); return; }
     const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
     setAddress(accounts[0]);
+
+    // Ensure we're on Sepolia before allowing any writes
+    const chainId = await window.ethereum.request({ method: "eth_chainId" });
+    if (chainId !== "0xaa36a7") {
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: "0xaa36a7" }],
+        });
+      } catch {
+        alert("Por favor, troque para a rede Sepolia na sua carteira.");
+        return;
+      }
+    }
+
     setConnected(true);
   };
 
@@ -112,7 +127,12 @@ export default function AdminPage() {
     setFinalizing(f => ({ ...f, [batchId]: true }));
     setError(e => ({ ...e, [batchId]: "" }));
     try {
-      const tx = await contract.finalizeBatch(batchId);
+      let gasLimit = 300000n;
+      try {
+        const est = await contract.finalizeBatch.estimateGas(batchId);
+        gasLimit = est * 130n / 100n;
+      } catch { /* use fallback */ }
+      const tx = await contract.finalizeBatch(batchId, { gasLimit });
       await tx.wait();
       setDone(d => ({ ...d, [batchId]: tx.hash }));
       fetchBatches();
@@ -141,16 +161,24 @@ export default function AdminPage() {
 
       // Create batch
       const contract = new ethers.Contract(PROTOCOL, CONTRACT_ABI, signer);
+      const taskIds    = ["task-0", "task-1", "task-2"];
+      const contents   = [
+        "Esta notícia é verdadeira, falsa ou não verificável? Pesquisadores da USP desenvolveram IA para diagnosticar dengue.",
+        "Esta resposta de IA está correta? Qual a capital do Pará? Resposta: Belém.",
+        "Este dado é plausível? China instalou 295.000 robôs industriais em 2024.",
+      ];
+      const taskTypes  = [0, 0, 0];
+      const deadlineIn = BigInt(48 * 3600);
+
+      let gasLimit = 600000n;
+      try {
+        const est = await contract.createBatch.estimateGas(taskIds, contents, taskTypes, deadlineIn, rewardWei);
+        gasLimit = est * 130n / 100n;
+      } catch { /* use fallback */ }
+
       const tx = await contract.createBatch(
-        ["task-0", "task-1", "task-2"],
-        [
-          "Esta notícia é verdadeira, falsa ou não verificável? Pesquisadores da USP desenvolveram IA para diagnosticar dengue.",
-          "Esta resposta de IA está correta? Qual a capital do Pará? Resposta: Belém.",
-          "Este dado é plausível? China instalou 295.000 robôs industriais em 2024."
-        ],
-        [0, 0, 0],
-        BigInt(48 * 3600),
-        rewardWei
+        taskIds, contents, taskTypes, deadlineIn, rewardWei,
+        { gasLimit }
       );
       await tx.wait();
       setCreateTx(tx.hash);
