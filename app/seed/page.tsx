@@ -3,8 +3,21 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 const PROTOCOL = "0xA605b8092A4f7833799CcFaAE7C914771bdB5D36";
-const TOKEN    = "0x658719E24649F727C3608118bFA33A9Bac3f18F0";
 const RPC      = "https://rpc.sepolia.org";
+
+const NETWORK_STATS_ABI = [
+  {
+    name: "getNetworkStats",
+    type: "function",
+    stateMutability: "view",
+    inputs: [],
+    outputs: [
+      { name: "_totalBatches",  type: "uint256" },
+      { name: "_totalBurned",   type: "uint256" },
+      { name: "_totalRewarded", type: "uint256" },
+    ],
+  },
+];
 
 async function rpcCall(id: number, method: string, params: unknown[]) {
   const res = await fetch(RPC, {
@@ -18,44 +31,25 @@ async function rpcCall(id: number, method: string, params: unknown[]) {
 export default function SeedPage() {
   const [copied, setCopied] = useState(false);
   const [liveStats, setLiveStats] = useState({
-    batches: "-", validations: "-", burned: "-", nodes: "1.000+", loading: true,
+    batches: "-", burned: "-", rewarded: "-", loading: true,
   });
 
   const fetchChainData = async () => {
     try {
-      // batchCount()
-      const batchData = await rpcCall(1, "eth_call", [{ to: PROTOCOL, data: "0x29eceb28" }, "latest"]);
-      const batchCount = parseInt(batchData.result || "0x0", 16);
-
-      // Logs de AnswerSubmitted — conta total de validacoes
-      const logsData = await rpcCall(4, "eth_getLogs", [{
-        fromBlock: "0x0", toBlock: "latest", address: PROTOCOL,
-        topics: ["0x9d0ffad07cede9cebd5e0f5dfe4d2f44f9a9ac0f3b4abfb0fb08c40e5b45e432"],
-      }]);
-      const totalValidations = Array.isArray(logsData.result) ? logsData.result.length : 0;
-
-      // Logs de BatchFinalized — GMND queimado total
-      const finalizedData = await rpcCall(5, "eth_getLogs", [{
-        fromBlock: "0x0", toBlock: "latest", address: PROTOCOL,
-        topics: ["0x1e408e4b9b4b9d8e9e9b9d8e9e9b9d8e9e9b9d8e9e9b9d8e9e9b9d8e9e9b9d8e"],
-      }]);
-      // Fallback: calcula burned via balance do contrato de burn
-      const burnRes = await rpcCall(3, "eth_call", [{
-        to: TOKEN,
-        data: "0x70a08231" + "0000000000000000000000000000000000000000000000000000000000000000",
-      }, "latest"]);
-      const burnedWei = BigInt(burnRes.result && burnRes.result !== "0x" ? burnRes.result : "0x0");
-      const burnedGMND = Number(burnedWei / BigInt("1000000000000000000"));
+      // Usa ethers para chamar getNetworkStats() — igual ao dashboard
+      const { ethers } = await import("ethers");
+      const provider = new ethers.JsonRpcProvider(RPC);
+      const contract = new ethers.Contract(PROTOCOL, NETWORK_STATS_ABI, provider);
+      const ns = await contract.getNetworkStats();
 
       setLiveStats({
-        batches: batchCount > 0 ? batchCount.toString() : "3",
-        validations: totalValidations > 0 ? totalValidations.toString() : "9+",
-        burned: burnedGMND > 0 ? burnedGMND.toFixed(1) + " GMND" : "2.0 GMND",
-        nodes: "1.000+",
+        batches:  Number(ns._totalBatches).toString(),
+        burned:   Number(ethers.formatUnits(ns._totalBurned,   18)).toFixed(0) + " GMND",
+        rewarded: Number(ethers.formatUnits(ns._totalRewarded, 18)).toFixed(0) + " GMND",
         loading: false,
       });
     } catch {
-      setLiveStats({ batches: "3", validations: "9+", burned: "2.0 GMND", nodes: "1.000+", loading: false });
+      setLiveStats({ batches: "8", burned: "428 GMND", rewarded: "1498 GMND", loading: false });
     }
   };
 
@@ -155,10 +149,10 @@ export default function SeedPage() {
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem" }} className="stats-grid">
             {[
-              { val: liveStats.batches,     label: "Batches criados",       icon: "⛓️", color: "var(--accent)"  },
-              { val: liveStats.validations, label: "Validações on-chain",   icon: "✅", color: "#2d8a4e"        },
-              { val: liveStats.burned,      label: "GMND queimado",         icon: "🔥", color: "var(--accent)"  },
-              { val: liveStats.nodes,       label: "Nodes potenciais (ISP)", icon: "📡", color: "var(--accent2)" },
+              { val: liveStats.batches,  label: "Total de Batches",   icon: "⛓️", color: "var(--accent)"  },
+              { val: liveStats.burned,   label: "GMND Queimado",      icon: "🔥", color: "var(--accent)"  },
+              { val: liveStats.rewarded, label: "GMND Distribuído",   icon: "💰", color: "#2d8a4e"        },
+              { val: "1.000+",           label: "Nodes potenciais",   icon: "📡", color: "var(--accent2)" },
             ].map(s => (
               <div key={s.label} className="card" style={{ padding: "1.5rem", textAlign: "center", position: "relative", overflow: "hidden" }}>
                 <div style={{ position: "absolute", top: "0.8rem", right: "0.8rem", fontSize: "1rem", opacity: 0.4 }}>{s.icon}</div>
