@@ -125,7 +125,7 @@ export default function SeedPage() {
               { icon: "✅", text: "Open source — github.com/EuJeffeson/globalmind-protocol" },
               { icon: "✅", text: "Listado no Giveth como public good — primeira doação recebida" },
               { icon: "✅", text: "Product Hunt lançado · DevHunt listado" },
-              { icon: "✅", text: "Co-founders: Jeffeson Rocha + Davi Viana" },
+              { icon: "✅", text: "Co-founders: Jeffeson Rocha + David Coelho" },
             ].map(({ icon, text }) => (
               <div key={text} style={{ display: "flex", alignItems: "center", gap: "0.8rem", padding: "0.6rem 0", borderBottom: "1px solid rgba(244,241,235,0.05)" }}>
                 <span style={{ fontSize: "0.85rem" }}>{icon}</span>
@@ -182,7 +182,7 @@ export default function SeedPage() {
               <span style={{ fontFamily: "var(--font-serif), serif", fontSize: "3rem", color: "white", fontStyle: "italic" }}>DV</span>
             </div>
             <div>
-              <h3 style={{ fontFamily: "var(--font-serif), serif", fontSize: "1.5rem", marginBottom: "0.3rem" }}>Davi Viana</h3>
+              <h3 style={{ fontFamily: "var(--font-serif), serif", fontSize: "1.5rem", marginBottom: "0.3rem" }}>David Coelho</h3>
               <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "var(--accent2)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "1.5rem" }}>
                 Co-Founder & Chief Business Officer — GlobalMind Protocol · Brasil 🇧🇷
               </p>
@@ -328,7 +328,7 @@ export default function SeedPage() {
           </button>
         </div>
         <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "rgba(244,241,235,0.2)", position: "relative" }}>
-          Jeffeson Rocha + Davi Viana — De Marabá, Pará para o mundo 🇧🇷
+          Jeffeson Rocha + David Coelho — De Marabá, Pará para o mundo 🇧🇷
         </p>
       </section>
 

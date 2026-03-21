@@ -408,7 +408,7 @@ export default function Home() {
             "✅ Painel admin — gestão de batches no browser",
             "✅ Open source no GitHub",
             "✅ Product Hunt · DevHunt · Giveth listados",
-            "✅ Co-founders: Jeffeson Rocha + Davi Viana",
+            "✅ Co-founders: Jeffeson Rocha + David Coelho",
             "✅ Seed round aberto @ $3.3M valuation",
             "✅ Whitepaper v0.4 + Pitch Deck EN/PT",
           ].map((item, i) => (
@@ -434,7 +434,7 @@ export default function Home() {
               tags: ["Ethereum", "Smart Contracts", "DePIN", "Maranet Telecom"],
             },
             {
-              initials: "DV", name: "Davi Viana",
+              initials: "DV", name: "David Coelho",
               role: "Co-Founder & Chief Business Officer",
               bio: "Empresário do agronegócio brasileiro especializado em operações de pulverização com drones. Financiou o desenvolvimento inicial do protocolo. Estratégia de negócios e expansão.",
               tags: ["Agronegócio", "Drones", "Business", "Investidor Fundador"],
