@@ -50,15 +50,15 @@ export default function SeedPage() {
           lineHeight: 1.05, letterSpacing: "-0.02em",
           color: "var(--ink)", marginBottom: "1.5rem",
         }}>
-          Participe do{" "}
-          <em style={{ fontStyle: "italic", color: "var(--accent)" }}>futuro</em>{" "}
-          da validação de IA
+          Quem controla os dados{" "}
+          <em style={{ fontStyle: "italic", color: "var(--accent)" }}>controla o futuro</em>{" "}
+          da inteligência
         </h1>
 
         <p style={{ fontSize: "1rem", color: "var(--ink2)", lineHeight: 1.8, fontWeight: 300, maxWidth: "600px", marginBottom: "1rem" }}>
-          O GlobalMind Protocol está com o Seed Round aberto. Valuation de $3.3M,
-          com potencial de 3x–5x na Série A. Seja um dos primeiros investidores
-          da infraestrutura descentralizada de validação de IA.
+          Bittensor confirmou com $2.6B de market cap que validação descentralizada de IA é a próxima camada crítica.
+          GlobalMind é o protocolo especializado em validação humana de dados — já rodando — a $3.3M de valuation.
+          Mesma tese. <strong style={{ color: "var(--ink)" }}>800x mais upside.</strong>
         </p>
 
         <p style={{ fontSize: "0.85rem", color: "var(--accent)", fontFamily: "var(--font-mono), monospace", marginBottom: "2.5rem" }}>
@@ -82,7 +82,7 @@ export default function SeedPage() {
             { val: "$500K",  label: "Meta da Rodada",     color: "var(--accent)"  },
             { val: "$0.003", label: "Preço por GMND",     color: "var(--accent2)" },
             { val: "$3.3M",  label: "Valuation",          color: "var(--accent3)" },
-            { val: "150M",   label: "Tokens Disponíveis", color: "var(--accent)"  },
+            { val: "800x",   label: "Upside vs Bittensor", color: "var(--accent)" },
           ].map(s => (
             <div key={s.label} className="card reveal" style={{ padding: "1.5rem", textAlign: "center" }}>
               <span style={{ fontFamily: "var(--font-serif), serif", fontSize: "2rem", color: s.color, lineHeight: 1, display: "block" }}>{s.val}</span>
@@ -92,7 +92,7 @@ export default function SeedPage() {
         </div>
       </section>
 
-      {/* TRACTION AO VIVO */}
+      {/* TRACTION */}
       <section style={{ padding: "5rem 1.5rem", background: "var(--ink)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         <div style={{ maxWidth: "860px", margin: "0 auto" }}>
           <span style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "rgba(244,241,235,0.3)", letterSpacing: "0.15em", textTransform: "uppercase", display: "block", marginBottom: "1rem" }}>// Tração Real — Não é Demo</span>
@@ -102,9 +102,9 @@ export default function SeedPage() {
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem", marginBottom: "2rem" }} className="traction-grid">
             {[
-              { val: "2",        label: "Contratos on-chain",    color: "var(--accent)"  },
-              { val: "1.000+",   label: "Nodes potenciais (ISP)", color: "var(--accent3)" },
-              { val: "$17B",     label: "Mercado total (2030)",   color: "var(--accent2)" },
+              { val: "2",       label: "Contratos on-chain",     color: "var(--accent)"  },
+              { val: "1.000+",  label: "Nodes potenciais (ISP)", color: "var(--accent3)" },
+              { val: "$17B",    label: "Mercado total (2030)",    color: "var(--accent2)" },
             ].map(s => (
               <div key={s.label} style={{ background: "rgba(244,241,235,0.04)", border: "1px solid rgba(244,241,235,0.08)", borderRadius: "6px", padding: "1.5rem", textAlign: "center" }}>
                 <span style={{ fontFamily: "var(--font-serif), serif", fontSize: "2rem", color: s.color, lineHeight: 1, display: "block" }}>{s.val}</span>
@@ -116,22 +116,25 @@ export default function SeedPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
             {[
               { icon: "✅", text: "Smart Contracts V2 + V3 live na Ethereum Sepolia" },
-              { icon: "✅", text: "Token $GMND ERC-20 com Halving deployado" },
+              { icon: "✅", text: "Token $GMND ERC-20 com Halving + 20% auto-burn deployado" },
               { icon: "✅", text: "dApp em produção — globalmind-protocol.vercel.app" },
               { icon: "✅", text: "Parceria Maranet Telecom — 1.000+ clientes, Marabá-PA" },
-              { icon: "✅", text: "Primeiras validações on-chain confirmadas na blockchain" },
+              { icon: "✅", text: "Clientes Maranet testando o protocolo agora" },
+              { icon: "✅", text: "Primeira validação on-chain confirmada — +2.5 GMND ganhos automaticamente" },
+              { icon: "✅", text: "Painel admin — criar e finalizar batches pelo browser" },
               { icon: "✅", text: "Open source — github.com/EuJeffeson/globalmind-protocol" },
               { icon: "✅", text: "Listado no Giveth como public good — primeira doação recebida" },
               { icon: "✅", text: "Product Hunt lançado · DevHunt listado" },
+              { icon: "✅", text: "Co-founders: Jeffeson Rocha + Davi Viana" },
             ].map(({ icon, text }) => (
               <div key={text} style={{ display: "flex", alignItems: "center", gap: "0.8rem", padding: "0.6rem 0", borderBottom: "1px solid rgba(244,241,235,0.05)" }}>
                 <span style={{ fontSize: "0.85rem" }}>{icon}</span>
-                <span style={{ fontSize: "0.85rem", color: "rgba(244,241,235,0.6)", fontFamily: "var(--font-sans), sans-serif" }}>{text}</span>
+                <span style={{ fontSize: "0.85rem", color: "rgba(244,241,235,0.6)" }}>{text}</span>
               </div>
             ))}
           </div>
 
-          {/* TX on-chain proof */}
+          {/* TX proof */}
           <div style={{ marginTop: "2rem", background: "rgba(200,82,42,0.08)", border: "1px solid rgba(200,82,42,0.2)", borderRadius: "6px", padding: "1.2rem" }}>
             <div style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "var(--accent)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "0.5rem" }}>Primeira validação on-chain</div>
             <a href="https://sepolia.etherscan.io/tx/0xe68105a8faea2cad90aa0197f453a1f19cf6ece447efff65f1e4675b18726b6e" target="_blank" rel="noopener noreferrer"
@@ -143,35 +146,52 @@ export default function SeedPage() {
         </div>
       </section>
 
-      {/* FOUNDER */}
+      {/* FOUNDERS */}
       <section style={{ padding: "5rem 1.5rem", background: "var(--bg)", borderTop: "1px solid var(--border)" }}>
         <div style={{ maxWidth: "860px", margin: "0 auto" }}>
-          <span className="section-num">// 01 — O Founder</span>
-          <h2 className="section-title">De Marabá, Pará <em>para o mundo.</em></h2>
+          <span className="section-num">// 01 — Os Founders</span>
+          <h2 className="section-title">Do interior do Brasil <em>para o mundo.</em></h2>
 
-          <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "3rem", alignItems: "start", marginTop: "3rem" }} className="founder-grid">
+          {/* Jeffeson */}
+          <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "3rem", alignItems: "start", marginTop: "3rem", marginBottom: "3rem" }} className="founder-grid">
             <div style={{ width: "120px", height: "120px", borderRadius: "50%", background: "var(--accent)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               <span style={{ fontFamily: "var(--font-serif), serif", fontSize: "3rem", color: "white", fontStyle: "italic" }}>JR</span>
             </div>
-
             <div>
               <h3 style={{ fontFamily: "var(--font-serif), serif", fontSize: "1.5rem", marginBottom: "0.3rem" }}>Jeffeson Rocha</h3>
               <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "var(--accent)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "1.5rem" }}>
-                Founder & Lead Developer — GlobalMind Protocol · Marabá, Pará 🇧🇷
+                Co-Founder & Lead Developer — GlobalMind Protocol · Marabá, Pará 🇧🇷
               </p>
-
               <div style={{ fontSize: "0.92rem", color: "var(--ink2)", lineHeight: 1.9, fontWeight: 300 }}>
                 <p style={{ marginBottom: "1rem" }}>
                   Minha história não começou em Vale do Silício nem em startup de São Paulo. Começou no interior do Pará, vendendo móveis por 3 anos. Era um trabalho honesto, mas eu sempre soube que tecnologia era meu caminho.
                 </p>
                 <p style={{ marginBottom: "1rem" }}>
-                  Tive a chance de entrar num provedor de internet local. Com dedicação total, fui subindo — aprendi rede, suporte, gestão — até ser chamado pra ser sócio em outro provedor. Hoje sou administrador, tocando operações reais de telecom no Norte do Brasil.
-                </p>
-                <p style={{ marginBottom: "1rem" }}>
-                  Fiz um bootcamp de dev web e me apaixonei por código. Dali, entrei no Web3: estudei Ethereum, smart contracts, DePIN — tudo do zero, noites adentro. Estudando IA profundamente, vi o problema que ninguém estava resolvendo: o gargalo não é só compute, é <strong style={{ color: "var(--ink)" }}>validação humana confiável</strong>.
+                  Entrei num provedor de internet local, fui subindo até ser sócio-administrador. Hoje toco operações reais de telecom no Norte do Brasil com a Maranet Telecom.
                 </p>
                 <p>
-                  Decidi unir Web3 + IA + pessoas reais. Em poucas semanas: contratos live, dApp em produção, parceria ISP com 1.000+ nodes potenciais e seed round aberto. De vendedor de móveis em Marabá → solo founder construindo infraestrutura pública para a IA do futuro.
+                  Fiz bootcamp de dev web, me apaixonei por código, entrei no Web3. Vi o problema que ninguém resolvia: <strong style={{ color: "var(--ink)" }}>validação humana confiável para IA</strong>. Em 3 semanas: contratos live, dApp em produção, parceiro ISP e seed round aberto.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Davi */}
+          <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "3rem", alignItems: "start", paddingTop: "3rem", borderTop: "1px solid var(--border)" }} className="founder-grid">
+            <div style={{ width: "120px", height: "120px", borderRadius: "50%", background: "var(--accent2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <span style={{ fontFamily: "var(--font-serif), serif", fontSize: "3rem", color: "white", fontStyle: "italic" }}>DV</span>
+            </div>
+            <div>
+              <h3 style={{ fontFamily: "var(--font-serif), serif", fontSize: "1.5rem", marginBottom: "0.3rem" }}>Davi Viana</h3>
+              <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "var(--accent2)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "1.5rem" }}>
+                Co-Founder & Chief Business Officer — GlobalMind Protocol · Brasil 🇧🇷
+              </p>
+              <div style={{ fontSize: "0.92rem", color: "var(--ink2)", lineHeight: 1.9, fontWeight: 300 }}>
+                <p style={{ marginBottom: "1rem" }}>
+                  Empresário do agronegócio brasileiro com experiência em operações de pulverização com drones. Traz visão operacional e experiência de negócios do mundo físico para o GlobalMind.
+                </p>
+                <p>
+                  Responsável pelo financiamento inicial do protocolo e pela estratégia de negócios e parcerias. A experiência com drones conecta diretamente à visão de <strong style={{ color: "var(--ink)" }}>Real-World Data Network</strong> do GlobalMind — dados do mundo real coletados e validados on-chain.
                 </p>
               </div>
             </div>
@@ -185,14 +205,14 @@ export default function SeedPage() {
           <span className="section-num">// 02 — Por que Investir</span>
           <h2 className="section-title">O mercado certo. <em>Na hora certa.</em></h2>
           <p style={{ color: "var(--ink2)", fontSize: "1rem", lineHeight: 1.8, fontWeight: 300, marginTop: "1rem", marginBottom: "3rem", maxWidth: "600px" }}>
-            O mercado de validação de dados de IA cresce 30-35% ao ano e deve atingir $17B até 2030. Nenhum protocolo descentralizado domina esse espaço ainda.
+            Bittensor confirmou com $2.6B de market cap que validação descentralizada de IA é a próxima camada crítica. GlobalMind é o protocolo especializado nisso, já rodando, a $3.3M de FDV.
           </p>
 
           <div className="cards-grid">
             {[
-              { icon: "📈", title: "Mercado de $17B", desc: "Validação de dados de IA cresce 30-35% ao ano. Empresas como Scale AI dominam de forma centralizada e opaca. Oportunidade enorme para um protocolo descentralizado." },
+              { icon: "⛓️", title: "Bittensor = $2.6B", desc: "TAO lançou em ~$1M e chegou a $2.6B validando modelos de IA. GlobalMind valida os dados que treinam esses modelos. Camada complementar. Mesma tese — 800x mais upside." },
               { icon: "🔥", title: "Deflação Dupla", desc: "Halving a cada 2 anos + burn de 20% por transação corporativa. Nenhum competidor combina os dois mecanismos. Pressão deflacionária constante sobre o token." },
-              { icon: "🌐", title: "Tração Real", desc: "Contratos live, dApp em produção, parceiro ISP com 1.000+ clientes. Primeiras validações on-chain confirmadas. Solo founder executando rápido." },
+              { icon: "🌐", title: "Tração Real", desc: "Contratos live, dApp em produção, clientes Maranet testando agora. Primeira validação on-chain confirmada. Co-founders executando rápido do interior do Brasil." },
             ].map(c => (
               <div key={c.title} className="card reveal" style={{ padding: "2rem 1.5rem" }}>
                 <span style={{ fontSize: "2.5rem", display: "block", marginBottom: "1.2rem" }}>{c.icon}</span>
@@ -210,7 +230,7 @@ export default function SeedPage() {
           <span className="section-num">// 03 — Potencial de Retorno</span>
           <h2 className="section-title">Bittensor começou em <em>$1M.</em></h2>
           <p style={{ color: "var(--ink2)", fontSize: "1rem", lineHeight: 1.8, fontWeight: 300, marginTop: "1rem", marginBottom: "3rem", maxWidth: "600px" }}>
-            Hoje vale $2.2 bilhões. Entrada no GlobalMind a $3.3M de valuation representa upside assimétrico para investidores early-stage.
+            Hoje vale $2.6 bilhões. Entrada no GlobalMind a $3.3M de valuation representa upside assimétrico para investidores early-stage. Mesma tese — validação descentralizada de IA. 800x mais upside.
           </p>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }} className="compare-grid">
@@ -231,11 +251,11 @@ export default function SeedPage() {
             <div className="card reveal" style={{ padding: "2rem", background: "var(--surface)" }}>
               <div style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "var(--muted)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "1rem" }}>Termos do Seed</div>
               {[
-                { label: "Instrumento",   val: "SAFE / Token Warrant"  },
-                { label: "Cliff",         val: "6 meses"               },
-                { label: "Vesting",       val: "18 meses linear"       },
-                { label: "Ticket mínimo", val: "$5.000"                },
-                { label: "Aceita",        val: "ETH / USDC / BRL"      },
+                { label: "Instrumento",   val: "SAFE / Token Warrant" },
+                { label: "Cliff",         val: "6 meses"              },
+                { label: "Vesting",       val: "18 meses linear"      },
+                { label: "Ticket mínimo", val: "$5.000"               },
+                { label: "Aceita",        val: "ETH / USDC / BRL"     },
               ].map(({ label, val }) => (
                 <div key={label} style={{ display: "flex", justifyContent: "space-between", padding: "0.8rem 0", borderBottom: "1px solid var(--border)" }}>
                   <span style={{ fontSize: "0.85rem", color: "var(--ink2)" }}>{label}</span>
@@ -255,8 +275,8 @@ export default function SeedPage() {
 
           <div style={{ marginTop: "3rem", display: "flex", flexDirection: "column", gap: 0 }}>
             {[
-              { num: "01", title: "Entre em contato", desc: "Manda email ou DM no X (@GMNDProtocol). Respondo em até 24h." },
-              { num: "02", title: "Receba o pitch deck", desc: "Envio o pitch deck completo com tokenomics, roadmap, tração e termos do seed." },
+              { num: "01", title: "Entre em contato", desc: "Manda email ou DM no X (@GMNDProtocol). Respondemos em até 24h." },
+              { num: "02", title: "Receba o pitch deck", desc: "Enviamos o pitch deck completo com tokenomics, roadmap, tração e termos do seed." },
               { num: "03", title: "Due diligence", desc: "Todo o código é open source no GitHub. Contratos verificáveis no Etherscan. Transparência total." },
               { num: "04", title: "Assine o SAFE", desc: "Documento simples. Aceito ETH, USDC ou BRL via transferência." },
               { num: "05", title: "Receba os tokens", desc: "GMND alocados para sua carteira com vesting automático via smart contract no mainnet." },
@@ -278,7 +298,7 @@ export default function SeedPage() {
       <section style={{ padding: "2rem 1.5rem", background: "var(--bg)", borderTop: "1px solid var(--border)" }}>
         <div style={{ maxWidth: "860px", margin: "0 auto" }}>
           <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.62rem", color: "var(--muted)", lineHeight: 1.8, letterSpacing: "0.02em" }}>
-            ⚠️ DISCLAIMER: Investimento em projetos early-stage crypto/DePIN envolve alto risco, incluindo potencial perda total do capital investido. Este conteúdo não constitui conselho financeiro, jurídico ou de investimento. DYOR (Do Your Own Research). Apenas invista o que você pode se dar ao luxo de perder. O GlobalMind Protocol está em fase de testnet — mainnet e funcionalidades completas ainda em desenvolvimento.
+            ⚠️ DISCLAIMER: Investimento em projetos early-stage crypto/DePIN envolve alto risco, incluindo potencial perda total do capital investido. Este conteúdo não constitui conselho financeiro, jurídico ou de investimento. DYOR. Apenas invista o que você pode se dar ao luxo de perder. O GlobalMind Protocol está em fase de testnet — mainnet e funcionalidades completas ainda em desenvolvimento.
           </p>
         </div>
       </section>
@@ -286,6 +306,9 @@ export default function SeedPage() {
       {/* CTA FINAL */}
       <section style={{ background: "var(--ink)", padding: "6rem 1.5rem", textAlign: "center", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", bottom: "-3rem", left: "50%", transform: "translateX(-50%)", fontFamily: "var(--font-serif), serif", fontSize: "30vw", color: "rgba(244,241,235,0.03)", pointerEvents: "none", whiteSpace: "nowrap", lineHeight: 1 }}>SEED</div>
+        <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "rgba(244,241,235,0.3)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "1rem", position: "relative" }}>
+          // Mesma tese do Bittensor — 800x mais upside
+        </p>
         <h2 style={{ fontFamily: "var(--font-serif), serif", fontStyle: "italic", fontSize: "clamp(2rem, 6vw, 5rem)", color: "var(--bg)", lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: "1.5rem", position: "relative" }}>
           Entre cedo.<br/>
           <em style={{ fontStyle: "normal", color: "var(--accent)" }}>Ganhe muito.</em>
@@ -297,15 +320,15 @@ export default function SeedPage() {
           ⚡ Primeiros $200K em negociação — spots limitados
         </p>
         <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", position: "relative", marginBottom: "1.5rem" }}>
-          <a href="https://twitter.com/GMNDProtocol" target="_blank" rel="noopener noreferrer" style={{ background: "var(--accent)", color: "white", padding: "1rem 2rem", borderRadius: "2px", fontWeight: 700, fontSize: "0.85rem", letterSpacing: "0.08em", textTransform: "uppercase", textDecoration: "none", display: "inline-block" }}>
-            DM @GMNDProtocol
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7A0bAoQ4IjRvK0JKkqXeeJcnFXS0_HhpFFrNFvOhcBrO_xQ/viewform" target="_blank" rel="noopener noreferrer" style={{ background: "var(--accent)", color: "white", padding: "1rem 2rem", borderRadius: "2px", fontWeight: 700, fontSize: "0.85rem", letterSpacing: "0.08em", textTransform: "uppercase", textDecoration: "none", display: "inline-block" }}>
+            Quero Investir
           </a>
           <button onClick={copyEmail} style={{ background: "transparent", color: "rgba(244,241,235,0.6)", padding: "1rem 2rem", borderRadius: "2px", fontWeight: 700, fontSize: "0.85rem", letterSpacing: "0.08em", textTransform: "uppercase", border: "1px solid rgba(244,241,235,0.15)", cursor: "pointer", fontFamily: "var(--font-mono), monospace" }}>
             {copied ? "✅ Copiado!" : "globalmindprotocol@gmail.com"}
           </button>
         </div>
         <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "rgba(244,241,235,0.2)", position: "relative" }}>
-          People's AI — De Marabá, Pará para o mundo 🇧🇷
+          Jeffeson Rocha + Davi Viana — De Marabá, Pará para o mundo 🇧🇷
         </p>
       </section>
 
@@ -314,11 +337,13 @@ export default function SeedPage() {
         .compare-grid { grid-template-columns: 1fr 1fr; }
         .founder-grid { grid-template-columns: auto 1fr; }
         .traction-grid { grid-template-columns: repeat(3, 1fr); }
+        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
         @media (max-width: 768px) {
           .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
           .compare-grid { grid-template-columns: 1fr !important; }
           .founder-grid { grid-template-columns: 1fr !important; }
           .traction-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .cards-grid { grid-template-columns: 1fr !important; }
         }
         @media (max-width: 480px) {
           .traction-grid { grid-template-columns: 1fr !important; }

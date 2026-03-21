@@ -56,7 +56,7 @@ export default function Home() {
             <span style={{
               fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem",
               color: "var(--muted)", letterSpacing: "0.1em",
-            }}>// Infraestrutura Descentralizada de IA</span>
+            }}>// Camada de Validação Humana para IA</span>
           </div>
 
           <h1 style={{
@@ -65,9 +65,9 @@ export default function Home() {
             lineHeight: 1.05, letterSpacing: "-0.02em",
             color: "var(--ink)", marginBottom: "1.5rem",
           }}>
-            A primeira{" "}
-            <em style={{ fontStyle: "italic", color: "var(--accent)" }}>rede neural</em>{" "}
-            movida por hardware cotidiano
+            Quem controla os{" "}
+            <em style={{ fontStyle: "italic", color: "var(--accent)" }}>dados de treinamento</em>{" "}
+            controla o futuro da inteligência
           </h1>
 
           <p style={{
@@ -75,7 +75,8 @@ export default function Home() {
             lineHeight: 1.8, fontWeight: 300,
             marginBottom: "0.8rem",
           }}>
-            GlobalMind transforma qualquer dispositivo conectado em um neurônio de validação global. Sem data centers. Sem monopólios. A inteligência pertence a quem a alimenta.
+            GlobalMind transforma qualquer dispositivo conectado em um nó de validação de dados de IA.
+            Descentralizado. On-chain. Auditável. A infraestrutura base que alimenta Bittensor, Perle e qualquer empresa de IA.
           </p>
 
           <p style={{
@@ -84,7 +85,7 @@ export default function Home() {
           }}>
             Parceiro ISP:{" "}
             <span style={{ color: "var(--ink)", fontWeight: 600 }}>Maranet Telecom</span>
-            {" "}— mais de mil clientes ativos em Marabá, Pará 🇧🇷
+            {" "}— mais de mil clientes ativos em Marabá, Pará 🇧🇷 · Clientes testando o protocolo agora
           </p>
 
           <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
@@ -94,10 +95,10 @@ export default function Home() {
 
           <div className="hero-stats">
             {[
-              { val: "∞",    label: "Escalabilidade" },
-              { val: "$0",   label: "CAPEX Próprio"  },
-              { val: "PoEC", label: "Consenso Cego"  },
-              { val: "1B",   label: "Supply GMND"    },
+              { val: "$2.6B", label: "Bittensor validou a tese" },
+              { val: "800x",  label: "Mais upside vs TAO"      },
+              { val: "PoEC",  label: "Consenso Cego"           },
+              { val: "1B",    label: "Supply GMND"             },
             ].map(m => (
               <div key={m.label} style={{ flex: "1 1 auto", minWidth: "70px" }}>
                 <span style={{
@@ -125,13 +126,13 @@ export default function Home() {
               <span style={{ fontSize: "1.8rem", display: "block", marginBottom: "0.8rem" }}>📱</span>
               <div style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "rgba(244,241,235,0.4)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "0.3rem" }}>One-Click Install</div>
               <div style={{ fontSize: "1rem", fontWeight: 700, color: "var(--bg)" }}>App Mobile — Android & iOS</div>
-              <div style={{ fontSize: "0.8rem", color: "rgba(244,241,235,0.55)", marginTop: "0.4rem", lineHeight: 1.5 }}>Usuário leigo instala, toca em "Iniciar" e começa a ganhar $GMND em segundo plano.</div>
+              <div style={{ fontSize: "0.8rem", color: "rgba(244,241,235,0.55)", marginTop: "0.4rem", lineHeight: 1.5 }}>Usuário instala, conecta carteira e começa a ganhar $GMND validando dados de IA em segundo plano.</div>
             </div>
             {[
-              { icon: "💻", label: "Desktop",    name: "Windows / macOS", desc: "Usa apenas capacidade ociosa da CPU/GPU." },
-              { icon: "📡", label: "Infra / ISP", name: "Roteador + OpenWrt", desc: "Firmware Rust para uptime 24/7." },
-              { icon: "⚙️", label: "Server",     name: "Docker Container", desc: "Deploy em segundos para usuários tech." },
-              { icon: "🔗", label: "Smart Contract", name: "Recompensas GMND", desc: "Pagamentos automáticos on-chain." },
+              { icon: "💻", label: "Desktop",       name: "Windows / macOS",    desc: "Usa apenas capacidade ociosa da CPU/GPU." },
+              { icon: "📡", label: "Infra / ISP",   name: "Roteador + OpenWrt", desc: "Firmware para uptime 24/7. Modelo Maranet." },
+              { icon: "⚙️", label: "Server",        name: "Docker Container",   desc: "Deploy em segundos para usuários tech." },
+              { icon: "🔗", label: "Smart Contract", name: "Recompensas GMND",  desc: "Pagamentos automáticos on-chain. Auditável." },
             ].map(d => (
               <div key={d.name} className="card" style={{ padding: "1.5rem" }}>
                 <span style={{ fontSize: "1.6rem", display: "block", marginBottom: "0.8rem" }}>{d.icon}</span>
@@ -144,6 +145,28 @@ export default function Home() {
         </div>
       </section>
 
+      {/* BITTENSOR BANNER */}
+      <section style={{ padding: "2rem 1.5rem", background: "var(--ink)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+        <div style={{ maxWidth: "960px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
+          <div>
+            <span style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "rgba(244,241,235,0.3)", letterSpacing: "0.15em", textTransform: "uppercase", display: "block", marginBottom: "0.3rem" }}>// Validação da Tese</span>
+            <p style={{ color: "rgba(244,241,235,0.7)", fontSize: "0.95rem", lineHeight: 1.6 }}>
+              <strong style={{ color: "var(--accent)" }}>Bittensor ($TAO)</strong> valida modelos de IA e vale{" "}
+              <strong style={{ color: "var(--bg)" }}>$2.6 bilhões</strong>.{" "}
+              GlobalMind valida os <em>dados que treinam</em> esses modelos — a camada de baixo.{" "}
+              <strong style={{ color: "var(--accent)" }}>Mesma tese. 800x mais upside.</strong>
+            </p>
+          </div>
+          <Link href="/seed" style={{
+            background: "var(--accent)", color: "white",
+            padding: "0.8rem 1.5rem", borderRadius: "2px",
+            fontWeight: 700, fontSize: "0.8rem",
+            letterSpacing: "0.08em", textTransform: "uppercase",
+            textDecoration: "none", flexShrink: 0,
+          }}>Ver Seed Round →</Link>
+        </div>
+      </section>
+
       {/* HOW IT WORKS */}
       <section style={{ padding: "5rem 1.5rem", background: "var(--surface)", borderTop: "1px solid var(--border)" }}>
         <div style={{ marginBottom: "3rem" }}>
@@ -153,8 +176,8 @@ export default function Home() {
         <div className="cards-grid">
           {[
             { badge: "Para Usuários", badgeColor: "var(--accent3)", icon: "👤", title: "Instale e Ganhe", desc: "Instale o app, conecte sua carteira e deixe seu dispositivo validar tarefas de IA enquanto você dorme. Cada resposta correta gera $GMND automaticamente.", tags: ["Mobile", "Desktop", "Roteador"] },
-            { badge: "Para Provedores", badgeColor: "var(--accent2)", icon: "🌐", title: "Monetize sua Infraestrutura", desc: "ISPs e provedores de conectividade transformam capacidade ociosa de rede em receita tokenizada. Primeiro parceiro: Maranet Telecom, Marabá-PA.", tags: ["ISP", "Fibra", "DePIN"] },
-            { badge: "Para Empresas", badgeColor: "var(--accent)", icon: "🏢", title: "Validação Auditável", desc: "Acesse uma rede global de validadores humanos on-chain. Pague por resultado, audite cada etapa. Substitua contratos opacos de anotação por transparência total.", tags: ["AI Training", "LLM", "Auditável"] },
+            { badge: "Para Provedores", badgeColor: "var(--accent2)", icon: "🌐", title: "Monetize sua Infraestrutura", desc: "ISPs transformam capacidade ociosa de rede em receita tokenizada. Primeiro parceiro: Maranet Telecom, Marabá-PA. Clientes já testando o protocolo.", tags: ["ISP", "Fibra", "DePIN"] },
+            { badge: "Para Empresas de IA", badgeColor: "var(--accent)", icon: "🏢", title: "Validação Auditável", desc: "Acesse rede global de validadores humanos on-chain. Pague por resultado, audite cada etapa. De LLMs a visão computacional — dados verificáveis on-chain.", tags: ["AI Training", "RLHF", "Auditável"] },
           ].map(c => (
             <div key={c.title} className="card reveal" style={{ padding: "2rem 1.5rem" }}>
               <span style={{
@@ -195,10 +218,10 @@ export default function Home() {
         <div className="tokenomics-grid">
           <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
             {[
-              { icon: "🏢", title: "Empresas de IA compram acesso", desc: "Clientes corporativos pagam Créditos de Validação em $GMND para acessar a rede de validadores humanos." },
+              { icon: "🏢", title: "Empresas de IA compram acesso", desc: "Clientes corporativos pagam em $GMND para acessar a rede global de validadores humanos on-chain." },
               { icon: "🔥", title: "Burn — Oferta Diminui", desc: "20% dos tokens pagos são permanentemente destruídos. Oferta circulante cai com o crescimento da demanda." },
               { icon: "👥", title: "Distribuição aos Nós", desc: "70% é distribuído proporcionalmente aos nós com base no score PoEC. Quanto melhor a contribuição, maior a fatia." },
-              { icon: "📈", title: "Efeito de Rede Composto", desc: "Mais usuários → mais confiável → mais clientes → mais burn → maior valor. Ciclo virtuoso autossustentado." },
+              { icon: "📈", title: "Efeito de Rede Composto", desc: "Mais empresas → mais GMND queimado → oferta cai → valorização → mais nodes → mais confiável. Ciclo virtuoso." },
             ].map((n, i) => (
               <div key={n.title} className="reveal" style={{ display: "flex", alignItems: "stretch", gap: "1rem", position: "relative" }}>
                 {i < 3 && <div style={{ position: "absolute", left: "23px", top: "52px", width: "1px", bottom: "-24px", background: "var(--border)" }} />}
@@ -234,7 +257,7 @@ export default function Home() {
               <span style={{ fontSize: "2rem" }}>🔥</span>
               <div>
                 <h4 style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--bg)", marginBottom: "0.3rem" }}>Queima Automática On-Chain</h4>
-                <p style={{ fontSize: "0.82rem", color: "rgba(244,241,235,0.5)", lineHeight: 1.5 }}>Cada batch finalizado queima 20% via smart contract. Imutável e auditável.</p>
+                <p style={{ fontSize: "0.82rem", color: "rgba(244,241,235,0.5)", lineHeight: 1.5 }}>Cada batch finalizado queima 20% via smart contract. Imutável e auditável no Etherscan.</p>
               </div>
             </div>
           </div>
@@ -247,7 +270,7 @@ export default function Home() {
             Calendário de <em>Emissão</em>
           </h3>
           <p style={{ color: "var(--ink2)", fontSize: "0.9rem", lineHeight: 1.8, fontWeight: 300, marginBottom: "2rem" }}>
-            Inspirado no Bitcoin — a cada 2 anos a emissão de novos $GMND cai pela metade.
+            Inspirado no Bitcoin e Bittensor — a cada 2 anos a emissão de novos $GMND cai pela metade.
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem" }} className="halving-grid">
             {HALVING.map(({ era, emission, active }) => (
@@ -292,10 +315,13 @@ export default function Home() {
                 <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "var(--muted)", letterSpacing: "0.08em" }}>MARABÁ, PARÁ — NORTE DO BRASIL 🇧🇷</p>
               </div>
             </div>
-            <p style={{ fontSize: "0.9rem", color: "var(--ink2)", lineHeight: 1.8, marginBottom: "1.5rem" }}>
+            <p style={{ fontSize: "0.9rem", color: "var(--ink2)", lineHeight: 1.8, marginBottom: "1rem" }}>
               Mais de mil clientes ativos se tornam nodes potenciais da rede GlobalMind.
               Primeiro DePIN de validação de IA do Norte do Brasil — provando que
               qualquer ISP do mundo pode replicar o modelo.
+            </p>
+            <p style={{ fontSize: "0.85rem", color: "var(--accent)", fontFamily: "var(--font-mono), monospace", marginBottom: "1.5rem" }}>
+              ✅ Clientes Maranet testando o protocolo agora
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
               {["DePIN", "ISP Node", "Marabá-PA", "1.000+ Clientes", "Norte do Brasil"].map(tag => (
@@ -333,26 +359,103 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TRACTION */}
+      {/* COMPETITIVE */}
       <section style={{ padding: "4rem 1.5rem", background: "var(--bg)", borderTop: "1px solid var(--border)" }}>
         <div style={{ marginBottom: "2rem" }}>
-          <span className="section-num">// 04 — Tração</span>
+          <span className="section-num">// 04 — Posicionamento</span>
+          <h2 className="section-title">A camada que <em>todos precisam.</em></h2>
+          <p style={{ color: "var(--ink2)", fontSize: "1rem", lineHeight: 1.8, fontWeight: 300, marginTop: "1rem", maxWidth: "600px" }}>
+            Bittensor valida modelos. Perle valida com especialistas. GlobalMind é a infraestrutura base — a camada de validação humana que alimenta todos eles.
+          </p>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem" }} className="cards-grid">
+          {[
+            { icon: "⛓️", title: "Bittensor ($2.6B)", desc: "Valida modelos de IA. Não valida os dados que treinam esses modelos. GlobalMind é a camada complementar de baixo.", badge: "Complementar", color: "var(--accent2)" },
+            { icon: "🔬", title: "Perle AI ($17.5M)", desc: "Expert-in-the-loop centralizado na Solana. GlobalMind é a infraestrutura aberta que pode alimentar o pipeline deles.", badge: "Complementar", color: "var(--accent3)" },
+            { icon: "🌐", title: "GlobalMind ($3.3M)", desc: "A infraestrutura base. Qualquer dispositivo. On-chain. ISP como nodes. Halving + Burn. Nenhum competidor combina tudo isso.", badge: "Nós", color: "var(--accent)" },
+          ].map(c => (
+            <div key={c.title} className="card reveal" style={{ padding: "2rem 1.5rem" }}>
+              <span style={{
+                display: "inline-block",
+                fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem",
+                letterSpacing: "0.12em", textTransform: "uppercase",
+                padding: "0.25rem 0.7rem", borderRadius: "2px", marginBottom: "1.5rem",
+                border: `1px solid ${c.color}`, color: c.color,
+                background: `${c.color}0f`,
+              }}>{c.badge}</span>
+              <span style={{ fontSize: "2.5rem", display: "block", marginBottom: "1.2rem" }}>{c.icon}</span>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 800, marginBottom: "0.8rem" }}>{c.title}</h3>
+              <p style={{ fontSize: "0.87rem", color: "var(--muted)", lineHeight: 1.7 }}>{c.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* TRACTION */}
+      <section style={{ padding: "4rem 1.5rem", background: "var(--surface)", borderTop: "1px solid var(--border)" }}>
+        <div style={{ marginBottom: "2rem" }}>
+          <span className="section-num">// 05 — Tração</span>
           <h2 className="section-title">Construído em <em>3 semanas.</em></h2>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.8rem" }} className="traction-grid">
           {[
-            "✅ Smart Contracts V2 live na Sepolia",
-            "✅ Token ERC-20 $GMND deployado",
-            "✅ dApp em produção",
-            "✅ App de validação Maranet",
-            "✅ Contrato V3 + Halving desenvolvido",
+            "✅ Smart Contracts V2 + V3 live na Sepolia",
+            "✅ Token ERC-20 $GMND com Halving deployado",
+            "✅ dApp em produção — WalletConnect mobile",
+            "✅ Parceiro ISP Maranet — 1.000+ clientes",
+            "✅ Clientes Maranet testando o protocolo",
+            "✅ Primeira validação on-chain confirmada",
+            "✅ Painel admin — gestão de batches no browser",
             "✅ Open source no GitHub",
-            "✅ Product Hunt lançado",
-            "✅ DevHunt listado",
-            "✅ Giveth — primeira doação recebida",
+            "✅ Product Hunt · DevHunt · Giveth listados",
+            "✅ Co-founders: Jeffeson Rocha + Davi Viana",
+            "✅ Seed round aberto @ $3.3M valuation",
+            "✅ Whitepaper v0.4 + Pitch Deck EN/PT",
           ].map((item, i) => (
             <div key={i} className="card reveal" style={{ padding: "1rem 1.2rem", fontSize: "0.82rem", color: "var(--ink2)" }}>
               {item}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* TEAM */}
+      <section style={{ padding: "4rem 1.5rem", background: "var(--bg)", borderTop: "1px solid var(--border)" }}>
+        <div style={{ marginBottom: "2rem" }}>
+          <span className="section-num">// 06 — Time</span>
+          <h2 className="section-title">Dois fundadores do <em>interior do Brasil.</em></h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }} className="team-grid">
+          {[
+            {
+              initials: "JR", name: "Jeffeson Rocha",
+              role: "Co-Founder & Lead Developer",
+              bio: "De vendedor de móveis em Marabá a solo developer de smart contracts na Ethereum em 3 semanas. Co-administrador da Maranet Telecom. Web3 autodidata.",
+              tags: ["Ethereum", "Smart Contracts", "DePIN", "Maranet Telecom"],
+            },
+            {
+              initials: "DV", name: "Davi Viana",
+              role: "Co-Founder & Chief Business Officer",
+              bio: "Empresário do agronegócio brasileiro especializado em operações de pulverização com drones. Financiou o desenvolvimento inicial do protocolo. Estratégia de negócios e expansão.",
+              tags: ["Agronegócio", "Drones", "Business", "Investidor Fundador"],
+            },
+          ].map(m => (
+            <div key={m.name} className="card reveal" style={{ padding: "2rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
+                <div style={{ width: "60px", height: "60px", borderRadius: "50%", background: "var(--accent)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <span style={{ fontFamily: "var(--font-serif), serif", fontSize: "1.3rem", color: "white", fontStyle: "italic" }}>{m.initials}</span>
+                </div>
+                <div>
+                  <h3 style={{ fontSize: "1.1rem", fontWeight: 800, marginBottom: "0.2rem" }}>{m.name}</h3>
+                  <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "var(--accent)", letterSpacing: "0.08em", textTransform: "uppercase" }}>{m.role}</p>
+                </div>
+              </div>
+              <p style={{ fontSize: "0.87rem", color: "var(--muted)", lineHeight: 1.7, marginBottom: "1.2rem" }}>{m.bio}</p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                {m.tags.map(t => (
+                  <span key={t} style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.63rem", background: "var(--surface)", padding: "0.2rem 0.6rem", borderRadius: "2px", color: "var(--ink2)", letterSpacing: "0.05em" }}>{t}</span>
+                ))}
+              </div>
             </div>
           ))}
         </div>
@@ -368,37 +471,40 @@ export default function Home() {
           fontFamily: "var(--font-serif), serif", fontSize: "30vw", color: "rgba(244,241,235,0.03)",
           pointerEvents: "none", whiteSpace: "nowrap", lineHeight: 1,
         }}>GMND</div>
+        <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "rgba(244,241,235,0.3)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "1rem", position: "relative" }}>
+          // A infraestrutura que todos precisam
+        </p>
         <h2 style={{
           fontFamily: "var(--font-serif), serif", fontStyle: "italic",
           fontSize: "clamp(2rem, 6vw, 6rem)", color: "var(--bg)",
           lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: "1.5rem",
           position: "relative",
         }}>
-          A inteligência pertence<br/>a{" "}
-          <em style={{ fontStyle: "normal", color: "var(--accent)" }}>todos</em>
+          Quem controla os dados<br/>controla{" "}
+          <em style={{ fontStyle: "normal", color: "var(--accent)" }}>o futuro</em>
         </h2>
         <p style={{ color: "rgba(244,241,235,0.45)", fontSize: "1rem", maxWidth: "520px", margin: "0 auto 0.8rem", lineHeight: 1.7, position: "relative" }}>
-          Seja um dos primeiros a apoiar a infraestrutura descentralizada que vai remodelar o futuro global da IA.
+          Bittensor confirmou com $2.6B que essa é a próxima camada crítica. GlobalMind é o protocolo especializado — já rodando — a $3.3M de valuation.
         </p>
         <p style={{ color: "rgba(244,241,235,0.25)", fontSize: "0.82rem", marginBottom: "2.5rem", position: "relative", fontFamily: "var(--font-mono), monospace", letterSpacing: "0.05em" }}>
           Seed Round Aberto · $500K · 150M GMND · $0.003/token · Valuation $3.3M
         </p>
         <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", position: "relative" }}>
-          <Link href="/empresa" style={{
+          <Link href="/seed" style={{
             background: "var(--accent)", color: "white",
             padding: "1rem 2rem", borderRadius: "2px",
             fontWeight: 700, fontSize: "0.85rem",
             letterSpacing: "0.08em", textTransform: "uppercase",
             textDecoration: "none", display: "inline-block",
-          }}>Entrar no Protocolo</Link>
-          <Link href="/dashboard" style={{
+          }}>Ver Seed Round</Link>
+          <Link href="/maranet" style={{
             background: "transparent", color: "rgba(244,241,235,0.6)",
             padding: "1rem 2rem", borderRadius: "2px",
             fontWeight: 700, fontSize: "0.85rem",
             letterSpacing: "0.08em", textTransform: "uppercase",
             textDecoration: "none", border: "1px solid rgba(244,241,235,0.15)",
             display: "inline-block",
-          }}>Ver Dashboard</Link>
+          }}>Testar o Protocolo</Link>
         </div>
       </section>
 
@@ -422,60 +528,34 @@ export default function Home() {
 
       <style>{`
         .hero-section {
-          min-height: 100vh;
-          padding: 8rem 1.5rem 4rem;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 4rem;
-          align-items: center;
-          position: relative;
-          overflow: hidden;
+          min-height: 100vh; padding: 8rem 1.5rem 4rem;
+          display: grid; grid-template-columns: 1fr 1fr;
+          gap: 4rem; align-items: center;
+          position: relative; overflow: hidden;
         }
         .hero-stats {
-          display: flex;
-          gap: 1.5rem;
-          margin-top: 2.5rem;
-          padding-top: 2rem;
-          border-top: 1px solid var(--border);
-          flex-wrap: wrap;
+          display: flex; gap: 1.5rem; margin-top: 2.5rem;
+          padding-top: 2rem; border-top: 1px solid var(--border); flex-wrap: wrap;
         }
         .hero-cards { display: block; }
-        .cards-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 1.5rem;
-        }
-        .tokenomics-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 4rem;
-          align-items: start;
-        }
-        .halving-grid {
-          grid-template-columns: repeat(4, 1fr) !important;
-        }
-        .maranet-grid {
-          grid-template-columns: 1fr 1fr !important;
-        }
-        .traction-grid {
-          grid-template-columns: repeat(3, 1fr) !important;
-        }
+        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .tokenomics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+        .halving-grid { grid-template-columns: repeat(4, 1fr) !important; }
+        .maranet-grid { grid-template-columns: 1fr 1fr !important; }
+        .traction-grid { grid-template-columns: repeat(3, 1fr) !important; }
+        .team-grid { grid-template-columns: 1fr 1fr !important; }
         @media (max-width: 900px) {
-          .hero-section {
-            grid-template-columns: 1fr;
-            padding: 7rem 1.5rem 3rem;
-            gap: 2rem;
-          }
+          .hero-section { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; gap: 2rem; }
           .hero-cards { display: none; }
           .cards-grid { grid-template-columns: 1fr; }
           .tokenomics-grid { grid-template-columns: 1fr; gap: 2rem; }
           .halving-grid { grid-template-columns: repeat(2, 1fr) !important; }
           .maranet-grid { grid-template-columns: 1fr !important; }
           .traction-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .team-grid { grid-template-columns: 1fr !important; }
         }
         @media (max-width: 480px) {
           .hero-section { padding: 6rem 1rem 2.5rem; }
-          .hero-stats { gap: 1rem; }
           .halving-grid { grid-template-columns: repeat(2, 1fr) !important; }
           .traction-grid { grid-template-columns: 1fr !important; }
         }
