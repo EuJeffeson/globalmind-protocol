@@ -3,30 +3,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 const PROTOCOL = "0xA605b8092A4f7833799CcFaAE7C914771bdB5D36";
-const RPC      = "https://rpc.sepolia.org";
-
-const NETWORK_STATS_ABI = [
-  {
-    name: "getNetworkStats",
-    type: "function",
-    stateMutability: "view",
-    inputs: [],
-    outputs: [
-      { name: "_totalBatches",  type: "uint256" },
-      { name: "_totalBurned",   type: "uint256" },
-      { name: "_totalRewarded", type: "uint256" },
-    ],
-  },
-];
-
-async function rpcCall(id: number, method: string, params: unknown[]) {
-  const res = await fetch(RPC, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ jsonrpc: "2.0", id, method, params }),
-  });
-  return res.json();
-}
 
 export default function SeedPage() {
   const [copied, setCopied] = useState(false);
@@ -35,22 +11,50 @@ export default function SeedPage() {
   });
 
   const fetchChainData = async () => {
-    try {
-      // Usa ethers para chamar getNetworkStats() — igual ao dashboard
-      const { ethers } = await import("ethers");
-      const provider = new ethers.JsonRpcProvider(RPC);
-      const contract = new ethers.Contract(PROTOCOL, NETWORK_STATS_ABI, provider);
-      const ns = await contract.getNetworkStats();
+    // getNetworkStats() selector = 0x9ec9cda9
+    const RPCS = [
+      "https://ethereum-sepolia-rpc.publicnode.com",
+      "https://sepolia.drpc.org",
+      "https://rpc.sepolia.org",
+    ];
 
-      setLiveStats({
-        batches:  Number(ns._totalBatches).toString(),
-        burned:   Number(ethers.formatUnits(ns._totalBurned,   18)).toFixed(0) + " GMND",
-        rewarded: Number(ethers.formatUnits(ns._totalRewarded, 18)).toFixed(0) + " GMND",
-        loading: false,
-      });
-    } catch {
-      setLiveStats({ batches: "8", burned: "428 GMND", rewarded: "1498 GMND", loading: false });
+    const fromWei = (hex: string) => {
+      try {
+        const val = BigInt(hex);
+        return (Number(val) / 1e18).toFixed(0);
+      } catch { return "0"; }
+    };
+
+    for (const rpc of RPCS) {
+      try {
+        const res = await fetch(rpc, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            jsonrpc: "2.0", id: 1, method: "eth_call",
+            params: [{ to: PROTOCOL, data: "0x9ec9cda9" }, "latest"],
+          }),
+        });
+        const data = await res.json();
+        if (!data.result || data.result === "0x") continue;
+
+        // Decode 3 uint256 values (32 bytes each)
+        const raw = data.result.slice(2); // remove 0x
+        const batches  = parseInt(raw.slice(0,   64), 16);
+        const burned   = "0x" + raw.slice(64,  128);
+        const rewarded = "0x" + raw.slice(128, 192);
+
+        setLiveStats({
+          batches:  batches.toString(),
+          burned:   fromWei(burned) + " GMND",
+          rewarded: fromWei(rewarded) + " GMND",
+          loading: false,
+        });
+        return; // sucesso — para aqui
+      } catch { continue; }
     }
+    // Todos os RPCs falharam — mostra erro
+    setLiveStats(prev => ({ ...prev, loading: false }));
   };
 
   useEffect(() => {
