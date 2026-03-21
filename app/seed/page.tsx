@@ -11,16 +11,15 @@ export default function SeedPage() {
   });
 
   const fetchChainData = async () => {
-    // getNetworkStats() selector = 0x9ec9cda9
     const RPCS = [
-      "https://ethereum-sepolia-rpc.publicnode.com",
-      "https://sepolia.drpc.org",
-      "https://rpc.sepolia.org",
+      "https://eth-sepolia.g.alchemy.com/v2/demo",
+      "https://endpoints.omniatech.io/v1/eth/sepolia/public",
+      "https://sepolia.gateway.tenderly.co",
     ];
 
     const fromWei = (hex: string) => {
       try {
-        const val = BigInt(hex);
+        const val = BigInt("0x" + hex);
         return (Number(val) / 1e18).toFixed(0);
       } catch { return "0"; }
     };
@@ -36,13 +35,16 @@ export default function SeedPage() {
           }),
         });
         const data = await res.json();
-        if (!data.result || data.result === "0x") continue;
+        if (!data.result || data.result === "0x" || data.result.length < 10) continue;
 
-        // Decode 3 uint256 values (32 bytes each)
-        const raw = data.result.slice(2); // remove 0x
+        const raw = data.result.slice(2);
+        if (raw.length < 192) continue;
+
         const batches  = parseInt(raw.slice(0,   64), 16);
-        const burned   = "0x" + raw.slice(64,  128);
-        const rewarded = "0x" + raw.slice(128, 192);
+        const burned   = raw.slice(64,  128);
+        const rewarded = raw.slice(128, 192);
+
+        if (isNaN(batches)) continue;
 
         setLiveStats({
           batches:  batches.toString(),
@@ -50,10 +52,9 @@ export default function SeedPage() {
           rewarded: fromWei(rewarded) + " GMND",
           loading: false,
         });
-        return; // sucesso — para aqui
+        return;
       } catch { continue; }
     }
-    // Todos os RPCs falharam — mostra erro
     setLiveStats(prev => ({ ...prev, loading: false }));
   };
 
