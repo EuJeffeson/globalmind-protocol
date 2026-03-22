@@ -14,14 +14,7 @@ export default function SeedPage() {
 
   const fetchChainData = async () => {
     try {
-      // Tenta usar MetaMask se disponível, senão usa provider público
-      let provider;
-      if (typeof window !== "undefined" && window.ethereum) {
-        provider = new ethers.BrowserProvider(window.ethereum);
-      } else {
-        provider = new ethers.JsonRpcProvider("https://rpc2.sepolia.org");
-      }
-
+      const provider = new ethers.JsonRpcProvider("https://rpc2.sepolia.org");
       const contract = new ethers.Contract(PROTOCOL, CONTRACT_ABI, provider);
       const ns = await contract.getNetworkStats();
 
@@ -33,7 +26,20 @@ export default function SeedPage() {
       });
     } catch (e) {
       console.error("fetchChainData error:", e);
-      setLiveStats(prev => ({ ...prev, loading: false }));
+      // Fallback com segundo RPC
+      try {
+        const provider = new ethers.JsonRpcProvider("https://sepolia.drpc.org");
+        const contract = new ethers.Contract(PROTOCOL, CONTRACT_ABI, provider);
+        const ns = await contract.getNetworkStats();
+        setLiveStats({
+          batches:  Number(ns._totalBatches).toString(),
+          burned:   Number(ethers.formatUnits(ns._totalBurned, 18)).toFixed(0) + " GMND",
+          rewarded: Number(ethers.formatUnits(ns._totalRewarded, 18)).toFixed(0) + " GMND",
+          loading: false,
+        });
+      } catch {
+        setLiveStats(prev => ({ ...prev, loading: false }));
+      }
     }
   };
 
