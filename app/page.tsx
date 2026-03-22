@@ -96,7 +96,7 @@ export default function Home() {
           <div className="hero-stats">
             {[
               { val: "$2.6B", label: "Bittensor validou a tese" },
-              { val: "800x",  label: "Mais upside vs TAO"      },
+              { val: "$3.3M", label: "vs $2.6B Bittensor hoje" },
               { val: "PoEC",  label: "Consenso Cego"           },
               { val: "1B",    label: "Supply GMND"             },
             ].map(m => (
@@ -154,7 +154,7 @@ export default function Home() {
               <strong style={{ color: "var(--accent)" }}>Bittensor ($TAO)</strong> valida modelos de IA e vale{" "}
               <strong style={{ color: "var(--bg)" }}>$2.6 bilhões</strong>.{" "}
               GlobalMind valida os <em>dados que treinam</em> esses modelos — a camada de baixo.{" "}
-              <strong style={{ color: "var(--accent)" }}>Mesma tese. 800x mais upside.</strong>
+              Entrada a <strong style={{ color: "var(--accent)" }}>800x menor valuation</strong> que Bittensor hoje.
             </p>
           </div>
           <Link href="/seed" style={{
@@ -408,7 +408,7 @@ export default function Home() {
             "✅ Painel admin — gestão de batches no browser",
             "✅ Open source no GitHub",
             "✅ Product Hunt · DevHunt · Giveth listados",
-            "✅ Co-founders: Jeffeson Rocha + David Coelho",
+            "✅ Co-founders: Jeffeson Rocha + Davi Viana",
             "✅ Seed round aberto @ $3.3M valuation",
             "✅ Whitepaper v0.4 + Pitch Deck EN/PT",
           ].map((item, i) => (
@@ -434,7 +434,7 @@ export default function Home() {
               tags: ["Ethereum", "Smart Contracts", "DePIN", "Maranet Telecom"],
             },
             {
-              initials: "DV", name: "David Coelho",
+              initials: "DV", name: "Davi Viana",
               role: "Co-Founder & Chief Business Officer",
               bio: "Empresário do agronegócio brasileiro especializado em operações de pulverização com drones. Financiou o desenvolvimento inicial do protocolo. Estratégia de negócios e expansão.",
               tags: ["Agronegócio", "Drones", "Business", "Investidor Fundador"],

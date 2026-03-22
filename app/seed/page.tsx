@@ -90,7 +90,7 @@ export default function SeedPage() {
         <p style={{ fontSize: "1rem", color: "var(--ink2)", lineHeight: 1.8, fontWeight: 300, maxWidth: "600px", marginBottom: "1rem" }}>
           Bittensor confirmou com $2.6B de market cap que validação descentralizada de IA é a próxima camada crítica.
           GlobalMind é o protocolo especializado em validação humana de dados — já rodando — a $3.3M de valuation.
-          Mesma tese. <strong style={{ color: "var(--ink)" }}>800x mais upside.</strong>
+          Entrada a <strong style={{ color: "var(--ink)" }}>800x menor valuation</strong> que Bittensor hoje.
         </p>
 
         <p style={{ fontSize: "0.85rem", color: "var(--accent)", fontFamily: "var(--font-mono), monospace", marginBottom: "2.5rem" }}>
@@ -105,6 +105,16 @@ export default function SeedPage() {
             DM @GMNDProtocol →
           </a>
         </div>
+        <div style={{ display: "flex", gap: "1.5rem", marginTop: "1.2rem", flexWrap: "wrap" }}>
+          <a href="https://github.com/EuJeffeson/globalmind-protocol/raw/main/docs/globalmind-whitepaper-v04.pdf" target="_blank" rel="noopener noreferrer"
+            style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.7rem", color: "var(--accent)", letterSpacing: "0.05em", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+            📄 Whitepaper v0.4 (EN) →
+          </a>
+          <a href="https://github.com/EuJeffeson/globalmind-protocol/raw/main/docs/globalmind-whitepaper-v04-pt.pdf" target="_blank" rel="noopener noreferrer"
+            style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.7rem", color: "var(--muted)", letterSpacing: "0.05em", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+            📄 Whitepaper v0.4 (PT) →
+          </a>
+        </div>
       </section>
 
       {/* STATS */}
@@ -114,7 +124,7 @@ export default function SeedPage() {
             { val: "$500K",  label: "Meta da Rodada",      color: "var(--accent)"  },
             { val: "$0.003", label: "Preço por GMND",      color: "var(--accent2)" },
             { val: "$3.3M",  label: "Valuation",           color: "var(--accent3)" },
-            { val: "800x",   label: "Upside vs Bittensor", color: "var(--accent)"  },
+            { val: "$3.3M",  label: "vs $2.6B Bittensor",  color: "var(--accent)"  },
           ].map(s => (
             <div key={s.label} className="card reveal" style={{ padding: "1.5rem", textAlign: "center" }}>
               <span style={{ fontFamily: "var(--font-serif), serif", fontSize: "2rem", color: s.color, lineHeight: 1, display: "block" }}>{s.val}</span>
@@ -249,6 +259,41 @@ export default function SeedPage() {
         </div>
       </section>
 
+
+      {/* CAP TABLE */}
+      <section style={{ padding: "4rem 1.5rem", background: "var(--surface)", borderTop: "1px solid var(--border)" }}>
+        <div style={{ maxWidth: "860px", margin: "0 auto" }}>
+          <span className="section-num">// Cap Table — Distribuição de Tokens</span>
+          <h2 className="section-title">Transparência <em>total.</em></h2>
+          <p style={{ color: "var(--ink2)", fontSize: "0.9rem", lineHeight: 1.8, fontWeight: 300, marginTop: "0.5rem", marginBottom: "2rem" }}>
+            Supply fixo de 1.000.000.000 GMND. Sem mint adicional. Auditável on-chain.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            {[
+              { holder: "Recompensas de Rede",        pct: "40%", tokens: "400.000.000", cliff: "Halving schedule",       color: "var(--accent)"  },
+              { holder: "Venda Seed (investidores)",   pct: "15%", tokens: "150.000.000", cliff: "6m cliff + 18m linear",  color: "var(--accent2)" },
+              { holder: "Equipe & Fundadores",         pct: "15%", tokens: "150.000.000", cliff: "12m cliff + 36m linear", color: "var(--accent3)" },
+              { holder: "Ecossistema & Parcerias",     pct: "15%", tokens: "150.000.000", cliff: "Via DAO após lançamento", color: "var(--muted)"   },
+              { holder: "Reserva do Protocolo",        pct: "10%", tokens: "100.000.000", cliff: "Multisig controlado",    color: "var(--muted)"   },
+              { holder: "Liquidez Inicial",            pct: "5%",  tokens: "50.000.000",  cliff: "TGE — DEX liquidity",   color: "var(--muted)"   },
+            ].map(({ holder, pct, tokens, cliff, color }) => (
+              <div key={holder} style={{ display: "grid", gridTemplateColumns: "2fr 0.5fr 1.2fr 1.5fr", gap: "1rem", padding: "0.9rem 1.2rem", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: "4px", alignItems: "center" }} className="cap-row">
+                <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                  <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: color, flexShrink: 0 }} />
+                  <span style={{ fontSize: "0.85rem", color: "var(--ink)", fontWeight: 500 }}>{holder}</span>
+                </div>
+                <span style={{ fontFamily: "var(--font-serif), serif", fontSize: "1.1rem", color, fontWeight: 700 }}>{pct}</span>
+                <span style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.7rem", color: "var(--ink2)" }}>{tokens}</span>
+                <span style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "var(--muted)" }}>{cliff}</span>
+              </div>
+            ))}
+          </div>
+          <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "var(--muted)", marginTop: "1rem" }}>
+            * Contrato: {CONTRACT_ADDRESS} · Verificável no Etherscan
+          </p>
+        </div>
+      </section>
+
       {/* POR QUE INVESTIR */}
       <section style={{ padding: "5rem 1.5rem", background: "var(--surface)", borderTop: "1px solid var(--border)" }}>
         <div style={{ maxWidth: "860px", margin: "0 auto" }}>
@@ -259,7 +304,7 @@ export default function SeedPage() {
           </p>
           <div className="cards-grid">
             {[
-              { icon: "⛓️", title: "Bittensor = $2.6B", desc: "TAO lançou em ~$1M e chegou a $2.6B validando modelos de IA. GlobalMind valida os dados que treinam esses modelos. Camada complementar. Mesma tese — 800x mais upside." },
+              { icon: "⛓️", title: "Bittensor = $2.6B", desc: "TAO lançou em ~$1M e chegou a $2.6B validando modelos de IA. GlobalMind valida os dados que treinam esses modelos. Camada complementar. Entrada a 800x menor valuation que Bittensor hoje." },
               { icon: "🔥", title: "Deflação Dupla", desc: "Halving a cada 2 anos + burn de 20% por transação corporativa. Nenhum competidor combina os dois mecanismos. Pressão deflacionária constante." },
               { icon: "🌐", title: "Tração Real", desc: "Contratos live, dApp em produção, clientes Maranet testando agora. Dados ao vivo na blockchain. Co-founders executando do interior do Brasil." },
             ].map(c => (
@@ -279,7 +324,7 @@ export default function SeedPage() {
           <span className="section-num">// 03 — Potencial de Retorno</span>
           <h2 className="section-title">Bittensor começou em <em>$1M.</em></h2>
           <p style={{ color: "var(--ink2)", fontSize: "1rem", lineHeight: 1.8, fontWeight: 300, marginTop: "1rem", marginBottom: "3rem", maxWidth: "600px" }}>
-            Hoje vale $2.6 bilhões. Entrada no GlobalMind a $3.3M de valuation representa upside assimétrico para investidores early-stage. Mesma tese — 800x mais upside.
+            Hoje vale $2.6 bilhões. Entrada no GlobalMind a $3.3M de valuation representa upside assimétrico para investidores early-stage. Entrada a 800x menor valuation que Bittensor hoje.
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }} className="compare-grid">
             <div className="card reveal" style={{ padding: "2rem", background: "var(--surface)" }}>
@@ -353,7 +398,7 @@ export default function SeedPage() {
       <section style={{ background: "var(--ink)", padding: "6rem 1.5rem", textAlign: "center", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", bottom: "-3rem", left: "50%", transform: "translateX(-50%)", fontFamily: "var(--font-serif), serif", fontSize: "30vw", color: "rgba(244,241,235,0.03)", pointerEvents: "none", whiteSpace: "nowrap", lineHeight: 1 }}>SEED</div>
         <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "rgba(244,241,235,0.3)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "1rem", position: "relative" }}>
-          // Mesma tese do Bittensor — 800x mais upside
+          // Entrada a 800x menor valuation que Bittensor hoje
         </p>
         <h2 style={{ fontFamily: "var(--font-serif), serif", fontStyle: "italic", fontSize: "clamp(2rem, 6vw, 5rem)", color: "var(--bg)", lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: "1.5rem", position: "relative" }}>
           Entre cedo.<br/>
