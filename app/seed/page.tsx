@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { ethers } from "ethers";
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract";
 
-const PROTOCOL = "0xA605b8092A4f7833799CcFaAE7C914771bdB5D36";
+const PROTOCOL = CONTRACT_ADDRESS;
 
 export default function SeedPage() {
   const [copied, setCopied] = useState(false);
@@ -11,51 +13,28 @@ export default function SeedPage() {
   });
 
   const fetchChainData = async () => {
-    const RPCS = [
-      "https://eth-sepolia.g.alchemy.com/v2/demo",
-      "https://endpoints.omniatech.io/v1/eth/sepolia/public",
-      "https://sepolia.gateway.tenderly.co",
-    ];
+    try {
+      // Tenta usar MetaMask se disponível, senão usa provider público
+      let provider;
+      if (typeof window !== "undefined" && window.ethereum) {
+        provider = new ethers.BrowserProvider(window.ethereum);
+      } else {
+        provider = new ethers.JsonRpcProvider("https://rpc2.sepolia.org");
+      }
 
-    const fromWei = (hex: string) => {
-      try {
-        const val = BigInt("0x" + hex);
-        return (Number(val) / 1e18).toFixed(0);
-      } catch { return "0"; }
-    };
+      const contract = new ethers.Contract(PROTOCOL, CONTRACT_ABI, provider);
+      const ns = await contract.getNetworkStats();
 
-    for (const rpc of RPCS) {
-      try {
-        const res = await fetch(rpc, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            jsonrpc: "2.0", id: 1, method: "eth_call",
-            params: [{ to: PROTOCOL, data: "0x9ec9cda9" }, "latest"],
-          }),
-        });
-        const data = await res.json();
-        if (!data.result || data.result === "0x" || data.result.length < 10) continue;
-
-        const raw = data.result.slice(2);
-        if (raw.length < 192) continue;
-
-        const batches  = parseInt(raw.slice(0,   64), 16);
-        const burned   = raw.slice(64,  128);
-        const rewarded = raw.slice(128, 192);
-
-        if (isNaN(batches)) continue;
-
-        setLiveStats({
-          batches:  batches.toString(),
-          burned:   fromWei(burned) + " GMND",
-          rewarded: fromWei(rewarded) + " GMND",
-          loading: false,
-        });
-        return;
-      } catch { continue; }
+      setLiveStats({
+        batches:  Number(ns._totalBatches).toString(),
+        burned:   Number(ethers.formatUnits(ns._totalBurned, 18)).toFixed(0) + " GMND",
+        rewarded: Number(ethers.formatUnits(ns._totalRewarded, 18)).toFixed(0) + " GMND",
+        loading: false,
+      });
+    } catch (e) {
+      console.error("fetchChainData error:", e);
+      setLiveStats(prev => ({ ...prev, loading: false }));
     }
-    setLiveStats(prev => ({ ...prev, loading: false }));
   };
 
   useEffect(() => {
