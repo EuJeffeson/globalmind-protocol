@@ -3,10 +3,10 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 
 const HALVING = [
-  { era: "Era 0 — Ano 1-2", emission: "100.000 GMND/dia", active: true },
-  { era: "Era 1 — Ano 3-4", emission: "50.000 GMND/dia",  active: false },
-  { era: "Era 2 — Ano 5-6", emission: "25.000 GMND/dia",  active: false },
-  { era: "Era 3 — Ano 7-8", emission: "12.500 GMND/dia",  active: false },
+  { era: "Era 0 — Ano 1-2", emission: "100.000 créditos/dia", active: true },
+  { era: "Era 1 — Ano 3-4", emission: "50.000 créditos/dia",  active: false },
+  { era: "Era 2 — Ano 5-6", emission: "25.000 créditos/dia",  active: false },
+  { era: "Era 3 — Ano 7-8", emission: "12.500 créditos/dia",  active: false },
 ];
 
 export default function Home() {
@@ -76,7 +76,8 @@ export default function Home() {
             marginBottom: "0.8rem",
           }}>
             GlobalMind transforma qualquer dispositivo conectado em um nó de validação de dados de IA.
-            Descentralizado. On-chain. Auditável. A infraestrutura base que alimenta Bittensor, Perle e qualquer empresa de IA.
+            Empresas pagam em{" "}<strong style={{ color: "var(--ink)" }}>USDC</strong>{" "}— sem volatilidade, sem fricção.
+            Validadores acumulam{" "}<strong style={{ color: "var(--accent)" }}>créditos GMND</strong>{" "}que convertem em tokens reais no lançamento.
           </p>
 
           <p style={{
@@ -98,7 +99,7 @@ export default function Home() {
               { val: "$2.6B", label: "Bittensor validou a tese" },
               { val: "$3.3M", label: "vs $2.6B Bittensor hoje" },
               { val: "PoEC",  label: "Consenso Cego"           },
-              { val: "1B",    label: "Supply GMND"             },
+              { val: "USDC", label: "Pagamento Enterprise"     },
             ].map(m => (
               <div key={m.label} style={{ flex: "1 1 auto", minWidth: "70px" }}>
                 <span style={{
@@ -132,7 +133,7 @@ export default function Home() {
               { icon: "💻", label: "Desktop",       name: "Windows / macOS",    desc: "Usa apenas capacidade ociosa da CPU/GPU." },
               { icon: "📡", label: "Infra / ISP",   name: "Roteador + OpenWrt", desc: "Firmware para uptime 24/7. Modelo Maranet." },
               { icon: "⚙️", label: "Server",        name: "Docker Container",   desc: "Deploy em segundos para usuários tech." },
-              { icon: "🔗", label: "Smart Contract", name: "Recompensas GMND",  desc: "Pagamentos automáticos on-chain. Auditável." },
+              { icon: "🔗", label: "Smart Contract", name: "Créditos GMND",     desc: "Validadores ganham créditos on-chain. Convertem para GMND no TGE." },
             ].map(d => (
               <div key={d.name} className="card" style={{ padding: "1.5rem" }}>
                 <span style={{ fontSize: "1.6rem", display: "block", marginBottom: "0.8rem" }}>{d.icon}</span>
@@ -175,9 +176,9 @@ export default function Home() {
         </div>
         <div className="cards-grid">
           {[
-            { badge: "Para Usuários", badgeColor: "var(--accent3)", icon: "👤", title: "Instale e Ganhe", desc: "Instale o app, conecte sua carteira e deixe seu dispositivo validar tarefas de IA enquanto você dorme. Cada resposta correta gera $GMND automaticamente.", tags: ["Mobile", "Desktop", "Roteador"] },
+            { badge: "Para Usuários", badgeColor: "var(--accent3)", icon: "👤", title: "Instale e Acumule", desc: "Instale o app, conecte sua carteira e deixe seu dispositivo validar tarefas de IA em segundo plano. Cada resposta correta gera créditos GMND automaticamente — resgatáveis em tokens no lançamento.", tags: ["Mobile", "Desktop", "Créditos GMND"] },
             { badge: "Para Provedores", badgeColor: "var(--accent2)", icon: "🌐", title: "Monetize sua Infraestrutura", desc: "ISPs transformam capacidade ociosa de rede em receita tokenizada. Primeiro parceiro: Maranet Telecom, Marabá-PA. Clientes já testando o protocolo.", tags: ["ISP", "Fibra", "DePIN"] },
-            { badge: "Para Empresas de IA", badgeColor: "var(--accent)", icon: "🏢", title: "Validação Auditável", desc: "Acesse rede global de validadores humanos on-chain. Pague por resultado, audite cada etapa. De LLMs a visão computacional — dados verificáveis on-chain.", tags: ["AI Training", "RLHF", "Auditável"] },
+            { badge: "Para Empresas de IA", badgeColor: "var(--accent)", icon: "🏢", title: "Pague em USDC", desc: "Acesse rede global de validadores humanos on-chain. Pague por resultado em USDC — sem exposição a token volátil. Cada etapa auditável no Etherscan.", tags: ["USDC", "RLHF", "Auditável"] },
           ].map(c => (
             <div key={c.title} className="card reveal" style={{ padding: "2rem 1.5rem" }}>
               <span style={{
@@ -209,19 +210,19 @@ export default function Home() {
       <section style={{ padding: "5rem 1.5rem", background: "var(--bg)" }}>
         <div style={{ marginBottom: "3rem" }}>
           <span className="section-num">// 02 — Tokenomics</span>
-          <h2 className="section-title">$GMND: Deflação <em>Dupla</em></h2>
+          <h2 className="section-title">Pagamento em <em>USDC</em> · Token GMND <em>Fase Futura</em></h2>
           <p style={{ color: "var(--ink2)", fontSize: "1rem", lineHeight: 1.8, fontWeight: 300, marginTop: "1rem" }}>
-            Halving a cada 2 anos (inspirado no Bitcoin) + Burn automático de 20% por transação corporativa.
-            Nenhum competidor combina os dois mecanismos simultaneamente.
+            Empresas de IA pagam em USDC — zero fricção enterprise. Validadores acumulam créditos GMND
+            que convertem 1:1 para tokens reais no TGE. Burn automático de 20% em cada batch + Halving a cada 2 anos.
           </p>
         </div>
         <div className="tokenomics-grid">
           <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
             {[
-              { icon: "🏢", title: "Empresas de IA compram acesso", desc: "Clientes corporativos pagam em $GMND para acessar a rede global de validadores humanos on-chain." },
+              { icon: "🏢", title: "Empresas pagam em USDC", desc: "Clientes corporativos depositam USDC — estável, sem exposição especulativa, aprovado por qualquer equipe de compliance." },
               { icon: "🔥", title: "Burn — Oferta Diminui", desc: "20% dos tokens pagos são permanentemente destruídos. Oferta circulante cai com o crescimento da demanda." },
-              { icon: "👥", title: "Distribuição aos Nós", desc: "70% é distribuído proporcionalmente aos nós com base no score PoEC. Quanto melhor a contribuição, maior a fatia." },
-              { icon: "📈", title: "Efeito de Rede Composto", desc: "Mais empresas → mais GMND queimado → oferta cai → valorização → mais nodes → mais confiável. Ciclo virtuoso." },
+              { icon: "👥", title: "Créditos GMND aos Validadores", desc: "70% do USDC converte em créditos GMND e é distribuído aos nós proporcionalmente ao score PoEC. No TGE, créditos viram tokens reais 1:1." },
+              { icon: "📈", title: "Flywheel Virtuoso", desc: "Mais empresas em USDC → mais burn de GMND via DEX → supply cai → valorização → mais validadores entram → rede mais confiável." },
             ].map((n, i) => (
               <div key={n.title} className="reveal" style={{ display: "flex", alignItems: "stretch", gap: "1rem", position: "relative" }}>
                 {i < 3 && <div style={{ position: "absolute", left: "23px", top: "52px", width: "1px", bottom: "-24px", background: "var(--border)" }} />}
@@ -243,10 +244,10 @@ export default function Home() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
             {[
-              { val: "1B",    color: "var(--accent)",  key: "Supply Total GMND" },
+              { val: "USDC", color: "var(--accent2)", key: "Moeda de Pagamento" },
               { val: "0,003", color: "var(--accent2)", key: "Preço Seed (USD)" },
-              { val: "20%",   color: "var(--accent)",  key: "Burn por Transação" },
-              { val: "70%",   color: "var(--accent3)", key: "Para Validadores" },
+              { val: "20%",   color: "var(--accent)",  key: "Burn GMND por Batch" },
+              { val: "70%",   color: "var(--accent3)", key: "Créditos GMND" },
             ].map(s => (
               <div key={s.key} className="card reveal" style={{ padding: "1.5rem" }}>
                 <span style={{ fontFamily: "var(--font-serif), serif", fontSize: "2rem", color: s.color, lineHeight: 1, display: "block" }}>{s.val}</span>
@@ -256,8 +257,8 @@ export default function Home() {
             <div style={{ gridColumn: "span 2", background: "var(--ink)", borderRadius: "6px", padding: "1.5rem", display: "flex", alignItems: "center", gap: "1rem" }} className="reveal">
               <span style={{ fontSize: "2rem" }}>🔥</span>
               <div>
-                <h4 style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--bg)", marginBottom: "0.3rem" }}>Queima Automática On-Chain</h4>
-                <p style={{ fontSize: "0.82rem", color: "rgba(244,241,235,0.5)", lineHeight: 1.5 }}>Cada batch finalizado queima 20% via smart contract. Imutável e auditável no Etherscan.</p>
+                <h4 style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--bg)", marginBottom: "0.3rem" }}>Burn Automático via USDC → GMND</h4>
+                <p style={{ fontSize: "0.82rem", color: "rgba(244,241,235,0.5)", lineHeight: 1.5 }}>20% do USDC de cada batch é convertido para GMND via DEX e queimado permanentemente on-chain. Imutável e auditável no Etherscan.</p>
               </div>
             </div>
           </div>
@@ -270,7 +271,7 @@ export default function Home() {
             Calendário de <em>Emissão</em>
           </h3>
           <p style={{ color: "var(--ink2)", fontSize: "0.9rem", lineHeight: 1.8, fontWeight: 300, marginBottom: "2rem" }}>
-            Inspirado no Bitcoin e Bittensor — a cada 2 anos a emissão de novos $GMND cai pela metade.
+            Inspirado no Bitcoin — a cada 2 anos a emissão de novos créditos GMND cai pela metade. No TGE, créditos acumulados convertem 1:1 para tokens reais.
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem" }} className="halving-grid">
             {HALVING.map(({ era, emission, active }) => (
@@ -291,7 +292,7 @@ export default function Home() {
                   {emission.split(" ")[0]}
                 </div>
                 <div style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem" }}>
-                  GMND/dia
+                  créditos/dia
                 </div>
                 <div style={{ fontSize: "0.78rem", color: "var(--ink2)" }}>{era}</div>
               </div>
@@ -341,7 +342,7 @@ export default function Home() {
             {[
               "Cliente instala o app GlobalMind",
               "Dispositivo valida dados de IA em background",
-              "Ganha $GMND automaticamente via smart contract",
+              "Acumula créditos GMND automaticamente via smart contract",
               "Maranet se diferencia da concorrência",
             ].map((step, i) => (
               <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "0.8rem", marginBottom: "1rem" }}>
@@ -372,7 +373,7 @@ export default function Home() {
           {[
             { icon: "⛓️", title: "Bittensor ($2.6B)", desc: "Valida modelos de IA. Não valida os dados que treinam esses modelos. GlobalMind é a camada complementar de baixo.", badge: "Complementar", color: "var(--accent2)" },
             { icon: "🔬", title: "Perle AI ($17.5M)", desc: "Expert-in-the-loop centralizado na Solana. GlobalMind é a infraestrutura aberta que pode alimentar o pipeline deles.", badge: "Complementar", color: "var(--accent3)" },
-            { icon: "🌐", title: "GlobalMind ($3.3M)", desc: "A infraestrutura base. Qualquer dispositivo. On-chain. ISP como nodes. Halving + Burn. Nenhum competidor combina tudo isso.", badge: "Nós", color: "var(--accent)" },
+            { icon: "🌐", title: "GlobalMind ($3.3M)", desc: "A infraestrutura base. Pagamento em USDC (zero fricção enterprise). Créditos GMND para validadores. ISP como nodes. Halving + Burn. Nenhum competidor combina tudo isso.", badge: "Nós", color: "var(--accent)" },
           ].map(c => (
             <div key={c.title} className="card reveal" style={{ padding: "2rem 1.5rem" }}>
               <span style={{
@@ -408,9 +409,9 @@ export default function Home() {
             "✅ Painel admin — gestão de batches no browser",
             "✅ Open source no GitHub",
             "✅ Product Hunt · DevHunt · Giveth listados",
-            "✅ Co-founders: Jeffeson Rocha + Davi Viana",
+            "✅ Co-founders: Jeffeson Rocha + David Coelho",
             "✅ Seed round aberto @ $3.3M valuation",
-            "✅ Whitepaper v0.4 + Pitch Deck EN/PT",
+            "✅ Whitepaper v0.7 — modelo USDC + créditos GMND",
           ].map((item, i) => (
             <div key={i} className="card reveal" style={{ padding: "1rem 1.2rem", fontSize: "0.82rem", color: "var(--ink2)" }}>
               {item}
@@ -434,7 +435,7 @@ export default function Home() {
               tags: ["Ethereum", "Smart Contracts", "DePIN", "Maranet Telecom"],
             },
             {
-              initials: "DV", name: "Davi Viana",
+              initials: "DC", name: "David Coelho",
               role: "Co-Founder & Chief Business Officer",
               bio: "Empresário do agronegócio brasileiro especializado em operações de pulverização com drones. Financiou o desenvolvimento inicial do protocolo. Estratégia de negócios e expansão.",
               tags: ["Agronegócio", "Drones", "Business", "Investidor Fundador"],
@@ -487,7 +488,7 @@ export default function Home() {
           Bittensor confirmou com $2.6B que essa é a próxima camada crítica. GlobalMind é o protocolo especializado — já rodando — a $3.3M de valuation.
         </p>
         <p style={{ color: "rgba(244,241,235,0.25)", fontSize: "0.82rem", marginBottom: "2.5rem", position: "relative", fontFamily: "var(--font-mono), monospace", letterSpacing: "0.05em" }}>
-          Seed Round Aberto · $500K · 150M GMND · $0.003/token · Valuation $3.3M
+          Seed Round Aberto · $500K · 150M GMND · $0.003/GMND · Pagamento via USDC · Valuation $3.3M
         </p>
         <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", position: "relative" }}>
           <Link href="/seed" style={{
