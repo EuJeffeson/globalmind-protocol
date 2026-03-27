@@ -108,11 +108,11 @@ export default function SeedPage() {
         <div style={{ display: "flex", gap: "1.5rem", marginTop: "1.2rem", flexWrap: "wrap" }}>
           <a href="https://drive.google.com/uc?export=download&id=1fd7GSOuFwEioK8ufn00-R41uESpJwKM4" target="_blank" rel="noopener noreferrer"
             style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.7rem", color: "var(--accent)", letterSpacing: "0.05em", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-            📄 Whitepaper v0.4 (EN) →
+            📄 Whitepaper v0.7 (EN) →
           </a>
           <a href="https://drive.google.com/uc?export=download&id=1ud_aYz7WC_nx0bo1SzwY0gImq6ah95I0" target="_blank" rel="noopener noreferrer"
             style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.7rem", color: "var(--muted)", letterSpacing: "0.05em", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-            📄 Whitepaper v0.4 (PT) →
+            📄 Whitepaper v0.7 (PT) →
           </a>
         </div>
       </section>
