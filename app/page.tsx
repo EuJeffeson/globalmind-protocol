@@ -52,11 +52,11 @@ export default function Home() {
               fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem",
               padding: "0.35rem 0.8rem", borderRadius: "2px",
               letterSpacing: "0.12em", textTransform: "uppercase",
-            }}>Protocolo v2.0</span>
+            }}>Validation-in-the-Loop Protocol</span>
             <span style={{
               fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem",
               color: "var(--muted)", letterSpacing: "0.1em",
-            }}>// Camada de Validação Humana para IA</span>
+            }}>// A camada de trust abaixo de toda plataforma de anotação</span>
           </div>
 
           <h1 style={{
@@ -65,9 +65,9 @@ export default function Home() {
             lineHeight: 1.05, letterSpacing: "-0.02em",
             color: "var(--ink)", marginBottom: "1.5rem",
           }}>
-            Quem controla os{" "}
-            <em style={{ fontStyle: "italic", color: "var(--accent)" }}>dados de treinamento</em>{" "}
-            controla o futuro da inteligência
+            A indústria de IA gasta bilhões{" "}
+            <em style={{ fontStyle: "italic", color: "var(--accent)" }}>criando dados.</em>{" "}
+            Quase zero verificando se são confiáveis
           </h1>
 
           <p style={{
@@ -75,9 +75,9 @@ export default function Home() {
             lineHeight: 1.8, fontWeight: 300,
             marginBottom: "0.8rem",
           }}>
-            GlobalMind transforma qualquer dispositivo conectado em um nó de validação de dados de IA.
-            Empresas pagam em{" "}<strong style={{ color: "var(--ink)" }}>USDC</strong>{" "}— sem volatilidade, sem fricção.
-            Validadores acumulam{" "}<strong style={{ color: "var(--accent)" }}>créditos GMND</strong>{" "}que convertem em tokens reais no lançamento.
+            GlobalMind é o <strong style={{ color: "var(--ink)" }}>Validation-in-the-Loop Protocol</strong> — a camada que verifica dados de treinamento de IA antes de tocarem um modelo.
+            Empresas pagam em{" "}<strong style={{ color: "var(--ink)" }}>USDC</strong>{" "}— zero fricção enterprise, zero exposição especulativa.
+            Validadores acumulam{" "}<strong style={{ color: "var(--accent)" }}>créditos GMND</strong>{" "}que convertem 1:1 em tokens reais no TGE.
           </p>
 
           <p style={{
@@ -97,7 +97,7 @@ export default function Home() {
           <div className="hero-stats">
             {[
               { val: "$2.6B", label: "Bittensor validou a tese" },
-              { val: "$3.3M", label: "vs $2.6B Bittensor hoje" },
+              { val: "$3.3M", label: "Valuation Seed Entry" },
               { val: "PoEC",  label: "Consenso Cego"           },
               { val: "USDC", label: "Pagamento Enterprise"     },
             ].map(m => (
@@ -152,10 +152,9 @@ export default function Home() {
           <div>
             <span style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "rgba(244,241,235,0.3)", letterSpacing: "0.15em", textTransform: "uppercase", display: "block", marginBottom: "0.3rem" }}>// Validação da Tese</span>
             <p style={{ color: "rgba(244,241,235,0.7)", fontSize: "0.95rem", lineHeight: 1.6 }}>
-              <strong style={{ color: "var(--accent)" }}>Bittensor ($TAO)</strong> valida modelos de IA e vale{" "}
-              <strong style={{ color: "var(--bg)" }}>$2.6 bilhões</strong>.{" "}
-              GlobalMind valida os <em>dados que treinam</em> esses modelos — a camada de baixo.{" "}
-              Entrada a <strong style={{ color: "var(--accent)" }}>800x menor valuation</strong> que Bittensor hoje.
+              <strong style={{ color: "var(--accent)" }}>Model Collapse</strong>: quando IA é treinada em dados gerados por IA, erros se amplificam a cada geração.{" "}
+              Um estudo do Stanford HAI mostrou que{" "}<strong style={{ color: "var(--bg)" }}>30% dos erros</strong>{" "}em sistemas comerciais rastreiam para qualidade de dados.{" "}
+              A solução é uma camada contínua de validação humana.{" "}<strong style={{ color: "var(--accent)" }}>Isso é o GlobalMind.</strong>
             </p>
           </div>
           <Link href="/seed" style={{
@@ -172,13 +171,13 @@ export default function Home() {
       <section style={{ padding: "5rem 1.5rem", background: "var(--surface)", borderTop: "1px solid var(--border)" }}>
         <div style={{ marginBottom: "3rem" }}>
           <span className="section-num">// 01 — Como Funciona</span>
-          <h2 className="section-title">Três participantes. <em>Um protocolo.</em></h2>
+          <h2 className="section-title">Validation-in-the-Loop. <em>Como funciona.</em></h2>
         </div>
         <div className="cards-grid">
           {[
             { badge: "Para Usuários", badgeColor: "var(--accent3)", icon: "👤", title: "Instale e Acumule", desc: "Instale o app, conecte sua carteira e deixe seu dispositivo validar tarefas de IA em segundo plano. Cada resposta correta gera créditos GMND automaticamente — resgatáveis em tokens no lançamento.", tags: ["Mobile", "Desktop", "Créditos GMND"] },
             { badge: "Para Provedores", badgeColor: "var(--accent2)", icon: "🌐", title: "Monetize sua Infraestrutura", desc: "ISPs transformam capacidade ociosa de rede em receita tokenizada. Primeiro parceiro: Maranet Telecom, Marabá-PA. Clientes já testando o protocolo.", tags: ["ISP", "Fibra", "DePIN"] },
-            { badge: "Para Empresas de IA", badgeColor: "var(--accent)", icon: "🏢", title: "Pague em USDC", desc: "Acesse rede global de validadores humanos on-chain. Pague por resultado em USDC — sem exposição a token volátil. Cada etapa auditável no Etherscan.", tags: ["USDC", "RLHF", "Auditável"] },
+            { badge: "Para Empresas de IA", badgeColor: "var(--accent)", icon: "🏢", title: "Pague em USDC", desc: "Acesse rede global de validadores humanos on-chain. Pague por resultado em USDC — zero fricção enterprise, zero compliance issue. Dados exportados em JSONL compatível com OpenAI fine-tuning e HuggingFace.", tags: ["USDC", "RLHF", "Auditável", "API Enterprise"] },
           ].map(c => (
             <div key={c.title} className="card reveal" style={{ padding: "2rem 1.5rem" }}>
               <span style={{
@@ -210,10 +209,10 @@ export default function Home() {
       <section style={{ padding: "5rem 1.5rem", background: "var(--bg)" }}>
         <div style={{ marginBottom: "3rem" }}>
           <span className="section-num">// 02 — Tokenomics</span>
-          <h2 className="section-title">Pagamento em <em>USDC</em> · Token GMND <em>Fase Futura</em></h2>
+          <h2 className="section-title">Validation-in-the-Loop · <em>USDC Fase 1</em> · Token GMND <em>Fase 2</em></h2>
           <p style={{ color: "var(--ink2)", fontSize: "1rem", lineHeight: 1.8, fontWeight: 300, marginTop: "1rem" }}>
-            Empresas de IA pagam em USDC — zero fricção enterprise. Validadores acumulam créditos GMND
-            que convertem 1:1 para tokens reais no TGE. Burn automático de 20% em cada batch + Halving a cada 2 anos.
+            Empresas pagam em USDC — zero exposição especulativa, zero fricção de compliance. Validadores acumulam créditos GMND
+            que convertem 1:1 para tokens reais no TGE. O burn automático de 20% via conversão USDC→GMND on-chain cria pressão deflacionária real sem que a empresa precise segurar token.
           </p>
         </div>
         <div className="tokenomics-grid">
@@ -364,15 +363,15 @@ export default function Home() {
       <section style={{ padding: "4rem 1.5rem", background: "var(--bg)", borderTop: "1px solid var(--border)" }}>
         <div style={{ marginBottom: "2rem" }}>
           <span className="section-num">// 04 — Posicionamento</span>
-          <h2 className="section-title">A camada que <em>todos precisam.</em></h2>
+          <h2 className="section-title">Não competimos com ninguém. <em>Somos a infraestrutura abaixo deles.</em></h2>
           <p style={{ color: "var(--ink2)", fontSize: "1rem", lineHeight: 1.8, fontWeight: 300, marginTop: "1rem", maxWidth: "600px" }}>
-            Bittensor valida modelos. Perle valida com especialistas. GlobalMind é a infraestrutura base — a camada de validação humana que alimenta todos eles.
+            Plataformas de anotação criam dados. O GlobalMind verifica se são confiáveis. Scale AI, Perle, e qualquer plataforma que cria dados de IA são clientes potenciais — não concorrentes. Somos a camada de trust abaixo delas.
           </p>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem" }} className="cards-grid">
           {[
             { icon: "⛓️", title: "Bittensor ($2.6B)", desc: "Valida modelos de IA. Não valida os dados que treinam esses modelos. GlobalMind é a camada complementar de baixo.", badge: "Complementar", color: "var(--accent2)" },
-            { icon: "🔬", title: "Perle AI ($17.5M)", desc: "Expert-in-the-loop centralizado na Solana. GlobalMind é a infraestrutura aberta que pode alimentar o pipeline deles.", badge: "Complementar", color: "var(--accent3)" },
+            { icon: "🔬", title: "Perle AI ($17.5M)", desc: "Cria dados RLHF com especialistas. GlobalMind valida esses dados on-chain antes de irem para o modelo. Perle é cliente potencial — não concorrente.", badge: "Cliente Potencial", color: "var(--accent3)" },
             { icon: "🌐", title: "GlobalMind ($3.3M)", desc: "A infraestrutura base. Pagamento em USDC (zero fricção enterprise). Créditos GMND para validadores. ISP como nodes. Halving + Burn. Nenhum competidor combina tudo isso.", badge: "Nós", color: "var(--accent)" },
           ].map(c => (
             <div key={c.title} className="card reveal" style={{ padding: "2rem 1.5rem" }}>
@@ -411,7 +410,7 @@ export default function Home() {
             "✅ Product Hunt · DevHunt · Giveth listados",
             "✅ Co-founders: Jeffeson Rocha + David Coelho",
             "✅ Seed round aberto @ $3.3M valuation",
-            "✅ Whitepaper v0.7 — modelo USDC + créditos GMND",
+            "✅ Whitepaper v0.8 — Validation-in-the-Loop + USDC + Model Collapse",
           ].map((item, i) => (
             <div key={i} className="card reveal" style={{ padding: "1rem 1.2rem", fontSize: "0.82rem", color: "var(--ink2)" }}>
               {item}
@@ -430,7 +429,7 @@ export default function Home() {
           {[
             {
               initials: "JR", name: "Jeffeson Rocha",
-              role: "Co-Founder & Lead Developer",
+              role: "Founder & Lead Developer",
               bio: "De vendedor de móveis em Marabá a solo developer de smart contracts na Ethereum em 3 semanas. Co-administrador da Maranet Telecom. Web3 autodidata.",
               tags: ["Ethereum", "Smart Contracts", "DePIN", "Maranet Telecom"],
             },
