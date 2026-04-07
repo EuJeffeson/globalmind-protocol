@@ -31,21 +31,21 @@ export default function ValidadorPage() {
   const { data: isValidCode } = useReadContract({
     address: CONTRACT_ADDRESS, abi: PROTOCOL_ABI,
     functionName: "isValidISPCode", args: [code],
-    query: { enabled: digits.join("").length === 6 && code > 0 },
+    query: { enabled: digits.join("").length === 6 && code > 0 && typeof window !== "undefined" },
   });
 
   // Busca nome do ISP
   const { data: ispData } = useReadContract({
     address: CONTRACT_ADDRESS, abi: PROTOCOL_ABI,
     functionName: "getISP", args: [code],
-    query: { enabled: !!isValidCode },
+    query: { enabled: !!isValidCode && typeof window !== "undefined" },
   });
 
   // Verifica se já está registrado
   const { data: alreadyRegistered } = useReadContract({
     address: CONTRACT_ADDRESS, abi: PROTOCOL_ABI,
     functionName: "isRegisteredValidator", args: address ? [address] : undefined,
-    query: { enabled: !!address },
+    query: { enabled: !!address && isConnected },
   });
 
   // Chama registerValidator on-chain
@@ -61,6 +61,16 @@ export default function ValidadorPage() {
   const handleRegister = async () => {
     const codeStr = digits.join("");
     if (codeStr.length < 6) { setError("Digite os 6 dígitos do código."); return; }
+
+    // Detecta mobile sem carteira disponível
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isMetaMaskBrowser = /MetaMask/i.test(navigator.userAgent);
+    if (isMobile && !isMetaMaskBrowser && !isConnected) {
+      setError("No celular, abra este site dentro do MetaMask Browser para conectar sua carteira.");
+      setScreen("register");
+      return;
+    }
+
     if (!isConnected) { open(); return; }
 
     setError("");
