@@ -65,9 +65,9 @@ export default function Home() {
             lineHeight: 1.05, letterSpacing: "-0.02em",
             color: "var(--ink)", marginBottom: "1.5rem",
           }}>
-            A indústria de IA gasta bilhões{" "}
-            <em style={{ fontStyle: "italic", color: "var(--accent)" }}>criando dados.</em>{" "}
-            Quase zero verificando se são confiáveis
+            Validation-in-the-Loop.
+            <em style={{ fontStyle: "italic", color: "var(--accent)" }}>A camada que verifica</em>{" "}
+            antes de treinar
           </h1>
 
           <p style={{
