@@ -49,10 +49,11 @@ export default function Navbar() {
   }, []);
 
   const links = [
-    { href: "/empresa",   label: "Postar Tarefas" },
-    { href: "/tarefas",   label: "Validar"         },
-    { href: "/dashboard", label: "Dashboard"       },
-    { href: "/seed",      label: "Seed Round"      },
+    { href: "/empresa",        label: "Postar Tarefas"  },
+    { href: "/tarefas",        label: "Validar"          },
+    { href: "/como-funciona",  label: "Como Funciona"    },
+    { href: "/dashboard",      label: "Dashboard"        },
+    { href: "/seed",           label: "Seed Round"       },
   ];
 
   const shortAddr = address ? address.slice(0,6) + "..." + address.slice(-4) : "";
