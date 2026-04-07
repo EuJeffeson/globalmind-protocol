@@ -179,10 +179,14 @@ export default function EmpresaPage() {
           </div>
           <div style={s.summaryRow}>
             <span style={s.summaryKey}>Para validadores (65%)</span>
-            <span style={s.summaryVal}>{(Number(reward) * 0.7).toFixed(0)} GMND</span>
+            <span style={s.summaryVal}>{(Number(reward) * 0.65).toFixed(0)} GMND</span>
           </div>
           <div style={s.summaryRow}>
-            <span style={s.summaryKey}>🔥 Queimado (20%)</span>
+            <span style={s.summaryKey}>Para ISP parceiro (5%)</span>
+            <span style={s.summaryVal}>{(Number(reward) * 0.05).toFixed(0)} GMND</span>
+          </div>
+          <div style={s.summaryRow}>
+            <span style={s.summaryKey}>Burn Reserve (20%)</span>
             <span style={{ ...s.summaryVal, color: "var(--accent)" }}>{(Number(reward) * 0.2).toFixed(0)} GMND</span>
           </div>
           <div style={s.summaryRow}>
