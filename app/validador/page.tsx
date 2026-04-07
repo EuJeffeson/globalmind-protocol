@@ -168,7 +168,7 @@ export default function ValidadorPage() {
               {!isConnected && <strong style={{ color: "var(--ink)", display: "block", marginTop: "0.5rem" }}>⚡ Você também precisará conectar sua carteira.</strong>}
             </p>
 
-            <div style={{ display: "flex", gap: "0.6rem", justifyContent: "center", marginBottom: "0.8rem" }} onPaste={handlePaste}>
+            <div style={{ display: "flex", gap: "clamp(0.3rem, 1.5vw, 0.6rem)", justifyContent: "center", marginBottom: "0.8rem" }} onPaste={handlePaste}>
               {digits.map((d, i) => (
                 <input key={i} ref={el => { inputRefs.current[i] = el; }} type="text" inputMode="numeric" maxLength={1} value={d}
                   onChange={e => handleDigit(i, e.target.value)} onKeyDown={e => handleKey(i, e)}
