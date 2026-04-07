@@ -6,6 +6,61 @@ import { TASK_TYPES, GMND_TOKEN_ADDRESS, GMND_TOKEN_ABI, CONTRACT_ADDRESS } from
 
 interface TaskRow { id: string; content: string; taskType: number; }
 
+function WaitlistCard() {
+  const s: React.CSSProperties = {
+    background: "rgba(26,58,143,0.06)",
+    border: "1px solid rgba(26,58,143,0.2)",
+    borderRadius: "8px",
+    padding: "1.8rem",
+    marginBottom: "2rem",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "2rem",
+    flexWrap: "wrap",
+  };
+  const btnS: React.CSSProperties = {
+    flexShrink: 0,
+    background: "var(--accent2)",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    padding: "0.9rem 1.8rem",
+    fontSize: "0.8rem",
+    fontWeight: 700,
+    letterSpacing: "0.08em",
+    textTransform: "uppercase",
+    textDecoration: "none",
+    fontFamily: "var(--font-sans), sans-serif",
+    whiteSpace: "nowrap",
+    display: "inline-block",
+  };
+  const eyeS: React.CSSProperties = {
+    fontFamily: "var(--font-mono), monospace",
+    fontSize: "0.6rem",
+    color: "var(--accent2)",
+    letterSpacing: "0.15em",
+    textTransform: "uppercase",
+    marginBottom: "0.4rem",
+  };
+  return (
+    <div style={s}>
+      <div>
+        <div style={eyeS}>// Early Access</div>
+        <h3 style={{ fontFamily: "var(--font-serif), serif", fontSize: "1.2rem", color: "var(--ink)", marginBottom: "0.4rem", letterSpacing: "-0.01em" }}>
+          Quer testar antes do mainnet?
+        </h3>
+        <p style={{ fontSize: "0.85rem", color: "var(--muted)", lineHeight: 1.6, maxWidth: "480px" }}>
+          Estamos selecionando os primeiros clientes empresariais para pilotos gratuitos na Sepolia. Leva 2 minutos — sem compromisso.
+        </p>
+      </div>
+      <a href="https://form.typeform.com/to/qRI3H1zP" target="_blank" rel="noopener noreferrer" style={btnS}>
+        Quero testar
+      </a>
+    </div>
+  );
+}
+
 export default function EmpresaPage() {
   const { isConnected, connect, getContract } = useWeb3();
   const [tasks, setTasks]       = useState<TaskRow[]>([{ id: crypto.randomUUID(), content: "", taskType: 0 }]);
@@ -119,6 +174,9 @@ export default function EmpresaPage() {
         <p style={s.subtitle}>
           Defina as tarefas, deposite a recompensa em GMND e a rede global valida automaticamente.
         </p>
+
+        {/* Waitlist Card */}
+        <WaitlistCard />
 
         {/* Wallet alert */}
         {!isConnected && (
