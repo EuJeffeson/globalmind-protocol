@@ -125,9 +125,9 @@ export default function Home() {
               background: "var(--ink)", borderRadius: "6px", padding: "1.8rem 1.5rem",
             }}>
               <span style={{ fontSize: "1.8rem", display: "block", marginBottom: "0.8rem" }}>📱</span>
-              <div style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "rgba(244,241,235,0.4)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "0.3rem" }}>One-Click Install</div>
+              <div style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem", color: "rgba(244,241,235,0.4)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "0.3rem" }}>Código ISP + Carteira</div>
               <div style={{ fontSize: "1rem", fontWeight: 700, color: "var(--bg)" }}>App Mobile — Android & iOS</div>
-              <div style={{ fontSize: "0.8rem", color: "rgba(244,241,235,0.55)", marginTop: "0.4rem", lineHeight: 1.5 }}>Usuário instala, conecta carteira e começa a ganhar $GMND validando dados de IA em segundo plano.</div>
+              <div style={{ fontSize: "0.8rem", color: "rgba(244,241,235,0.55)", marginTop: "0.4rem", lineHeight: 1.5 }}>Receba o código de 6 dígitos do seu ISP parceiro, conecte sua carteira e comece a validar dados de IA.</div>
             </div>
             {[
               { icon: "💻", label: "Desktop",       name: "Windows / macOS",    desc: "Usa apenas capacidade ociosa da CPU/GPU." },
@@ -175,7 +175,7 @@ export default function Home() {
         </div>
         <div className="cards-grid">
           {[
-            { badge: "Para Usuários", badgeColor: "var(--accent3)", icon: "👤", title: "Instale e Acumule", desc: "Instale o app, conecte sua carteira e deixe seu dispositivo validar tarefas de IA em segundo plano. Cada resposta correta gera créditos GMND automaticamente — resgatáveis em tokens no lançamento.", tags: ["Mobile", "Desktop", "Créditos GMND"] },
+            { badge: "Para Usuários", badgeColor: "var(--accent3)", icon: "👤", title: "Use seu código ISP", desc: "Receba o código de 6 dígitos do seu provedor de internet parceiro. Digite no dApp, conecte sua carteira e comece a validar. Cada resposta correta gera créditos GMND automaticamente — resgatáveis 1:1 em tokens no TGE.", tags: ["Código ISP", "Mobile", "Créditos GMND"] },
             { badge: "Para Provedores", badgeColor: "var(--accent2)", icon: "🌐", title: "Monetize sua Infraestrutura", desc: "ISPs transformam capacidade ociosa de rede em receita tokenizada. Primeiro parceiro: Maranet Telecom, Marabá-PA. Clientes já testando o protocolo.", tags: ["ISP", "Fibra", "DePIN"] },
             { badge: "Para Empresas de IA", badgeColor: "var(--accent)", icon: "🏢", title: "Pague em USDC", desc: "Acesse rede global de validadores humanos on-chain. Pague por resultado em USDC — zero fricção enterprise, zero compliance issue. Dados exportados em JSONL compatível com OpenAI fine-tuning e HuggingFace.", tags: ["USDC", "RLHF", "Auditável", "API Enterprise"] },
           ].map(c => (
@@ -339,7 +339,7 @@ export default function Home() {
               Como funciona
             </h4>
             {[
-              "Cliente instala o app GlobalMind",
+              "ISP distribui código de 6 dígitos para seus clientes",
               "Dispositivo valida dados de IA em background",
               "Acumula créditos GMND automaticamente via smart contract",
               "Maranet se diferencia da concorrência",
