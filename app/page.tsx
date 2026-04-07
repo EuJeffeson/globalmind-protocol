@@ -212,7 +212,7 @@ export default function Home() {
           <h2 className="section-title">Validation-in-the-Loop · <em>USDC Fase 1</em> · Token GMND <em>Fase 2</em></h2>
           <p style={{ color: "var(--ink2)", fontSize: "1rem", lineHeight: 1.8, fontWeight: 300, marginTop: "1rem" }}>
             Empresas pagam em USDC — zero exposição especulativa, zero fricção de compliance. Validadores acumulam créditos GMND
-            que convertem 1:1 para tokens reais no TGE. O burn automático de 20% via conversão USDC→GMND on-chain cria pressão deflacionária real sem que a empresa precise segurar token.
+            que convertem 1:1 para tokens reais no TGE. Os 20% acumulados na burn reserve em USDC criam pressão deflacionária futura via burn programado na V5, sem que a empresa precise segurar token.
           </p>
         </div>
         <div className="tokenomics-grid">
@@ -220,7 +220,7 @@ export default function Home() {
             {[
               { icon: "🏢", title: "Empresas pagam em USDC", desc: "Clientes corporativos depositam USDC — estável, sem exposição especulativa, aprovado por qualquer equipe de compliance." },
               { icon: "🔥", title: "Burn — Oferta Diminui", desc: "20% dos tokens pagos são permanentemente destruídos. Oferta circulante cai com o crescimento da demanda." },
-              { icon: "👥", title: "Créditos GMND aos Validadores", desc: "70% do USDC converte em créditos GMND e é distribuído aos nós proporcionalmente ao score PoEC. No TGE, créditos viram tokens reais 1:1." },
+              { icon: "👥", title: "Créditos GMND aos Validadores", desc: "65% do USDC vai para validadores vencedores do consenso + 5% direto para o ISP parceiro. Validadores acumulam créditos GMND proporcionais ao score PoEC — convertem 1:1 no TGE." },
               { icon: "📈", title: "Flywheel Virtuoso", desc: "Mais empresas em USDC → mais burn de GMND via DEX → supply cai → valorização → mais validadores entram → rede mais confiável." },
             ].map((n, i) => (
               <div key={n.title} className="reveal" style={{ display: "flex", alignItems: "stretch", gap: "1rem", position: "relative" }}>
@@ -246,7 +246,7 @@ export default function Home() {
               { val: "USDC", color: "var(--accent2)", key: "Moeda de Pagamento" },
               { val: "0,003", color: "var(--accent2)", key: "Preço Seed (USD)" },
               { val: "20%",   color: "var(--accent)",  key: "Burn GMND por Batch" },
-              { val: "70%",   color: "var(--accent3)", key: "Créditos GMND" },
+              { val: "65%",   color: "var(--accent3)", key: "Para Validadores" },
             ].map(s => (
               <div key={s.key} className="card reveal" style={{ padding: "1.5rem" }}>
                 <span style={{ fontFamily: "var(--font-serif), serif", fontSize: "2rem", color: s.color, lineHeight: 1, display: "block" }}>{s.val}</span>
@@ -410,7 +410,7 @@ export default function Home() {
             "✅ Product Hunt · DevHunt · Giveth listados",
             "✅ Co-founders: Jeffeson Rocha + David Coelho",
             "✅ Seed round aberto @ $3.3M valuation",
-            "✅ Whitepaper v0.8 — Validation-in-the-Loop + USDC + Model Collapse",
+            "✅ Whitepaper v0.9 — Sistema ISP + batchValidate + Score PoEC + Contrato V4",
           ].map((item, i) => (
             <div key={i} className="card reveal" style={{ padding: "1rem 1.2rem", fontSize: "0.82rem", color: "var(--ink2)" }}>
               {item}

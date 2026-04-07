@@ -162,7 +162,7 @@ export default function EmpresaPage() {
           <div style={s.inputWrap}>
             <span style={s.inputLabel}>Recompensa Total (GMND)</span>
             <input type="number" min="1" value={reward} onChange={e => setReward(e.target.value)} style={s.input} />
-            <span style={s.inputHint}>70% validadores · 20% burn · 10% treasury</span>
+            <span style={s.inputHint}>65% validadores · 5% ISP · 20% burn reserve · 10% treasury</span>
           </div>
           <div style={s.inputWrap}>
             <span style={s.inputLabel}>Prazo (horas)</span>
@@ -178,7 +178,7 @@ export default function EmpresaPage() {
             <span style={s.summaryVal}>{tasks.length}</span>
           </div>
           <div style={s.summaryRow}>
-            <span style={s.summaryKey}>Para validadores (70%)</span>
+            <span style={s.summaryKey}>Para validadores (65%)</span>
             <span style={s.summaryVal}>{(Number(reward) * 0.7).toFixed(0)} GMND</span>
           </div>
           <div style={s.summaryRow}>
