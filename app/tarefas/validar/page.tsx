@@ -30,16 +30,23 @@ export default function ValidarPage() {
     try {
       const count = await contract.batchCount();
       const found: Task[] = [];
-      for (let i = 0; i < Math.min(Number(count), 10); i++) {
+      // Pega tarefas de 1 batch por vez — garante sempre 1 TX só
+      for (let i = 0; i < Number(count); i++) {
         const info = await contract.getBatchInfo(i);
         if (Number(info.status) !== 0) continue;
         if (Number(info.deadline) < Date.now() / 1000) continue;
+        const batchTasks: Task[] = [];
         for (let j = 0; j < Number(info.taskCount); j++) {
           const already = address ? await contract.hasUserAnswered(i, j, address) : false;
           const isCreator = address?.toLowerCase() === info.creator.toLowerCase();
           if (already || isCreator) continue;
           const task = await contract.getTask(i, j);
-          found.push({ batchId: i, taskIndex: j, content: task.content, taskType: Number(task.taskType), deadline: Number(info.deadline) });
+          batchTasks.push({ batchId: i, taskIndex: j, content: task.content, taskType: Number(task.taskType), deadline: Number(info.deadline) });
+        }
+        // Se encontrou tarefas nesse batch — usa ele e para
+        if (batchTasks.length > 0) {
+          found.push(...batchTasks);
+          break;
         }
       }
       setTasks(found);
@@ -96,6 +103,18 @@ export default function ValidarPage() {
     } finally {
       setSending(false);
     }
+  };
+
+  const taskOptions = (type: number, content: string): string[] => {
+    // Tenta extrair opções do conteúdo se tiver formato "A) B) C)"
+    const match = content.match(/\(([^)]+)\)/g);
+    if (match && match.length >= 2) return match.map(m => m.replace(/[()]/g, ''));
+    // Opções padrão por tipo
+    if (type === 0) return ["Verdadeira", "Falsa", "Não verificável"];
+    if (type === 1) return ["Plausível", "Improvável", "Impossível verificar"];
+    if (type === 2) return ["Correta e útil", "Parcialmente correta", "Incorreta"];
+    if (type === 3) return ["Segura", "Conteúdo impróprio", "Incerto"];
+    return ["Sim", "Não", "Não sei"];
   };
 
   const taskLabel = (type: number) => ["CLASSIFICAÇÃO", "VERIFICAÇÃO", "AVALIAÇÃO LLM", "ROTULAGEM"][type] || "TAREFA";
@@ -167,17 +186,41 @@ export default function ValidarPage() {
                       {task.content}
                     </p>
 
-                    <textarea
-                      value={answers[key] || ""}
-                      onChange={e => setAnswers(a => ({ ...a, [key]: e.target.value }))}
-                      placeholder="Digite sua resposta..."
-                      rows={3}
-                      style={{ width: "100%", background: "var(--bg)", border: `1px solid ${answers[key] ? "var(--accent)" : "var(--border)"}`, borderRadius: "4px", padding: "0.8rem", color: "var(--ink)", fontFamily: "var(--font-mono), monospace", fontSize: "0.82rem", resize: "vertical", outline: "none", transition: "border-color 0.15s" }}
-                    />
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                      {taskOptions(task.taskType, task.content).map((opt, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setAnswers(a => ({ ...a, [key]: opt }))}
+                          style={{
+                            background: answers[key] === opt ? "rgba(200,82,42,0.1)" : "var(--bg)",
+                            border: `1px solid ${answers[key] === opt ? "var(--accent)" : "var(--border)"}`,
+                            borderRadius: "6px", padding: "0.9rem 1.2rem",
+                            color: answers[key] === opt ? "var(--ink)" : "var(--ink2)",
+                            fontSize: "0.9rem", cursor: "pointer",
+                            textAlign: "left" as const,
+                            display: "flex", alignItems: "center", gap: "0.8rem",
+                            transition: "all 0.15s",
+                            fontFamily: "var(--font-sans), sans-serif",
+                          }}
+                        >
+                          <span style={{
+                            width: "26px", height: "26px", borderRadius: "50%", flexShrink: 0,
+                            background: answers[key] === opt ? "var(--accent)" : "var(--border)",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            fontFamily: "var(--font-mono), monospace", fontSize: "0.65rem",
+                            color: answers[key] === opt ? "white" : "var(--muted)",
+                            transition: "all 0.15s",
+                          }}>
+                            {String.fromCharCode(65 + idx)}
+                          </span>
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
 
                     {answers[key] && (
-                      <div style={{ marginTop: "0.5rem", fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "var(--accent3)" }}>
-                        ✓ Resposta salva — será enviada junto com as outras
+                      <div style={{ marginTop: "0.8rem", fontFamily: "var(--font-mono), monospace", fontSize: "0.6rem", color: "var(--accent3)" }}>
+                        ✓ {answers[key]} — será enviado junto com as outras respostas
                       </div>
                     )}
                   </div>
