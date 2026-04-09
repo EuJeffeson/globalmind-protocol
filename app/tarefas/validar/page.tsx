@@ -106,10 +106,21 @@ export default function ValidarPage() {
   };
 
   const taskOptions = (type: number, content: string): string[] => {
-    // Tenta extrair opções do conteúdo se tiver formato "A) B) C)"
-    const match = content.match(/\(([^)]+)\)/g);
-    if (match && match.length >= 2) return match.map(m => m.replace(/[()]/g, ''));
-    // Opções padrão por tipo
+    const c = content.toLowerCase();
+    if (c.includes("sentimento") || c.includes("tom"))
+      return ["Positivo", "Negativo", "Neutro"];
+    if (c.includes("verdadeira") || c.includes("falsa") || c.includes("verificável"))
+      return ["Verdadeira", "Falsa", "Não verificável"];
+    if (c.includes("fato ou opinião"))
+      return ["Fato", "Opinião", "Ambos"];
+    if (c.includes("spam") || c.includes("golpe"))
+      return ["Legítima", "Spam / Golpe", "Incerto"];
+    if (c.includes("plausível") || c.includes("dado"))
+      return ["Plausível", "Improvável", "Impossível verificar"];
+    if (c.includes("correta") || c.includes("útil") || c.includes("resposta"))
+      return ["Correta e útil", "Parcialmente correta", "Incorreta"];
+    if (c.includes("segura") || c.includes("impróprio"))
+      return ["Segura", "Conteúdo impróprio", "Incerto"];
     if (type === 0) return ["Verdadeira", "Falsa", "Não verificável"];
     if (type === 1) return ["Plausível", "Improvável", "Impossível verificar"];
     if (type === 2) return ["Correta e útil", "Parcialmente correta", "Incorreta"];
