@@ -161,6 +161,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main style={{ paddingTop: "64px" }}>
             {children}
           </main>
+
         </Web3Provider>
       </body>
     </html>
