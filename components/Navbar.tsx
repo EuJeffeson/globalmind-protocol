@@ -49,6 +49,7 @@ export default function Navbar() {
   }, []);
 
   const links = [
+    { href: "/entrar",         label: "Entrar"           },
     { href: "/empresa",        label: "Postar Tarefas"  },
     { href: "/tarefas",        label: "Validar"          },
     { href: "/como-funciona",  label: "Como Funciona"    },
